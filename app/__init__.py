@@ -10,6 +10,10 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 def home():
     return render_template('home.html', title='Home')
 
+@app.route('/rbg')
+def rgb():
+    return render_template('rgb.html', title='RGB')
+
 @app.route('/login')
 def login():
     return render_template('login.html', title='Login')
