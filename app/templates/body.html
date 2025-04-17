@@ -8,18 +8,25 @@
     {% else %}
     <title>Home</title>
     {% endif %}
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Scyra</a></h1>
-    <div style="display: flex; gap: 10px;">
+    <header>
+        <h1><a href="{{ url_for('home') }}">Scyra</a></h1>
+    </header>
+    <nav>
         <button onclick="window.location.href='{{ url_for('home') }}'">Home page</button>
-        <button onclick="window.location.href='{{ url_for('login') }}'">login</button>
+        <button onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+    </nav>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="Logo">
     </div>
-
-    <div style="position: absolute; top: 10px; right: 10px;">
+    <!-- <div style="position: absolute; top: 10px; right: 10px;">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="height: 50px;">
-    </div>
-    {% block content %}
-    {% endblock %}
+    </div> -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
+</html></div>
