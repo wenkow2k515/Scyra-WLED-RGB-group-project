@@ -12,17 +12,27 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('home') }}">Scyra</a></h1>
+        <h1>
+            <img src="{{ url_for('static', filename='logo.png') }}" class="Logo">
+            <a href="{{ url_for('home') }}">Scyra</a>
+        </h1>
+        <nav class = "navbar">
+            <a href="{{ url_for('home') }}">Home page</a>
+            <a href="{{ url_for('rgb') }}">RGB</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </nav>
     </header>
-    <nav>
-        <button onclick="window.location.href='{{ url_for('home') }}'">Home page</button>
-        <button onclick="window.location.href='{{ url_for('rgb') }}'">RGB</button>
-        <button onclick="window.location.href='{{ url_for('login') }}'">Login</button>
-    </nav>
-    <div class="logo">
-        <img src="{{ url_for('static', filename='logo.png') }}" class="Logo">
-    </div>
+    
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% block content %}
         {% endblock %}
     </main>
