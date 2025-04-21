@@ -11,60 +11,69 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Ensure vertical alignment */
     background-color: #333;
     color: white;
+    padding: 15px 20px; /* Adjust padding for more space */
+    box-sizing: border-box; /* Ensure padding is included in the width */
 }
+
+header h1 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0; /* Prevent the logo and "Scyra" from shrinking */
+}
+
 header h1 a {
     text-decoration: none;
     color: white;
+    margin-left: 10px; /* Space between the logo and "Scyra" */
 }
+
 nav {
     display: flex;
     gap: 10px;
 }
-nav button {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+
+nav a {
+    color: #c9d1d9;
+    margin-left: 20px;
+    text-decoration: none;  
 }
-nav button:hover {
-    background-color: #0056b3;
+
+nav a:hover {
+    text-decoration: underline;
 }
-.logo {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+
+.navbar {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Push the navbar to the far right */
+    gap: 10px; /* Maintain spacing between links */
+    flex-shrink: 1; /* Allow the navbar to shrink if needed */
+    overflow: hidden; /* Prevent content from overflowing */
 }
-.logo img {
-    height: 50px;
+
+.navbar a {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 1.1em; /* Reduce font size slightly */
+    white-space: nowrap; /* Prevent text from breaking into multiple lines */
+    margin-left: 10px; /* Reduce margin between links */
 }
+
 main {
     margin-top: 20px;
     width: 100%;
     max-width: 800px;
 }
 
-.color-grid {
-  display: grid;
-  grid-template-columns: repeat(32, 40px);
-  gap: 5px;
-  margin: 20px;
-}
-.color-cell {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  position: relative;
-}
-.color-input {
-  position: absolute;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
+.Logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: contain;
+    margin: 0;
 }
 
