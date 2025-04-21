@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, request
+from flask import Flask, url_for, render_template, request, redirect, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length, NumberRange
@@ -14,13 +14,33 @@ def home():
 def rgb():
     return render_template('rgb.html', title='RGB')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print(f"Login attempt: {username}, {password}")  # Debugging output
+        flash('Login functionality not implemented yet.', 'info')
+        return redirect(url_for('login'))
     return render_template('login.html', title='Login')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html', title='Register')
+    if request.method == 'POST':
+        new_username = request.form['new_username']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            flash('Passwords do not match!', 'error')
+            return redirect(url_for('register'))
+
+        # Save the new user (for now, just print it for debugging)
+        print(f"New user registered: {new_username}")
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))  # Redirect to the login page
+
+    return render_template('register.html', title='Register account')
 
 
 if __name__ == '__main__':
