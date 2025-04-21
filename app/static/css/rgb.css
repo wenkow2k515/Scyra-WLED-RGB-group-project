@@ -1,0 +1,20 @@
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(32, 40px);
+    gap: 5px;
+    margin: 20px;
+  }
+  .color-cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    position: relative;
+  }
+  .color-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
