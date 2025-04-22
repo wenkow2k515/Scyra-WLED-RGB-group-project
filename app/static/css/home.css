@@ -1,0 +1,97 @@
+/* Ensure the body spans the full viewport */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center; /* Center vertically */
+    box-sizing: border-box; /* Include padding and border in width/height */
+}
+
+/* Center the container on the page */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    width: 100%; /* Ensure it spans the full width */
+    max-width: 800px; 
+    padding: 20px; /* Add some padding */
+}
+
+/* Heading styles */
+.container h1 {
+    font-size: 2.5em;
+    color: white; /* Ensure text is visible on the background */
+    margin: 0; /* Remove any margin */
+    padding: 20px; /* Add padding for better spacing */
+    text-align: center;
+    background-image: url('/static/pic/background.png'); /* Set the background image */
+    background-size: cover; /* Ensure the image covers the entire area */
+    background-position: center; /* Center the image */
+    height: 50vh; /* Make the height take up half of the viewport */
+    width: 100vw; /* Make the width span the entire window */
+    display: flex; /* Use Flexbox to center the text */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    border-radius: 0; /* Remove rounded corners for a full-width look */
+    box-shadow: none; /* Remove shadow for a cleaner look */
+}
+
+/* Paragraph styles */
+.container p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Button styles */
+.rgb-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rgb-options .btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 1200px; /* Increased width to make the buttons wider */
+    max-width: 100%; /* Ensure the button doesn't exceed the container width */
+}
+
+.rgb-options .btn:hover {
+    background-color: #04AA6D;
+}
+
+/* Options list styles */
+.options-list {
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
+    margin: auto;
+    width: 1200px; /* Increased width to make the buttons wider */
+    max-width: 100%; /* Ensure the button doesn't exceed the container width */
+    cursor: pointer;
+}
+
+.options-list li {
+    margin: 5px 0;
+}
+
+.options-list a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 1em;
+}
+
+.options-list a:hover {
+    text-decoration: underline;
+}
