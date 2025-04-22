@@ -16,6 +16,7 @@ header {
     color: white;
     padding: 15px 20px; /* Adjust padding for more space */
     box-sizing: border-box; /* Ensure padding is included in the width */
+    position: fixed; /* Fix the header to the top */
 }
 
 header h1 {
