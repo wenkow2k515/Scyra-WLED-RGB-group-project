@@ -42,6 +42,10 @@ def register():
 
     return render_template('register.html', title='Register account')
 
+@app.route('/account')
+def account():
+    return render_template('account.html', title='Account')
+
 
 if __name__ == '__main__':
     app.run()
