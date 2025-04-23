@@ -1,24 +1,33 @@
-# Scyra-WLED-RGB-group-project
-##1.Introduction - What is Scrya?
+# Scyra-WLED-RGB-Group-Project
 
-Scrya is an extension of the open-source LED control software WLED. It allows for easy, newbie-friendly creation of custom LED light strip presets with little to no coding knowledge through the use of a simple-to-understand visual system.
-WLED is a powerful piece of software, but its confusing UI and difficult learning curve—it requires some background in programming to truly use—have made it difficult for beginners to engage with.
-Scrya enables beginners to start creating their own presets immediately through a visual interface, translating their creations into JSON code that works seamlessly through WLED.
+## 1. Introduction – What is Scyra? 🤔
 
-##2.Features
+**Scrya** is a beginner-friendly extension of the open-source LED control software **WLED**.
 
-- Intuitive and beginner-friendly visual interface
-- A login system where people can store their presets
-- Simulation of the LED strip in real-time: no more turning your strips off and on in real life.
+- WLED is powerful, but its complex interface and reliance on programming knowledge make it tough for newcomers. 
+- Scrya solves this by offering a **visual interface**, allowing users to create custom LED presets without coding. 
+- These presets are converted into JSON and work seamlessly with WLED.
 
-##3.The group table
+## 2. Features ⚙️
+
+- Intuitive visual editor for creating LED presets  
+- Login system to save and manage user presets  
+- Real-time LED strip simulation — no hardware needed for testing  
+
+## 3. Usage 🚀
+
+To run the project locally:
+- Launch Terminal
+- Run the following command:
+```bash
+flask run
+```
+- Go to http://127.0.0.1:5000/ in a web browser of your choice
+
+## 4. Our Group Members 🤝
 
 |UWA ID | Name | GitHub Username|
 |---------|-------------|----------|
 |24168584 | Qihang Sun | wenkow2k515|
 |23905527 | MannoorKaur | MannoorKaur|
 |23625197 | Richard Lin | SagoCs |
-
-##3.How to launch the application
-
-At the terminal, use flask run to run the local server, then go to the URL http://127.0.0.1:5000/ in the browser.
