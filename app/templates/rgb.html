@@ -1,12 +1,54 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src = "/static/js/LEDgrid.js"></script>
+    <meta charset="UTF-8">
+    <title>Step 3: RGB Customization</title>
+    <script>
+        // Pass Python variables to JavaScript
+        const wledAddress = "{{ wled_address }}";
+        const groupSize = {{ group_size }};
+    </script>
+    <script src="/static/js/LEDgrid.js" defer></script>
     <link rel="stylesheet" href="/static/css/rgb.css">
-
 </head>
 {% extends "body.html" %}
 {% block content %}
-    <div class="color-grid" id="ledGrid"></div>
-    <button onclick="exportColors()">get the json output</button>
-    <pre id="output"></pre>
+<div id="step3" class="step">
+    <h2>Step 3: Select Segments & Set Colors</h2>
+    <div class="content-container">
+        <div class="info-container">
+            <p><strong>WLED Address:</strong> {{ wled_address }}</p>
+            <p><strong>Group Size:</strong> {{ group_size }}</p>
+        </div>
+
+        <div class = "customize-container">
+            <!-- Color Picker -->
+            <label>
+                Color:
+                <input id="colorPicker" type="color" value="#ffffff"/>
+            </label>
+
+            <!-- Brightness Slider -->
+            <label>
+                Brightness:
+                <input id="briSlider" type="range" min="0" max="255" value="128"/>
+                <span id="briValue">128</span>
+            </label>
+        </div>
+        <!-- Buttons -->
+        <div class="button-container">
+            <button id="applyColor">Apply to Selected</button>
+            <button id="defaultBtn">Default (50% Blue)</button>
+            <button id="selectAllBtn">Select All</button>
+            <button id="cancelAllBtn">Cancel All</button>
+        </div>
+
+        <!-- LED Grid -->
+        <div id="grid" class="grid"></div>
+
+        <!-- JSON Output -->
+        <button id="createBtn">Create JSON →</button>
+        <pre id="output" style="background:#f8f8f8;padding:1rem;"></pre>
+    </div>
+</div>
 {% endblock %}

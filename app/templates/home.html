@@ -6,19 +6,25 @@
 {% block content %}
 <div class="container">
     <h1>Scyra</h1>
-    <p>Explore the different types of RGB lighting options we offer. Select one to learn more:</p>
-    <div class="rgb-options">
-        <div class="btn btn-primary" onclick="toggleOptions('12V with 6 group')">12V with 6 group</div>
-        <ul id="12V with 6 group" class="options-list" style="display: none;">
-            <li><a href="{{ url_for('rgb', type='12/6') }}">One group with 1 control led</a></li>
-            <li><a href="{{ url_for('rgb', type='12/18') }}">One group with 3 control led</a></li>
-        </ul>
-        <div class="btn btn-secondary" onclick="toggleOptions('24V with 12 group')">24V with 12 group</div>
-        <ul id="24V with 12 group" class="options-list" style="display: none;">
-            <li><a href="{{ url_for('rgb', type='24/12') }}">One group with 1 control led</a></li>
-            <li><a href="{{ url_for('rgb', type='24/36') }}">One group with 3 control led</a></li>
-        </ul>
+    <p>Wanna have a try on LED customiz? follow this step below to get one:</p>
+    <div id="step1" class="step">
+        <h2>1. Enter your WLED address</h2>
+        <p>Provide the IP address of your WLED device to connect and retrieve its configuration.</p>
     </div>
+    
+    <div id="step2" class="step">
+        <h2>2. LEDs per addressable group</h2>
+        <p>Specify how many LEDs should be grouped together for customization.</p>
+    </div>
+
+    <div id="step2" class="step">
+        <h2>2. LEDs per addressable group</h2>
+        <p>Specify how many LEDs should be grouped together for customization.</p>
+    </div>
+
+    <!-- Redirect Button -->
+    <div class="redirect">
+        <button onclick="window.location.href='{{ url_for('step1_2') }}'">Start Customization →</button>  
 </div>
 <script src = "/static/js/home.js"></script>
 {% endblock %}
