@@ -22,7 +22,8 @@ To run the project locally:
 ```bash
 flask run
 ```
-- Go to http://127.0.0.1:5000/ in a web browser of your choice
+- Go to http://127.0.0.1:5000/ in a web browser of your choice.
+- Follow the instructions on the home screen.
 
 ## 4. Our Group Members 🤝
 
