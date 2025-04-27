@@ -118,4 +118,54 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = { on: true, seg: segs };
         document.getElementById('output').textContent = JSON.stringify(payload, null, 2);
     };
+
+    document.getElementById('outputToTextBoxBtn').onclick = () => {
+        const cells = Array.from(document.querySelectorAll('.cell.selected'));
+        if (!cells.length) {
+            alert('Please select at least one segment.');
+            return;
+        }
+
+        // Build array of { idx, color, bri }
+        const segsRaw = cells
+            .map((c) => ({
+                idx: Number(c.dataset.idx),
+                color: c.dataset.color,
+                bri: Number(c.dataset.bri),
+            }))
+            .sort((a, b) => a.idx - b.idx);
+
+        // Merge same properties
+        const merged = [];
+        let run = null;
+        segsRaw.forEach((item) => {
+            if (
+                run &&
+                item.idx === run.end + 1 &&
+                item.color === run.color &&
+                item.bri === run.bri
+            ) {
+                run.end = item.idx;
+            } else {
+                if (run) merged.push(run);
+                run = { startIdx: item.idx, end: item.idx, color: item.color, bri: item.bri };
+            }
+        });
+        if (run) merged.push(run);
+
+        // Converts JSON segments to WLED-parsable code
+        const segs = merged.map((r) => ({
+            start: r.startIdx * groupSize,
+            stop: (r.end + 1) * groupSize,
+            bri: r.bri,
+            col: [JSON.parse(r.color)],
+            grp: groupSize,
+        }));
+
+        const payload = { on: true, seg: segs };
+
+        // Output JSON to <textarea>
+        const textBox = document.getElementById('jsonTextBox');
+        textBox.value = JSON.stringify(payload, null, 2); // Pretty-print JSON
+    };
 });

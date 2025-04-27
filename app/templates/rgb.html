@@ -47,8 +47,11 @@
         <div id="grid" class="grid"></div>
 
         <!-- JSON Output -->
-        <button id="createBtn">Create JSON →</button>
+        <div class="json-buttons-container">
+            <button id="createBtn">Create JSON →</button>
+            <button id="outputToTextBoxBtn">Output to Text Box</button>
+        </div>
         <pre id="output" style="background:#f8f8f8;padding:1rem;"></pre>
-    </div>
-</div>
+        <textarea id="jsonTextBox" rows="10" class="json-textbox" readonly></textarea> <!-- Added readonly -->
+        </div>
 {% endblock %}
