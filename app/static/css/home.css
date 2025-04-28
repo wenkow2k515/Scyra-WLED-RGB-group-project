@@ -95,3 +95,52 @@ body {
 .options-list a:hover {
     text-decoration: underline;
 }
+
+/* Style for the Start Customization button */
+.redirect button {
+    padding: 15px 30px; /* Add padding for a larger button */
+    font-size: 1.2em; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    color: white; /* White text color */
+    background: linear-gradient(90deg, #ff0080, #ff8c00); /* Vibrant gradient background */
+    border: none; /* Remove border */
+    border-radius: 50px; /* Fully rounded corners */
+    cursor: pointer; /* Add pointer cursor on hover */
+    box-shadow: 0 4px 15px rgba(255, 0, 128, 0.5); /* Add a glowing shadow */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    text-transform: uppercase; /* Make text uppercase for a modern look */
+    letter-spacing: 1px; /* Add spacing between letters */
+}
+
+/* Hover effect for the button */
+.redirect button:hover {
+    background: linear-gradient(90deg, #ff8c00, #ff0080); /* Reverse gradient on hover */
+    transform: scale(1.1); /* Slightly enlarge the button */
+    box-shadow: 0 6px 20px rgba(255, 0, 128, 0.7); /* Enhance the glowing shadow */
+}
+
+/* Active (pressed) state for the button */
+.redirect button:active {
+    transform: scale(1); /* Reset scale when clicked */
+    box-shadow: 0 3px 10px rgba(255, 0, 128, 0.5); /* Reduce shadow when clicked */
+}
+
+/* Add a glowing animation to the button */
+.redirect button::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50px;
+    background: linear-gradient(90deg, rgba(255, 0, 128, 0.5), rgba(255, 140, 0, 0.5));
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.redirect button:hover::before {
+    opacity: 1; /* Show the glowing effect on hover */
+}
