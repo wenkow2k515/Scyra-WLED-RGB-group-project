@@ -1,122 +1,170 @@
-body {
-  font-family: 'Arial', sans-serif;
-  padding: 1.5rem;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  min-height: 100vh; /* Ensure the body takes up the full viewport height */
-  margin: 0; /* Remove default margin */
-}
-
-.grid {
+.color-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  gap: 10px;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(32, 40px); /* This will be overridden by JavaScript */
+  gap: 5px;
+  margin: 20px;
 }
 
-.cell {
-  width: 50px;
-  height: 50px;
-  background: #e0e0e0;
-  border: 2px solid #d0d0d0;
-  border-radius: 4px;
+.color-cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
   cursor: pointer;
-  transition: background 0.3s, border-color 0.3s;
+  position: relative;
+  background-color: #000000; /* Default color is black */
 }
 
-.cell:hover {
-  background: #d6d6d6;
-}
-
-.cell.selected {
-  border-color: #007bff;
-  background: #cce5ff;
-}
-
-label, button {
-  display: block;
-  margin-top: 1rem;
-  font-size: 1rem;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+.color-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+/* WLED Controls */
+.wled-controls {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
 }
 
-.error {
-  color: #d9534f;
-  margin-top: 0.5rem;
+.wled-controls h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.control-group {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control-group label {
+  margin-right: 10px;
   font-weight: bold;
 }
 
-.button-container {
-  display: flex;
-  gap: 10px; /* Add spacing between buttons */
-  justify-content: center; /* Center the buttons horizontally */
-  margin-top: 1rem; /* Add some space above the buttons */
+.control-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
 }
 
-.button-container button {
-  padding: 0.5rem 1rem; /* Add padding to the buttons */
-  font-size: 1rem; /* Ensure consistent font size */
-  cursor: pointer; /* Add a pointer cursor on hover */
-}
-.info-container {
-  display: flex;
-  gap: 10px; /* Add spacing between buttons */
-  justify-content: center; /* Center the buttons horizontally */
-  margin-top: 1rem; /* Add some space above the buttons */
-}
-
-.customize-container{
-  display: flex;
-  gap: 10px; /* Add spacing between buttons */
-  justify-content: center; /* Center the buttons horizontally */
-  margin-top: 1rem; /* Add some space above the buttons */
+.control-button {
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Align the buttons in a single line */
-.json-buttons-container {
-  display: flex;
-  gap: 10px; /* Add spacing between buttons */
-  justify-content: flex-start; /* Align buttons to the left */
-  margin-top: 1rem; /* Add some space above the buttons */
+.control-button:hover {
+  background-color: #038857;
 }
 
-/* Style the buttons */
+.status-message {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  min-height: 20px;
+}
+
+.status-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.status-message.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+/* LED Simulation */
+.led-simulation {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+}
+
+.led-simulation h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.simulation-strip {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 4px;
+  min-height: 60px;
+  align-items: center;
+}
+
+.simulated-led {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* JSON Output */
+#output {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px;
+  padding: 15px;
+  background-color: #282c34;
+  color: #abb2bf;
+  border-radius: 5px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
 .json-buttons-container button {
   padding: 0.5rem 1rem; /* Add padding to the buttons */
   font-size: 1rem; /* Ensure consistent font size */
   cursor: pointer; /* Add a pointer cursor on hover */
   border: 1px solid #ccc; /* Add a border */
   border-radius: 5px; /* Add rounded corners */
+  color: white; /* Text color */
   background-color: #1904df; /* Light background color */
   transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
 .json-buttons-container button:hover {
   background-color: #00f7ff; /* Slightly darker background on hover */
+  color:#000000; /* Change text color on hover */
 }
 
 /* Style the text box */
-.json-textbox {
-  width: 100%; /* Full width */
+#jsonTextBox {
+  width: 1300px; /* Full width */
+  height: 100%;
   margin-top: 1rem; /* Add space above the text box */
   padding: 0.5rem; /* Add padding inside the text box */
   font-family: 'Courier New', Courier, monospace; /* Use a monospace font for JSON */
@@ -126,14 +174,4 @@ button:hover {
   background-color: #f9f9f9; /* Light background color */
   resize: vertical; /* Allow vertical resizing only */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-}
-
-/* Hide steps by default */
-.step {
-  display: none;
-}
-
-/* Show the active step */
-.step.active {
-  display: block;
 }
