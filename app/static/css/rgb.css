@@ -144,3 +144,34 @@
   white-space: pre-wrap;
   overflow-x: auto;
 }
+
+.json-buttons-container button {
+  padding: 0.5rem 1rem; /* Add padding to the buttons */
+  font-size: 1rem; /* Ensure consistent font size */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add rounded corners */
+  color: white; /* Text color */
+  background-color: #1904df; /* Light background color */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.json-buttons-container button:hover {
+  background-color: #00f7ff; /* Slightly darker background on hover */
+  color:#000000; /* Change text color on hover */
+}
+
+/* Style the text box */
+#jsonTextBox {
+  width: 1300px; /* Full width */
+  height: 100%;
+  margin-top: 1rem; /* Add space above the text box */
+  padding: 0.5rem; /* Add padding inside the text box */
+  font-family: 'Courier New', Courier, monospace; /* Use a monospace font for JSON */
+  font-size: 1rem; /* Set font size */
+  border: 1px solid #eeff00; /* Add a border */
+  border-radius: 5px; /* Add rounded corners */
+  background-color: #f9f9f9; /* Light background color */
+  resize: vertical; /* Allow vertical resizing only */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
