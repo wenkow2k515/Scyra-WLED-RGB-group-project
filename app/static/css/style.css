@@ -1,81 +1,301 @@
-body {
-    font-family: Arial, sans-serif;
+/* Base Styles for Sycra */
+
+/* Reset and base styles */
+* {
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
 }
-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Ensure vertical alignment */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    background-color: #121212;
+    overflow-x: hidden;
+}
+
+a {
+    color: #00aaff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #66ccff;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #00aaff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0088cc;
+}
+
+.btn-secondary {
     background-color: #333;
     color: white;
-    padding: 15px 20px; /* Adjust padding for more space */
-    box-sizing: border-box; /* Ensure padding is included in the width */
-    position: sticky; /* Fix the header to the top */
-    top: 0; /* Position it at the top */
+    border: 1px solid #444;
 }
 
-header h1 {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    flex-shrink: 0; /* Prevent the logo and "Scyra" from shrinking */
+.btn-secondary:hover {
+    background-color: #444;
 }
 
-header h1 a {
-    text-decoration: none;
-    color: white;
-    margin-left: 10px; /* Space between the logo and "Scyra" */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-nav {
-    display: flex;
-    gap: 10px;
-}
-
-nav a {
-    color: #c9d1d9;
-    margin-left: 20px;
-    text-decoration: none;  
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
+/* Navigation */
 .navbar {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Push the navbar to the far right */
-    gap: 10px; /* Maintain spacing between links */
-    flex-shrink: 1; /* Allow the navbar to shrink if needed */
-    overflow: hidden; /* Prevent content from overflowing */
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.navbar a {
-    color: #c9d1d9;
+.logo {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    font-size: 1.1em; /* Reduce font size slightly */
-    white-space: nowrap; /* Prevent text from breaking into multiple lines */
-    margin-left: 10px; /* Reduce margin between links */
 }
 
-main {
-    margin-top: 20px;
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
+    filter: drop-shadow(0 0 5px rgba(0, 170, 255, 0.8));
+}
+
+.logo-text {
+    color: #00aaff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin-right: auto;
+    margin-left: 2rem;
+}
+
+.nav-links li {
+    margin-right: 1.5rem;
+}
+
+.nav-links a {
+    color: #fff;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #00aaff;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
     width: 100%;
-    max-width: 800px;
+    height: 3px;
+    background-color: #00aaff;
+    border-radius: 1.5px;
 }
 
-.Logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: contain;
-    margin: 0;
+.auth-links {
+    display: flex;
+    gap: 1rem;
 }
 
+.auth-links a:first-child {
+    color: #00aaff;
+}
+
+.auth-links a:last-child {
+    background-color: #00aaff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+/* Form elements */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #222;
+    color: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #00aaff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.25);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #ccc;
+}
+
+/* Flash messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flashes li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.flashes .info {
+    background-color: rgba(0, 170, 255, 0.2);
+    border-left: 4px solid #00aaff;
+    color: #00aaff;
+}
+
+.flashes .error {
+    background-color: rgba(255, 80, 80, 0.2);
+    border-left: 4px solid #ff5050;
+    color: #ff5050;
+}
+
+.flashes .success {
+    background-color: rgba(0, 200, 80, 0.2);
+    border-left: 4px solid #00c850;
+    color: #00c850;
+}
+
+/* Main content area */
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Footer */
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #f8f9fa;
+    padding: 2rem;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-links {
+    margin-bottom: 1.5rem;
+}
+
+.footer-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: #f8f9fa;
+    opacity: 0.8;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+footer p {
+    text-align: center;
+    margin-top: 1rem;
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        padding: 1rem;
+    }
+    
+    .logo {
+        margin-right: auto;
+    }
+    
+    .nav-links {
+        order: 3;
+        width: 100%;
+        margin-top: 1rem;
+        justify-content: center;
+        margin-left: 0;
+    }
+    
+    .nav-links li {
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+    
+    .auth-links {
+        order: 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav-links li {
+        margin: 0.5rem 0;
+    }
+    
+    .auth-links {
+        margin-left: auto;
+    }
+}
