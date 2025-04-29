@@ -1,33 +1,55 @@
-<!DOCTYPE html>
-<head>
-    <link rel="stylesheet" href="/static/css/home.css">
-</head>
 {% extends "body.html" %}
-{% block content %}
-<div class="container">
-    <h1>Scyra</h1>
-    <p>Wanna have a try on LED customiz? follow this step below to get one:</p>
-    <div id="step1" class="step">
-        <h2>1. Enter your WLED address</h2>
-        <p>Provide the IP address of your WLED device to connect and retrieve its configuration.</p>
-    </div>
-    
-    <div id="step2" class="step">
-        <h2>2. LEDs per addressable group</h2>
-        <p>Specify how many LEDs should be grouped together for customization.</p>
-    </div>
 
-    <div id="step2" class="step">
-        <h2>2. LEDs per addressable group</h2>
-        <p>Specify how many LEDs should be grouped together for customization.</p>
-    </div>
-
-    <!-- Redirect Button -->
-    <div class="redirect">
-        <button onclick="window.location.href='{{ url_for('rgb') }}'">Start Customization →</button>  
-</div>
-<script src = "/static/js/home.js"></script>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Control Your <span class="highlight">LED Lights</span> with Ease</h1>
+    <p>Sycra is a user-friendly web interface for WLED-compatible LED lights that puts privacy and simplicity first.</p>
+    <div class="hero-buttons">
+        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-secondary">Learn More</a>
+    </div>
     
-    
+    <div class="led-strip-illustration">
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+        <div class="led-segment"></div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animation for the LED strip illustration
+    document.addEventListener('DOMContentLoaded', () => {
+        const segments = document.querySelectorAll('.led-segment');
+        
+        // Animate the LED segments with a breathing effect
+        function animateSegments() {
+            segments.forEach((segment, index) => {
+                setTimeout(() => {
+                    segment.classList.add('animate');
+                    setTimeout(() => {
+                        segment.classList.remove('animate');
+                    }, 2000);
+                }, index * 200);
+            });
+        }
+        
+        // Initial animation
+        setTimeout(animateSegments, 500);
+        
+        // Repeat animation every 5 seconds
+        setInterval(animateSegments, 5000);
+    });
+</script>
+{% endblock %}
