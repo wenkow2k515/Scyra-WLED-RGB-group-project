@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
-    <title>Home</title>
+    <title>Scyra</title>
     {% endif %}
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
         <h1>
-            <img src="{{ url_for('static', filename='/pic/logo.png') }}" class="Logo">
+            <img src="{{ url_for('static', filename='pic/logo.png') }}" class="Logo">
             <a href="{{ url_for('home') }}">Scyra</a>
         </h1>
         <nav class="navbar">
@@ -39,5 +40,7 @@
         {% block content %}
         {% endblock %}
     </main>
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>

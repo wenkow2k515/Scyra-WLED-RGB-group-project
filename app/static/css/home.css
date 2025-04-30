@@ -126,3 +126,67 @@
         height: 25px;
     }
 }
+
+/* Container for content other than hero section */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    width: 100%; 
+    max-width: 800px; 
+    padding: 20px; 
+    margin: 0 auto;
+}
+
+/* Styles for steps */
+.step {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.step h2 {
+    color: #04AA6D;
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.step p {
+    color: #ccc;
+    line-height: 1.6;
+}
+
+/* Style for the Start Customization button */
+.redirect button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(4, 170, 109, 0.5);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 30px;
+}
+
+.redirect button:hover {
+    background: linear-gradient(90deg, #038857, #04AA6D);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(4, 170, 109, 0.7);
+}

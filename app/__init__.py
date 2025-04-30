@@ -10,9 +10,19 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 def home():
     return render_template('home.html', title='Home')
 
-@app.route('/rbg')
+@app.route('/rgb')  # Fixed route from '/rbg' to '/rgb'
 def rgb():
     return render_template('rgb.html', title='RGB')
+
+@app.route('/about')
+def about():
+    """Render the about page."""
+    return render_template('about.html', title='About Scyra')
+
+@app.route('/presets')
+def presets():
+    """Render the presets page."""
+    return render_template('presets.html', title='Presets')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

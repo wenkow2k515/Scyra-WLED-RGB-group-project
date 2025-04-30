@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<head>
-    <!-- Meta tags for SEO and responsiveness -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Learn more about Scyra, a user-friendly web interface for WLED-compatible LED lights.">
-    <title>About Scyra</title>
-    <link rel="stylesheet" href="/static/css/about.css">
-</head>
 {% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
 {% block content %}
 <!-- Use semantic main tag for primary content -->
 <main class="about-container">
@@ -36,7 +32,7 @@
                 <!-- Feature 1 -->
                 <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#00aaff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="No account required icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="No account required icon">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                             <path d="M9 3v18"></path>
                             <path d="M3 9h6"></path>
@@ -50,7 +46,7 @@
                 <!-- Feature 2 -->
                 <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#00aaff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="RGB color control icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="RGB color control icon">
                             <circle cx="12" cy="12" r="10"></circle>
                             <path d="M12 2L12 22"></path>
                             <path d="M2 12L22 12"></path>
@@ -63,7 +59,7 @@
                 <!-- Feature 3 -->
                 <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#00aaff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="LED segment management icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="LED segment management icon">
                             <rect x="3" y="3" width="4" height="18"></rect>
                             <rect x="10" y="3" width="4" height="18"></rect>
                             <rect x="17" y="3" width="4" height="18"></rect>
@@ -76,7 +72,7 @@
                 <!-- Feature 4 -->
                 <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#00aaff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Effects library icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Effects library icon">
                             <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"></path>
                         </svg>
                     </div>
@@ -161,4 +157,3 @@
     </div>
 </main>
 {% endblock %}
-{% block scripts %}

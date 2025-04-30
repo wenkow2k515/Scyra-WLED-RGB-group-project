@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<head>
-    <!-- Meta tags for SEO and responsiveness -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Save and manage your favorite LED lighting configurations with Scyra.">
-    <title>Presets - Scyra</title>
-    <link rel="stylesheet" href="/static/css/presets.css">
-</head>
 {% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/presets.css') }}">
+{% endblock %}
+
 {% block content %}
 <!-- Use semantic main tag for primary content -->
 <main class="presets-container">
     <!-- ======== PAGE HEADER ======== -->
     <header class="page-header">
         <h1>Your Light Presets</h1>
-        <p class="subtitle">Save and organize your favorite lighting configurations</p>
+        <p class="subtitle">Save, organize, and easily access your favorite lighting configurations.</p>
     </header>
     
     <!-- ======== TABS NAVIGATION ======== -->
@@ -114,20 +110,19 @@
         </div>
     </div>
 </main>
+{% endblock %}
 
-<!-- ======== PAGE SCRIPTS ======== -->
+{% block scripts %}
 <script>
     // Tab navigation
     document.querySelectorAll('.tab-btn').forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons and content
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
                 btn.setAttribute('aria-selected', 'false');
             });
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            // Add active class to clicked button and corresponding content
             button.classList.add('active');
             button.setAttribute('aria-selected', 'true');
             const tabId = `${button.dataset.tab}-presets`;
@@ -142,7 +137,6 @@
     
     const openModal = () => {
         modal.style.display = 'flex';
-        // Set focus on first form element for accessibility
         document.getElementById('preset-name').focus();
     };
     
@@ -156,14 +150,12 @@
     
     cancelBtn.addEventListener('click', closeModalFunc);
     
-    // Close modal when clicking outside content
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             closeModalFunc();
         }
     });
     
-    // Close modal on escape key press for accessibility
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && modal.style.display === 'flex') {
             closeModalFunc();
