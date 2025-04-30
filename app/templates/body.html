@@ -8,6 +8,7 @@
     {% else %}
     <title>Home</title>
     {% endif %}
+
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -20,15 +21,15 @@
             <a href="{{ url_for('home') }}">Home page</a>
             <a href="{{ url_for('rgb') }}">RGB</a>
             <!-- Conditional navigation links -->
-            {% if 'user_id' in session %}
-                <!-- Show when logged in -->
-                <div class="user-dropdown">
-                    <span class="user-greeting">Hello, {{ session.get('user_fname') }}</span>
-                    <div class="dropdown-content">
-                        <a href="{{ url_for('account') }}">Account</a>
-                        <a href="{{ url_for('logout') }}">Logout</a>
-                    </div>
+            {% if current_user.is_authenticated %}
+            <!-- Show when logged in -->
+            <div class="user-dropdown">
+                <span class="user-greeting">Hello, {{ current_user.fname }}</span>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('account') }}">Account</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
                 </div>
+            </div>
             {% else %}
                 <!-- Show when logged out -->
                 <a href="{{ url_for('login') }}">Login</a>
