@@ -1,37 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"></html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if title %}
-    <title>{{ title }} - Sycra</title>
+    <title>{{ title }}</title>
     {% else %}
-    <title>Sycra - LED Light Control</title>
+    <title>Home</title>
     {% endif %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <!-- LED Grid Background -->
-    <div class="led-bg"></div>
-    <div class="bg-gradient"></div>
-
-    <!-- Navigation -->
-    <nav class="navbar">
-        <a href="{{ url_for('home') }}" class="logo">
-            <img src="{{ url_for('static', filename='pic/logo.png') }}" alt="Sycra Logo" class="logo-img">
-            <span class="logo-text">SYCRA</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}>Home</a></li>
-            <li><a href="{{ url_for('rgb') }}" {% if request.endpoint == 'rgb' %}class="active"{% endif %}>Controller</a></li>
-            <li><a href="{{ url_for('account') }}" {% if request.endpoint == 'account' %}class="active"{% endif %}>Account</a></li>
-        </ul>
-        <div class="auth-links">
+    <header>
+        <h1>
+            <img src="{{ url_for('static', filename='/pic/logo.png') }}" class="Logo">
+            <a href="{{ url_for('home') }}">Scyra</a>
+        </h1>
+        <nav class="navbar">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('rgb') }}">RGB</a>
+            <a href="{{ url_for('presets') }}">Presets</a>
+            <a href="{{ url_for('about') }}">About</a>
             <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
-        </div>
-    </nav>
+            <a href="{{ url_for('account') }}">Account</a>
+        </nav>
+    </header>
     
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -46,20 +39,5 @@
         {% block content %}
         {% endblock %}
     </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-links">
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('rgb') }}">Controller</a></li>
-                <li><a href="{{ url_for('account') }}">Account</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            </ul>
-        </div>
-        <p>&copy; 2025 Sycra Light Control. All rights reserved.</p>
-    </footer>
-
-    {% block scripts %}{% endblock %}
 </body>
 </html>
