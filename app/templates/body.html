@@ -16,11 +16,24 @@
             <img src="{{ url_for('static', filename='/pic/logo.png') }}" class="Logo">
             <a href="{{ url_for('home') }}">Scyra</a>
         </h1>
-        <nav class = "navbar">
+        <nav class="navbar">
             <a href="{{ url_for('home') }}">Home page</a>
             <a href="{{ url_for('rgb') }}">RGB</a>
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('account') }}">account</a>
+            <!-- Conditional navigation links -->
+            {% if 'user_id' in session %}
+                <!-- Show when logged in -->
+                <div class="user-dropdown">
+                    <span class="user-greeting">Hello, {{ session.get('user_fname') }}</span>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('account') }}">Account</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Show when logged out -->
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
         </nav>
     </header>
     
@@ -38,4 +51,5 @@
         {% endblock %}
     </main>
 </body>
-</html></div>
+
+</html>
