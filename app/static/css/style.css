@@ -1,152 +1,12 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-}
+/* Add these image fixes to your existing style.css file */
 
-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 15px 20px;
-    box-sizing: border-box;
-    position: sticky;
-    top: 0;
-    z-index: 100; /* Ensure header stays above other content */
-}
-
-header h1 {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    flex-shrink: 0;
-}
-
-header h1 a {
-    text-decoration: none;
-    color: white;
-    margin-left: 10px;
-}
-
-/* Reduced logo size */
-.Logo {
-    width: 24px; /* Smaller size */
-    height: 24px; /* Smaller size */
-    border-radius: 50%;
-    object-fit: contain;
-    margin: 0;
-}
-
-nav {
-    display: flex;
-    gap: 10px;
-}
-
-nav a {
-    color: #c9d1d9;
-    margin-left: 20px;
-    text-decoration: none;  
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    gap: 10px;
-    flex-shrink: 1;
-    overflow: hidden;
-}
-
-.navbar a {
-    color: #c9d1d9;
-    text-decoration: none;
-    font-size: 1.1em;
-    white-space: nowrap;
-    margin-left: 10px;
-}
-
-.navbar a:hover {
-    text-decoration: underline;
-}
-
-main {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 1200px; /* Increased from 800px for wider content */
-    margin: 0 auto; /* Center the main content */
-    padding: 0 20px; /* Add some horizontal padding */
-}
-
-/* Global rule to prevent images from overflowing */
+/* Global image size constraint */
 img {
     max-width: 100%;
     height: auto;
 }
 
-/* Flash messages styling */
-.flashes {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-}
-
-.flashes li {
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.flashes .success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.flashes .error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.flashes .info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    header {
-        padding: 10px 15px;
-    }
-    
-    .Logo {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .navbar a {
-        font-size: 0.95em;
-    }
-}
-* Control images throughout the site */
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Make sure the logo is not too big */
+/* Logo size adjustments */
 .Logo {
     width: 24px;
     height: 24px;
@@ -155,10 +15,33 @@ img {
     margin: 0;
 }
 
-/* Responsive adjustments for the logo */
-@media (max-width: 768px) {
-    .Logo {
-        width: 20px;
-        height: 20px;
-    }
+/* Button styles consistent with the provided theme */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #00aaff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0088cc;
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: white;
+    border: 1px solid #444;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
 }

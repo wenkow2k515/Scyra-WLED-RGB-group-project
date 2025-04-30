@@ -50,7 +50,7 @@
 
     <!-- Redirect Button -->
     <div class="redirect">
-        <button onclick="window.location.href='{{ url_for("rgb") }}'">Start Customization →</button>
+        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Start Customization →</a>
     </div>
 </div>
 {% endblock %}

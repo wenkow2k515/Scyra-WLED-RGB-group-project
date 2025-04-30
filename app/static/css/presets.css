@@ -1,3 +1,4 @@
+/* Presets Page Styles */
 
 /* Container */
 .presets-container {
@@ -23,7 +24,7 @@
     color: #aaa;
 }
 
-/* ======== TABS NAVIGATION ======== */
+/* Tabs */
 .tabs {
     display: flex;
     border-bottom: 1px solid #333;
@@ -43,15 +44,15 @@
 }
 
 .tab-btn:hover {
-    color: #04AA6D; /* Changed to match your theme */
+    color: #00aaff;
 }
 
 .tab-btn.active {
-    color: #04AA6D; /* Changed to match your theme */
-    border-bottom: 3px solid #04AA6D; /* Changed to match your theme */
+    color: #00aaff;
+    border-bottom: 3px solid #00aaff;
 }
 
-/* ======== TAB CONTENT ======== */
+/* Tab content */
 .tab-content {
     display: none;
 }
@@ -73,7 +74,7 @@
     color: #aaa;
 }
 
-/* ======== PRESET GRID ======== */
+/* Preset grid */
 .presets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -96,7 +97,7 @@
 .preset-preview {
     height: 120px;
     border-radius: 8px 8px 0 0;
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff;
 }
 
 .preset-info {
@@ -120,7 +121,7 @@
     gap: 0.5rem;
 }
 
-/* ======== ADD PRESET CARD ======== */
+/* Add preset card */
 .add-preset {
     display: flex;
     flex-direction: column;
@@ -134,7 +135,7 @@
 }
 
 .add-preset:hover {
-    border-color: #04AA6D; /* Changed to match your theme */
+    border-color: #00aaff;
     background-color: #1a1a1a;
 }
 
@@ -143,7 +144,7 @@
     height: 50px;
     border-radius: 50%;
     background-color: #333;
-    color: #04AA6D; /* Changed to match your theme */
+    color: #00aaff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -152,7 +153,7 @@
 }
 
 .add-preset:hover .add-icon {
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff;
     color: white;
 }
 
@@ -162,7 +163,12 @@
     font-weight: 500;
 }
 
-/* ======== EMPTY STATES ======== */
+/* Empty states */
+.no-presets-message,
+.login-required-message {
+    display: none;
+}
+
 .empty-state {
     background-color: #222;
     border-radius: 8px;
@@ -188,7 +194,7 @@
     justify-content: center;
 }
 
-/* ======== MODAL STYLES ======== */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -231,7 +237,7 @@
     color: #fff;
 }
 
-/* ======== FORM STYLES ======== */
+/* Form styles */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -239,23 +245,27 @@
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #fff;
+    color: #ccc;
+    font-weight: 500;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 0.75rem;
-    background-color: #333;
     border: 1px solid #444;
     border-radius: 4px;
+    font-size: 1rem;
+    background-color: #222;
     color: #fff;
+    transition: border-color 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
+    border-color: #00aaff;
     outline: none;
-    border-color: #04AA6D; /* Changed to match your theme */
+    box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.25);
 }
 
 /* Form actions */
@@ -266,39 +276,38 @@
     margin-top: 2rem;
 }
 
-/* ======== BUTTON STYLES ======== */
+/* Button styles */
 .btn {
     display: inline-block;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
 }
 
 .btn-primary {
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff;
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #038857; /* Darker shade for hover */
-    transform: translateY(-2px);
+    background-color: #0088cc;
 }
 
 .btn-secondary {
     background-color: #333;
-    color: #fff;
+    color: white;
+    border: 1px solid #444;
 }
 
 .btn-secondary:hover {
     background-color: #444;
-    transform: translateY(-2px);
 }
 
-/* ======== RESPONSIVE ADJUSTMENTS ======== */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .presets-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -319,6 +328,8 @@
     
     .auth-buttons {
         flex-direction: column;
+        max-width: 300px;
+        margin: 0 auto;
     }
 }
 
@@ -345,6 +356,6 @@
     
     .btn {
         width: 100%;
-        text-align: center;
+        margin-bottom: 0.5rem;
     }
 }

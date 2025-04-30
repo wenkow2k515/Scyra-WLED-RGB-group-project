@@ -78,7 +78,7 @@ http://127.0.0.1:5000/
 - Mobile app integration
 - Direct hardware control for popular LED controllers
 
-## 7. Acknowledgements 🙏
+## 7. Acknowledgements 
 
 This project builds upon the amazing [WLED project](https://github.com/Aircoookie/WLED), an open-source solution for controlling WS2812B and many other types of digital RGB LEDs.
 
