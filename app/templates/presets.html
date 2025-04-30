@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<head>
+    <!-- Meta tags for SEO and responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Save and manage your favorite LED lighting configurations with Scyra.">
+    <title>Presets - Scyra</title>
+    <link rel="stylesheet" href="/static/css/presets.css">
+</head>
+{% extends "body.html" %}
+{% block content %}
+<!-- Use semantic main tag for primary content -->
+<main class="presets-container">
+    <!-- ======== PAGE HEADER ======== -->
+    <header class="page-header">
+        <h1>Your Light Presets</h1>
+        <p class="subtitle">Save and organize your favorite lighting configurations</p>
+    </header>
+    
+    <!-- ======== TABS NAVIGATION ======== -->
+    <div class="tabs" role="tablist">
+        <button class="tab-btn active" data-tab="local" role="tab" aria-selected="true" aria-controls="local-presets">Local Presets</button>
+        <button class="tab-btn" data-tab="cloud" role="tab" aria-selected="false" aria-controls="cloud-presets">Cloud Presets</button>
+        <button class="tab-btn" data-tab="community" role="tab" aria-selected="false" aria-controls="community-presets">Community Presets</button>
+    </div>
+    
+    <!-- ======== LOCAL PRESETS TAB ======== -->
+    <div class="tab-content active" id="local-presets" role="tabpanel" aria-labelledby="local-tab">
+        <div class="tab-header">
+            <h2>Locally Saved Presets</h2>
+            <p>These presets are stored in your browser.</p>
+        </div>
+        
+        <!-- Local Presets Grid -->
+        <div class="presets-grid" id="local-presets-grid">
+            <div class="preset-card add-preset">
+                <div class="add-icon" aria-hidden="true">+</div>
+                <p>Save Current Configuration</p>
+            </div>
+        </div>
+        
+        <!-- Empty State Message -->
+        <div class="no-presets-message" id="no-local-presets">
+            <div class="empty-state">
+                <h3>No saved presets yet</h3>
+                <p>Create a configuration in the <a href="{{ url_for('rgb') }}">Controller</a> and save it here.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ======== CLOUD PRESETS TAB ======== -->
+    <div class="tab-content" id="cloud-presets" role="tabpanel" aria-labelledby="cloud-tab">
+        <div class="tab-header">
+            <h2>Cloud Presets</h2>
+            <p>These presets are stored in your account.</p>
+        </div>
+        
+        <!-- Login Required Message -->
+        <div class="login-required-message">
+            <div class="empty-state">
+                <h3>Login Required</h3>
+                <p>You need to be logged in to access cloud presets.</p>
+                <div class="auth-buttons">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ======== COMMUNITY PRESETS TAB ======== -->
+    <div class="tab-content" id="community-presets" role="tabpanel" aria-labelledby="community-tab">
+        <div class="tab-header">
+            <h2>Community Presets</h2>
+            <p>Explore presets shared by other Scyra users.</p>
+        </div>
+        
+        <!-- Coming Soon Message -->
+        <div class="empty-state">
+            <h3>Community Presets Coming Soon</h3>
+            <p>We're building our collection of community presets. Check back later!</p>
+        </div>
+    </div>
+    
+    <!-- ======== PRESET MODAL ======== -->
+    <div class="modal" id="preset-modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close">&times;</span>
+            <h2 id="modal-title">Save Preset</h2>
+            
+            <!-- Preset Form -->
+            <form id="preset-form">
+                <div class="form-group">
+                    <label for="preset-name">Preset Name:</label>
+                    <input type="text" id="preset-name" placeholder="My Preset" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="preset-category">Category:</label>
+                    <select id="preset-category">
+                        <option value="ambiance">Ambiance</option>
+                        <option value="holidays">Holidays</option>
+                        <option value="party">Party</option>
+                        <option value="mood">Mood Lighting</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-preset">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-preset">Save Preset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- ======== PAGE SCRIPTS ======== -->
+<script>
+    // Tab navigation
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            button.classList.add('active');
+            button.setAttribute('aria-selected', 'true');
+            const tabId = `${button.dataset.tab}-presets`;
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Modal handling
+    const modal = document.getElementById('preset-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelBtn = document.getElementById('cancel-preset');
+    
+    const openModal = () => {
+        modal.style.display = 'flex';
+        // Set focus on first form element for accessibility
+        document.getElementById('preset-name').focus();
+    };
+    
+    const closeModalFunc = () => {
+        modal.style.display = 'none';
+    };
+    
+    document.querySelector('.add-preset').addEventListener('click', openModal);
+    
+    closeModal.addEventListener('click', closeModalFunc);
+    
+    cancelBtn.addEventListener('click', closeModalFunc);
+    
+    // Close modal when clicking outside content
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModalFunc();
+        }
+    });
+    
+    // Close modal on escape key press for accessibility
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.style.display === 'flex') {
+            closeModalFunc();
+        }
+    });
+</script>
+{% endblock %}
