@@ -79,3 +79,46 @@ main {
     margin: 0;
 }
 
+#user-greeting {
+    color: #c9d1d9;
+    text-decoration: none;
+    font-size: 1.1em; /* Reduce font size slightly */
+    white-space: nowrap; /* Prevent text from breaking into multiple lines */
+    margin-left: 10px; /* Reduce margin between links */
+}
+
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-greeting {
+    cursor: pointer;
+    padding: 8px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 10px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
