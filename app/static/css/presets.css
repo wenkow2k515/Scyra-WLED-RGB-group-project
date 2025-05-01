@@ -1,0 +1,350 @@
+
+/* Container */
+.presets-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Page header */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #aaa;
+}
+
+/* ======== TABS NAVIGATION ======== */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #333;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #aaa;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: #04AA6D; /* Changed to match your theme */
+}
+
+.tab-btn.active {
+    color: #04AA6D; /* Changed to match your theme */
+    border-bottom: 3px solid #04AA6D; /* Changed to match your theme */
+}
+
+/* ======== TAB CONTENT ======== */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-header {
+    margin-bottom: 2rem;
+}
+
+.tab-header h2 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.tab-header p {
+    color: #aaa;
+}
+
+/* ======== PRESET GRID ======== */
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.preset-card {
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.preset-card:hover {
+    transform: translateY(-5px);
+}
+
+.preset-preview {
+    height: 120px;
+    border-radius: 8px 8px 0 0;
+    background-color: #04AA6D; /* Changed to match your theme */
+}
+
+.preset-info {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+}
+
+.preset-info h3 {
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.preset-date {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.preset-actions {
+    display: flex;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+/* ======== ADD PRESET CARD ======== */
+.add-preset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #333;
+    background-color: #222;
+    cursor: pointer;
+    min-height: 220px;
+    transition: all 0.3s ease;
+}
+
+.add-preset:hover {
+    border-color: #04AA6D; /* Changed to match your theme */
+    background-color: #1a1a1a;
+}
+
+.add-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #04AA6D; /* Changed to match your theme */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.add-preset:hover .add-icon {
+    background-color: #04AA6D; /* Changed to match your theme */
+    color: white;
+}
+
+.add-preset p {
+    color: #aaa;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ======== EMPTY STATES ======== */
+.empty-state {
+    background-color: #222;
+    border-radius: 8px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.empty-state h3 {
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.empty-state p {
+    color: #aaa;
+    margin-bottom: 1.5rem;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* ======== MODAL STYLES ======== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.modal-content {
+    background-color: #222;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal:hover {
+    color: #fff;
+}
+
+#modal-title {
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+/* ======== FORM STYLES ======== */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #04AA6D; /* Changed to match your theme */
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* ======== BUTTON STYLES ======== */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #04AA6D; /* Changed to match your theme */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #038857; /* Darker shade for hover */
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+}
+
+/* ======== RESPONSIVE ADJUSTMENTS ======== */
+@media (max-width: 768px) {
+    .presets-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .tabs {
+        flex-wrap: nowrap;
+    }
+    
+    .tab-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .preset-preview {
+        height: 100px;
+    }
+    
+    .auth-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .presets-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
