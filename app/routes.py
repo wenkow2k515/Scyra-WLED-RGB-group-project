@@ -9,7 +9,7 @@ from .models import db, User, UploadedData, SharedData
 def home():
     return render_template('home.html', title='Home')
 
-@app.route('/rbg')
+@app.route('/rgb')
 def rgb():
     return render_template('rgb.html', title='RGB')
 
