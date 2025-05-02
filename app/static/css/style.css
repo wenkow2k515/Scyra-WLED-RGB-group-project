@@ -155,7 +155,6 @@ img {
     margin: 0;
 }
 
-<<<<<<< HEAD
 #user-greeting {
     color: #c9d1d9;
     text-decoration: none;
@@ -176,7 +175,7 @@ img {
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: #f1f1f1;
     min-width: 120px;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
@@ -198,12 +197,4 @@ img {
 
 .user-dropdown:hover .dropdown-content {
     display: block;
-=======
-/* Responsive adjustments for the logo */
-@media (max-width: 768px) {
-    .Logo {
-        width: 20px;
-        height: 20px;
-    }
->>>>>>> main
 }
