@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, request, redirect, flash, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
+from flask_migrate import Migrate
 from wtforms import StringField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length, NumberRange
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,6 +17,7 @@ def create_app(config_name='default'):
     
     # Initialize extensions
     db.init_app(app)
+    migrate = Migrate(app, db)  # Initialize Flask-Migrate
     
     # Initialize Flask-Login
     login_manager = LoginManager()
@@ -35,10 +37,6 @@ def create_app(config_name='default'):
 
 # Create app instance with development config by default
 app = create_app('development')
-
-# Create tables if they don't exist
-with app.app_context():
-    db.create_all()
 
 # Import routes at the bottom to avoid circular imports
 from . import routes
