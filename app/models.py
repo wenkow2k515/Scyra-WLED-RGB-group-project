@@ -25,3 +25,5 @@ class SharedData(db.Model):
     shared_with_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # user who received
     preset_id = db.Column(db.Integer, db.ForeignKey('uploaded_data.id'), nullable=False)  # shared preset
     shared_by = db.relationship('User', foreign_keys=[shared_by_id], backref=db.backref('shared_by', lazy=True))  # relationship for sharer
+    shared_with = db.relationship('User', foreign_keys=[shared_with_id], backref=db.backref('shared_data_received', lazy=True))                     
+    preset = db.relationship('UploadedData', foreign_keys=[preset_id], backref=db.backref('shared_instances', lazy=True))
