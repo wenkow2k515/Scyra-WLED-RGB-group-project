@@ -113,6 +113,11 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/about')
+def about():
+    """Render the about page."""
+    return render_template('about.html', title='About Scyra')
+
+@app.route('/presets')
 def presets():
     """Render the presets page with presets from the database."""
     # Get all public presets (you may want to add a 'public' flag to your model)
@@ -129,11 +134,6 @@ def presets():
         public_presets=public_presets,
         user_presets=user_presets
     )
-
-@app.route('/presets')
-def presets():
-    """Render the presets page."""
-    return render_template('presets.html', title='Presets')
 
 
 if __name__ == '__main__':
