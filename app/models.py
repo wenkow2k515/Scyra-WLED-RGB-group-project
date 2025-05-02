@@ -18,6 +18,7 @@ class UploadedData(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # reference to User
     preset_name = db.Column(db.String(100), nullable=False)  # preset name
     preset_data = db.Column(db.JSON, nullable=False)  # preset data stored as JSON
+    is_public = db.Column(db.Boolean, default=False)  # New field
 
 class SharedData(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # shared data id
