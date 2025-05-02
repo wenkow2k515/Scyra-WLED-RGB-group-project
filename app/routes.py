@@ -113,9 +113,22 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/about')
-def about():
-    """Render the about page."""
-    return render_template('about.html', title='About Scyra')
+def presets():
+    """Render the presets page with presets from the database."""
+    # Get all public presets (you may want to add a 'public' flag to your model)
+    public_presets = UploadedData.query.filter_by(is_public=True).all()
+    
+    # If user is logged in, also get their private presets
+    user_presets = []
+    if current_user.is_authenticated:
+        user_presets = UploadedData.query.filter_by(user_id=current_user.id).all()
+    
+    return render_template(
+        'presets.html', 
+        title='Presets',
+        public_presets=public_presets,
+        user_presets=user_presets
+    )
 
 @app.route('/presets')
 def presets():
