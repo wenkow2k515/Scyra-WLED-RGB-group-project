@@ -50,10 +50,7 @@ http://127.0.0.1:5000/
 
 ### Connecting to WLED
 
-1. Enter your WLED device's IP address
-2. Configure the number of LEDs per group
-3. Use the RGB controller to design your lighting
-4. Save your presets for future use
+[Getting Started - WLED](https://kno.wled.ge/basics/getting-started/)
 
 ## 4. Project Structure 
 
