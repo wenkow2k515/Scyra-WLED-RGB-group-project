@@ -1,5 +1,9 @@
 #local venv
 application-env/
+venv/
+
+#database
+database/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
