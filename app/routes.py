@@ -120,10 +120,24 @@ def about():
 @app.route('/presets')
 def presets():
     """Render the presets page with presets from the database."""
-    # Get all public presets (you may want to add a 'public' flag to your model)
-    public_presets = UploadedData.query.filter_by(is_public=True).all()
+    # Get all public presets (except the current user's)
+    public_presets = []
+    if current_user.is_authenticated:
+        public_presets = UploadedData.query.filter(
+            UploadedData.is_public == True,
+            UploadedData.user_id != current_user.id  # Don't show own public presets here
+        ).all()
+    else:
+        public_presets = UploadedData.query.filter_by(is_public=True).all()
     
-    # If user is logged in, also get their private presets
+    # Get presets shared with current user
+    shared_presets = []
+    if current_user.is_authenticated:
+        # Find all presets shared with the current user
+        shared_data = SharedData.query.filter_by(shared_with_id=current_user.id).all()
+        shared_presets = [data.preset for data in shared_data]
+    
+    # Get user's private presets
     user_presets = []
     if current_user.is_authenticated:
         user_presets = UploadedData.query.filter_by(user_id=current_user.id).all()
@@ -132,7 +146,8 @@ def presets():
         'presets.html', 
         title='Presets',
         public_presets=public_presets,
-        user_presets=user_presets
+        user_presets=user_presets,
+        shared_presets=shared_presets
     )
 
 
