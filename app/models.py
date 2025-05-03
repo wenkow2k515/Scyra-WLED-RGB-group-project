@@ -20,6 +20,14 @@ class UploadedData(db.Model):
     preset_data = db.Column(db.JSON, nullable=False)  # preset data stored as JSON
     is_public = db.Column(db.Boolean, default=False)  # New field
 
+    # Add a getter/setter if your database doesn't support JSON natively
+    @property
+    def preset_data_json(self):
+        """Return the preset data as a dict."""
+        if isinstance(self.preset_data, str):
+            return json.loads(self.preset_data)
+        return self.preset_data
+
 class SharedData(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # shared data id
     shared_by_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # user who shared

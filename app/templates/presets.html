@@ -128,6 +128,9 @@
                                 <small>By: {{ preset.user.fname }}</small>
                             </div>
                             <span class="preset-actions">
+                                <button class="action-btn view-preset" title="View Preset" data-preset-id="{{ preset.id }}">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
                                 <button class="action-btn apply-preset" title="Apply Preset">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button>
@@ -262,5 +265,51 @@
             closeModalFunc();
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Handle view button clicks
+    document.querySelectorAll('.view-preset').forEach(button => {
+        button.addEventListener('click', function() {
+            const presetId = this.getAttribute('data-preset-id') || 
+                             this.closest('.preset-card').dataset.presetId;
+            if (presetId) {
+                window.location.href = `/presets/${presetId}/view`;
+            }
+        });
+    });
+    
+    // Make the entire preset card clickable for viewing
+    document.querySelectorAll('.preset-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Only trigger if we clicked the card itself, not a button inside it
+            if (e.target === this || e.target.closest('.preset-preview')) {
+                const presetId = this.dataset.presetId;
+                if (presetId) {
+                    window.location.href = `/presets/${presetId}/view`;
+                }
+            }
+        });
+    });
+    
+    // Update existing action button handlers
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click from triggering
+            
+            if (this.classList.contains('apply-preset')) {
+                const presetId = this.closest('.preset-card').dataset.presetId;
+                window.location.href = `/presets/${presetId}/load`;
+            } else if (this.classList.contains('edit-preset')) {
+                const presetId = this.closest('.preset-card').dataset.presetId;
+                window.location.href = `/presets/${presetId}/edit`;
+            } else if (this.classList.contains('delete-preset')) {
+                if (confirm('Are you sure you want to delete this preset?')) {
+                    const presetId = this.closest('.preset-card').dataset.presetId;
+                    window.location.href = `/presets/${presetId}/delete`;
+                }
+            }
+        });
+    });
+});
 </script>
 {% endblock %}

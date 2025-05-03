@@ -5,6 +5,14 @@
     <title>RGB Editor</title>
     <script src="/static/js/LEDgrid.js" defer></script>
     <link rel="stylesheet" href="/static/css/rgb.css">
+    <script>
+        // Define global variables that LEDgrid.js can access
+        window.preset_name = {{ preset_name|tojson if preset_name else 'null' }};
+        window.preset_id = {{ preset_id|tojson if preset_id else 'null' }};
+        window.preset_data = {{ preset_data|tojson if preset_data else 'null' }};
+        window.view_mode = {{ view_mode|tojson if view_mode else 'false' }};
+        window.edit_mode = {{ edit_mode|tojson if edit_mode else 'false' }};
+    </script>
     <style>
       body, html {
           margin: 0;
@@ -98,8 +106,67 @@
           gap: 10px;
           margin-top: 10px;
       }
+      .save-btn {
+          background-color: #4a90e2;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-weight: bold;
+      }
+      .save-btn:hover {
+          background-color: #3a80d2;
+      }
+      .save-preset-container {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin: 1rem 0;
+      }
+      .public-toggle {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+      }
+      .tooltip {
+          cursor: help;
+          font-size: 12px;
+          background-color: #f0f0f0;
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+      }
+      /* Style for feedback messages */
+      .feedback-message {
+          padding: 10px;
+          margin-top: 10px;
+          border-radius: 4px;
+          display: none;
+      }
+      .success-message {
+          background-color: #d4edda;
+          color: #155724;
+          border: 1px solid #c3e6cb;
+      }
+      .error-message {
+          background-color: #f8d7da;
+          color: #721c24;
+          border: 1px solid #f5c6cb;
+      }
     </style>
 </head>
+{% if view_mode %}
+<style>
+    #view-flag {
+        display: none;
+    }
+</style>
+{% endif %}
 
 {% extends "body.html" %}
 
@@ -121,6 +188,7 @@
 
   <div class="color-grid" id="grid"></div>
 
+  <div id = "view-flag">
   <div style="margin-top:1rem;">
     <label for="colorPicker">Pick Color:</label>
     <input type="color" id="colorPicker" value="#ffffff">
@@ -129,12 +197,24 @@
     <input type="range" id="briSlider" min="0" max="255" value="255">
     <span id="briValue">255</span>
 
+    
     <div style="margin-top:1rem;">
       <button id="applyColor">Apply Color</button>
       <button id="defaultBtn">Set Default (50% Blue)</button>
       <button id="createBtn">Create JSON</button>
     </div>
   </div>
+
+  {% if current_user.is_authenticated %}
+  <div class="save-preset-container" style="margin-top:1rem;">
+    <button id="saveToAccount" class="save-btn">Save to Account</button>
+    <div class="public-toggle">
+      <input type="checkbox" id="isPublic" name="isPublic">
+      <label for="isPublic">Make preset public</label>
+      <span class="tooltip" title="Public presets can be viewed by all users">?</span>
+    </div>
+  </div>
+  {% endif %}
 
   <div id="output-container" class="hidden">
     <h3>Generated Preset</h3>
@@ -144,6 +224,9 @@
       <button id="sendToWled">Send to WLED</button>
     </div>
   </div>
+  </div>
+
+  <div id="saveMessage" class="feedback-message"></div>
 </div>
 
 {% endblock %}
