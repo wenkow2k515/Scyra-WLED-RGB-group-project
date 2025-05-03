@@ -11,10 +11,10 @@
 
 <!-- Hero Section -->
 <section class="hero">
-    <h1>Control Your <span class="highlight">LED Lights</span> with Ease</h1>
-    <p>Scyra is a user-friendly web interface for WLED-compatible LED lights that puts privacy and simplicity first.</p>
+    <h1>Transform Your <span class="highlight">Emotions</span> into Light</h1>
+    <p>MoodBeam analyzes how you feel and creates the perfect lighting environment to enhance your wellbeing and complement your state of mind.</p>
     <div class="hero-buttons">
-        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Get Started</a>
+        <a href="{{ url_for('mood_survey') }}" class="btn btn-primary">Take Mood Survey</a>
         <a href="{{ url_for('about') }}" class="btn btn-secondary">Learn More</a>
     </div>
     
@@ -31,26 +31,31 @@
 </section>
 
 <div class="container">
-    <p>Want to customize your LED lights? Follow these steps to get started:</p>
+    <p>Enhance your wellbeing with mood-responsive lighting in four simple steps:</p>
     
     <div id="step1" class="step">
-        <h2>1. Enter your WLED address</h2>
-        <p>Provide the IP address of your WLED device to connect and retrieve its configuration.</p>
+        <h2>1. Complete the Mood Survey</h2>
+        <p>Answer 10 simple questions about how you're feeling right now.</p>
     </div>
     
     <div id="step2" class="step">
-        <h2>2. LEDs per addressable group</h2>
-        <p>Specify how many LEDs should be grouped together for customization.</p>
+        <h2>2. Discover Your Color Match</h2>
+        <p>Our algorithm analyzes your responses and suggests colors scientifically linked to your emotional state.</p>
     </div>
     
     <div id="step3" class="step">
-        <h2>3. Create your light design</h2>
-        <p>Select colors, adjust brightness, and create custom patterns for your LED setup.</p>
+        <h2>3. Customize and Apply</h2>
+        <p>Fine-tune brightness and effects, then send directly to your WLED device to create your perfect environment.</p>
+    </div>
+
+    <div id="step4" class="step">
+        <h2>4. Track Your Emotional Journey</h2>
+        <p>Visit your personal dashboard to see patterns in your mood and lighting preferences over time.</p>
     </div>
 
     <!-- Redirect Button -->
     <div class="redirect">
-        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Start Customization →</a>
+        <button onclick="window.location.href='{{ url_for('mood_survey') }}'">Begin Your MoodBeam Journey →</button>
     </div>
 </div>
 {% endblock %}
@@ -61,9 +66,15 @@
     document.addEventListener('DOMContentLoaded', () => {
         const segments = document.querySelectorAll('.led-segment');
         
-        // Animate the LED segments with a breathing effect
+        // Animate the LED segments with a breathing effect and emotion colors
         function animateSegments() {
+            const emotionColors = ['#FF5E5E', '#5E8AFF', '#5EFF8A', '#FFDE5E', '#C45EFF']; // Red, Blue, Green, Yellow, Purple
+            
             segments.forEach((segment, index) => {
+                // Assign an emotion color
+                const colorIndex = index % emotionColors.length;
+                segment.style.backgroundColor = emotionColors[colorIndex];
+                
                 setTimeout(() => {
                     segment.classList.add('animate');
                     setTimeout(() => {
