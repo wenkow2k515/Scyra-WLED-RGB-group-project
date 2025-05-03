@@ -1,0 +1,284 @@
+{% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood_results.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
+<div class="results-container">
+    <header class="results-header">
+        <h1>Your MoodBeam Results</h1>
+        <p class="subtitle">Based on your responses, we've analyzed your current mood and created a personalized lighting recommendation.</p>
+    </header>
+
+    <div class="mood-analysis">
+        <div class="mood-category">
+            <h2>Your Current Mood: <span id="mood-name">{{ mood_category }}</span></h2>
+            <p class="mood-description">{{ mood_description }}</p>
+        </div>
+        
+        <div class="mood-scores">
+            <h3>Your Mood Dimensions</h3>
+            <div class="score-grid">
+                <div class="score-item">
+                    <div class="score-label">Positivity</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: {{ positivity_score }}%;"></div>
+                    </div>
+                    <div class="score-value">{{ positivity_score }}%</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Energy</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: {{ energy_score }}%;"></div>
+                    </div>
+                    <div class="score-value">{{ energy_score }}%</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Calmness</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: {{ calmness_score }}%;"></div>
+                    </div>
+                    <div class="score-value">{{ calmness_score }}%</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Focus</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: {{ focus_score }}%;"></div>
+                    </div>
+                    <div class="score-value">{{ focus_score }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lighting-recommendation">
+        <h2>Your Recommended Lighting</h2>
+        
+        <div class="color-preview-container">
+            <div class="color-preview" id="color-preview" style="background-color: {{ recommended_color }};">
+                <div class="color-info">
+                    <h3>{{ color_name }}</h3>
+                    <p>{{ color_description }}</p>
+                    <div class="color-code">{{ recommended_color }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="lighting-controls">
+            <div class="control-section">
+                <h3>Adjust Your Lighting</h3>
+                <div class="control-group">
+                    <label for="brightness-slider">Brightness:</label>
+                    <input type="range" id="brightness-slider" min="0" max="100" value="80">
+                    <span id="brightness-value">80%</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="effect-select">Lighting Effect:</label>
+                    <select id="effect-select">
+                        <option value="static" selected>Static Color</option>
+                        <option value="pulse">Gentle Pulse</option>
+                        <option value="breathe">Breathing Effect</option>
+                        <option value="fade">Color Fade</option>
+                        <option value="rainbow">Rainbow Flow</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="color-picker">Customize Color:</label>
+                    <input type="color" id="color-picker" value="{{ recommended_color }}">
+                    <button id="reset-color">Reset to Recommended</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button id="apply-lighting" class="btn-primary">Apply to My Lights</button>
+            <button id="save-preset" class="btn-secondary">Save as Preset</button>
+            <a href="{{ url_for('mood_dashboard') }}" class="btn-tertiary">View My Mood Dashboard</a>
+        </div>
+    </div>
+    
+    <div class="mood-explanation">
+        <h2>Why This Color?</h2>
+        <p>{{ color_psychology_explanation }}</p>
+        <div class="science-box">
+            <h3>The Science Behind Color and Mood</h3>
+            <p>Color psychology studies show that different colors can significantly affect our emotions and mental state. For example, blue tones tend to have a calming effect and can reduce stress, while warmer colors like red and orange can energize and stimulate. Your personalized recommendation is based on established research in color psychology and mood enhancement.</p>
+        </div>
+    </div>
+    
+    <div class="modal" id="connection-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Connect to WLED</h2>
+            <p>To apply this lighting to your WLED device, please enter its IP address:</p>
+            <div class="form-group">
+                <input type="text" id="wled-ip" placeholder="e.g., 192.168.1.100">
+                <button id="connect-wled">Connect</button>
+            </div>
+            <div id="connection-status"></div>
+        </div>
+    </div>
+    
+    <div class="modal" id="save-preset-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Save Lighting Preset</h2>
+            <div class="form-group">
+                <label for="preset-name">Preset Name:</label>
+                <input type="text" id="preset-name" placeholder="e.g., My Calm Evening">
+            </div>
+            <div class="form-group">
+                <label for="preset-category">Category:</label>
+                <select id="preset-category">
+                    <option value="mood">Mood-Based</option>
+                    <option value="relaxation">Relaxation</option>
+                    <option value="focus">Focus & Productivity</option>
+                    <option value="energy">Energy & Motivation</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button id="cancel-save" class="btn-tertiary">Cancel</button>
+                <button id="confirm-save" class="btn-primary">Save Preset</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Brightness slider
+        const brightnessSlider = document.getElementById('brightness-slider');
+        const brightnessValue = document.getElementById('brightness-value');
+        
+        brightnessSlider.addEventListener('input', function() {
+            brightnessValue.textContent = this.value + '%';
+            updateColorPreview();
+        });
+        
+        // Color picker
+        const colorPicker = document.getElementById('color-picker');
+        const resetColorBtn = document.getElementById('reset-color');
+        const recommendedColor = '{{ recommended_color }}';
+        
+        colorPicker.addEventListener('input', function() {
+            updateColorPreview();
+        });
+        
+        resetColorBtn.addEventListener('click', function() {
+            colorPicker.value = recommendedColor;
+            updateColorPreview();
+        });
+        
+        // Effect selector
+        const effectSelect = document.getElementById('effect-select');
+        effectSelect.addEventListener('change', function() {
+            // Apply effect logic would go here
+            const effectElement = document.getElementById('color-preview');
+            
+            // Remove all effect classes first
+            effectElement.classList.remove('effect-pulse', 'effect-breathe', 'effect-fade', 'effect-rainbow');
+            
+            // Add selected effect class
+            if (this.value !== 'static') {
+                effectElement.classList.add('effect-' + this.value);
+            }
+        });
+        
+        // Update color preview based on controls
+        function updateColorPreview() {
+            const colorPreview = document.getElementById('color-preview');
+            const brightness = brightnessSlider.value;
+            const color = colorPicker.value;
+            
+            // Calculate semi-transparent overlay based on brightness
+            const brightnessOverlay = 100 - brightness;
+            
+            colorPreview.style.backgroundColor = color;
+            colorPreview.style.boxShadow = `inset 0 0 0 1000px rgba(0, 0, 0, ${brightnessOverlay/100})`;
+        }
+        
+        // Apply to lights button
+        const applyLightingBtn = document.getElementById('apply-lighting');
+        applyLightingBtn.addEventListener('click', function() {
+            // Show connection modal
+            document.getElementById('connection-modal').style.display = 'flex';
+        });
+        
+        // Save preset button
+        const savePresetBtn = document.getElementById('save-preset');
+        savePresetBtn.addEventListener('click', function() {
+            // Show save preset modal
+            document.getElementById('save-preset-modal').style.display = 'flex';
+        });
+        
+        // Modal close buttons
+        document.querySelectorAll('.close-modal').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+        
+        // Connect WLED button
+        const connectWledBtn = document.getElementById('connect-wled');
+        connectWledBtn.addEventListener('click', function() {
+            const wledIp = document.getElementById('wled-ip').value;
+            const connectionStatus = document.getElementById('connection-status');
+            
+            if (!wledIp) {
+                connectionStatus.innerHTML = '<p class="error">Please enter an IP address.</p>';
+                return;
+            }
+            
+            // Simulate connection to WLED
+            connectionStatus.innerHTML = '<p class="info">Connecting to WLED...</p>';
+            
+            // This would be replaced with actual WLED API call
+            setTimeout(function() {
+                const color = colorPicker.value;
+                const brightness = brightnessSlider.value;
+                const effect = effectSelect.value;
+                
+                connectionStatus.innerHTML = `<p class="success">Connected! Sent color: ${color}, brightness: ${brightness}%, effect: ${effect}</p>`;
+                
+                // Close modal after a delay
+                setTimeout(function() {
+                    document.getElementById('connection-modal').style.display = 'none';
+                }, 2000);
+            }, 1500);
+        });
+        
+        // Save preset buttons
+        const cancelSaveBtn = document.getElementById('cancel-save');
+        cancelSaveBtn.addEventListener('click', function() {
+            document.getElementById('save-preset-modal').style.display = 'none';
+        });
+        
+        const confirmSaveBtn = document.getElementById('confirm-save');
+        confirmSaveBtn.addEventListener('click', function() {
+            const presetName = document.getElementById('preset-name').value;
+            
+            if (!presetName) {
+                alert('Please enter a name for your preset.');
+                return;
+            }
+            
+            // This would normally save to backend
+            alert(`Preset "${presetName}" saved successfully!`);
+            document.getElementById('save-preset-modal').style.display = 'none';
+        });
+        
+        // Initial update
+        updateColorPreview();
+    });
+</script>
+{% endblock %}

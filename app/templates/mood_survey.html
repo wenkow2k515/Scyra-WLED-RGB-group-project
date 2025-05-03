@@ -1,0 +1,466 @@
+{% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood_survey.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
+<div class="survey-container">
+    <header class="survey-header">
+        <h1>How Are You Feeling Today?</h1>
+        <p class="subtitle">Complete this quick survey to get personalized lighting recommendations that match your current mood.</p>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="survey-progress" style="width: 0%"></div>
+        <p class="progress-text">Question <span id="current-question">1</span> of 10</p>
+    </div>
+
+    <form id="mood-survey-form" action="{{ url_for('mood_survey') }}" method="POST">
+        <div class="survey-questions">
+            <!-- Question 1 -->
+            <div class="question-slide active" data-question="1">
+                <div class="question-content">
+                    <h3>I feel happy and in good spirits right now.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q1-1" name="happiness" value="1" required>
+                            <label for="q1-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q1-2" name="happiness" value="2">
+                            <label for="q1-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q1-3" name="happiness" value="3">
+                            <label for="q1-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q1-4" name="happiness" value="4">
+                            <label for="q1-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q1-5" name="happiness" value="5">
+                            <label for="q1-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">Start your journey to better lighting!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-slide" data-question="2">
+                <div class="question-content">
+                    <h3>I feel stressed or anxious.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q2-1" name="stress" value="1" required>
+                            <label for="q2-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q2-2" name="stress" value="2">
+                            <label for="q2-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q2-3" name="stress" value="3">
+                            <label for="q2-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q2-4" name="stress" value="4">
+                            <label for="q2-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q2-5" name="stress" value="5">
+                            <label for="q2-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">Your honest answers help create the perfect lighting environment!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-slide" data-question="3">
+                <div class="question-content">
+                    <h3>I feel energetic and motivated.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q3-1" name="energy" value="1" required>
+                            <label for="q3-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q3-2" name="energy" value="2">
+                            <label for="q3-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q3-3" name="energy" value="3">
+                            <label for="q3-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q3-4" name="energy" value="4">
+                            <label for="q3-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q3-5" name="energy" value="5">
+                            <label for="q3-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">You're doing great! Just a few more questions to go.</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-slide" data-question="4">
+                <div class="question-content">
+                    <h3>I feel tired or fatigued.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q4-1" name="tiredness" value="1" required>
+                            <label for="q4-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q4-2" name="tiredness" value="2">
+                            <label for="q4-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q4-3" name="tiredness" value="3">
+                            <label for="q4-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q4-4" name="tiredness" value="4">
+                            <label for="q4-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q4-5" name="tiredness" value="5">
+                            <label for="q4-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">Your lighting can help boost your energy levels!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-slide" data-question="5">
+                <div class="question-content">
+                    <h3>I feel calm and relaxed.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q5-1" name="calmness" value="1" required>
+                            <label for="q5-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q5-2" name="calmness" value="2">
+                            <label for="q5-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q5-3" name="calmness" value="3">
+                            <label for="q5-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q5-4" name="calmness" value="4">
+                            <label for="q5-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q5-5" name="calmness" value="5">
+                            <label for="q5-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">Halfway there! Your perfect lighting is just a few steps away.</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-slide" data-question="6">
+                <div class="question-content">
+                    <h3>I feel sad or down.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q6-1" name="sadness" value="1" required>
+                            <label for="q6-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q6-2" name="sadness" value="2">
+                            <label for="q6-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q6-3" name="sadness" value="3">
+                            <label for="q6-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q6-4" name="sadness" value="4">
+                            <label for="q6-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q6-5" name="sadness" value="5">
+                            <label for="q6-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">The right lighting can help improve your mood!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-slide" data-question="7">
+                <div class="question-content">
+                    <h3>I am able to focus and concentrate well.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q7-1" name="focus" value="1" required>
+                            <label for="q7-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q7-2" name="focus" value="2">
+                            <label for="q7-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q7-3" name="focus" value="3">
+                            <label for="q7-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q7-4" name="focus" value="4">
+                            <label for="q7-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q7-5" name="focus" value="5">
+                            <label for="q7-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">Just a few more questions to go!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-slide" data-question="8">
+                <div class="question-content">
+                    <h3>I feel optimistic about the future.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q8-1" name="optimism" value="1" required>
+                            <label for="q8-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q8-2" name="optimism" value="2">
+                            <label for="q8-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q8-3" name="optimism" value="3">
+                            <label for="q8-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q8-4" name="optimism" value="4">
+                            <label for="q8-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q8-5" name="optimism" value="5">
+                            <label for="q8-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">You're almost there! Your perfect lighting awaits.</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-slide" data-question="9">
+                <div class="question-content">
+                    <h3>I am satisfied with my productivity today.</h3>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" id="q9-1" name="productivity" value="1" required>
+                            <label for="q9-1">Strongly Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q9-2" name="productivity" value="2">
+                            <label for="q9-2">Disagree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q9-3" name="productivity" value="3">
+                            <label for="q9-3">Neutral</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q9-4" name="productivity" value="4">
+                            <label for="q9-4">Agree</label>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" id="q9-5" name="productivity" value="5">
+                            <label for="q9-5">Strongly Agree</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">One more question to go!</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-slide" data-question="10">
+                <div class="question-content">
+                    <h3>Optional: How would you describe your gender?</h3>
+                    <div class="gender-options">
+                        <div class="gender-option">
+                            <input type="radio" id="gender-male" name="gender" value="male">
+                            <label for="gender-male">Male</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="gender-female" name="gender" value="female">
+                            <label for="gender-female">Female</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="gender-nonbinary" name="gender" value="nonbinary">
+                            <label for="gender-nonbinary">Non-binary/Other</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="gender-prefer-not" name="gender" value="prefer_not_to_say">
+                            <label for="gender-prefer-not">Prefer not to say</label>
+                        </div>
+                    </div>
+                    <div class="motivational-message">This information is optional and helps us personalize your experience.</div>
+                </div>
+                <div class="question-nav">
+                    <button type="button" class="prev-btn">Previous</button>
+                    <button type="submit" class="submit-btn">Get My Lighting Recommendation</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.question-slide');
+        const progressBar = document.getElementById('survey-progress');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const totalQuestions = slides.length;
+        
+        // Set up navigation
+        document.querySelectorAll('.next-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentSlide = this.closest('.question-slide');
+                const currentQuestion = parseInt(currentSlide.dataset.question);
+                
+                // Check if current question is answered
+                const inputs = currentSlide.querySelectorAll('input[type="radio"]');
+                const isAnswered = Array.from(inputs).some(input => input.checked);
+                
+                if (!isAnswered && currentQuestion < 10) {
+                    alert('Please select an answer before proceeding.');
+                    return;
+                }
+                
+                if (currentQuestion < totalQuestions) {
+                    currentSlide.classList.remove('active');
+                    document.querySelector(`.question-slide[data-question="${currentQuestion + 1}"]`).classList.add('active');
+                    updateProgress(currentQuestion + 1);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.prev-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentSlide = this.closest('.question-slide');
+                const currentQuestion = parseInt(currentSlide.dataset.question);
+                
+                if (currentQuestion > 1) {
+                    currentSlide.classList.remove('active');
+                    document.querySelector(`.question-slide[data-question="${currentQuestion - 1}"]`).classList.add('active');
+                    updateProgress(currentQuestion - 1);
+                }
+            });
+        });
+        
+        // Update progress bar
+        function updateProgress(questionNumber) {
+            const progress = (questionNumber / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+            currentQuestionSpan.textContent = questionNumber;
+        }
+        
+        // Form submission
+        document.getElementById('mood-survey-form').addEventListener('submit', function(e) {
+            // Check if required questions are answered
+            const requiredQuestions = 9; // All except gender which is optional
+            let answeredCount = 0;
+            
+            for (let i = 1; i <= requiredQuestions; i++) {
+                const questionInputs = document.querySelectorAll(`input[name="${getQuestionName(i)}"]:checked`);
+                if (questionInputs.length > 0) {
+                    answeredCount++;
+                }
+            }
+            
+            if (answeredCount < requiredQuestions) {
+                e.preventDefault();
+                alert(`Please answer all questions. You have answered ${answeredCount} out of ${requiredQuestions} required questions.`);
+                
+                // Find first unanswered question
+                for (let i = 1; i <= requiredQuestions; i++) {
+                    const questionInputs = document.querySelectorAll(`input[name="${getQuestionName(i)}"]:checked`);
+                    if (questionInputs.length === 0) {
+                        // Navigate to that question
+                        document.querySelectorAll('.question-slide').forEach(slide => {
+                            slide.classList.remove('active');
+                        });
+                        document.querySelector(`.question-slide[data-question="${i}"]`).classList.add('active');
+                        updateProgress(i);
+                        break;
+                    }
+                }
+            }
+        });
+        
+        // Helper function to get question name from question number
+        function getQuestionName(questionNumber) {
+            const nameMap = {
+                1: 'happiness',
+                2: 'stress',
+                3: 'energy',
+                4: 'tiredness',
+                5: 'calmness',
+                6: 'sadness',
+                7: 'focus',
+                8: 'optimism',
+                9: 'productivity'
+                // 10 is gender which is optional
+            };
+            return nameMap[questionNumber];
+        }
+    });
+</script>
+{% endblock %}

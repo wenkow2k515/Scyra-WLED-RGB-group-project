@@ -1,0 +1,302 @@
+/* Mood Survey Page Styles */
+
+/* Background styles (reused from home.css) */
+.led-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/pic/background.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    opacity: 0.6;
+    z-index: -2;
+}
+
+.bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 70%);
+    z-index: -1;
+}
+
+/* Survey container */
+.survey-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Survey header */
+.survey-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.survey-header h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+}
+
+/* Progress bar */
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(34, 34, 34, 0.8);
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 0.5rem;
+}
+
+/* Question slides */
+.survey-questions {
+    position: relative;
+    min-height: 500px;
+}
+
+.question-slide {
+    display: none;
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.question-slide.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.question-content {
+    margin-bottom: 2rem;
+}
+
+.question-content h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+/* Likert scale styling */
+.likert-scale {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.likert-option {
+    flex: 1;
+    min-width: 130px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.likert-option input[type="radio"] {
+    display: none;
+}
+
+.likert-option label {
+    display: block;
+    padding: 1rem 0.5rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.likert-option input[type="radio"]:checked + label {
+    background-color: #04AA6D;
+    color: white;
+    box-shadow: 0 4px 8px rgba(4, 170, 109, 0.5);
+    transform: translateY(-3px);
+}
+
+.likert-option label:hover {
+    background-color: rgba(4, 170, 109, 0.3);
+    color: white;
+}
+
+/* Gender options styling */
+.gender-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.gender-option {
+    min-width: 150px;
+}
+
+.gender-option input[type="radio"] {
+    display: none;
+}
+
+.gender-option label {
+    display: block;
+    padding: 1rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    color: #aaa;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.gender-option input[type="radio"]:checked + label {
+    background-color: #04AA6D;
+    color: white;
+    box-shadow: 0 4px 8px rgba(4, 170, 109, 0.5);
+    transform: translateY(-3px);
+}
+
+.gender-option label:hover {
+    background-color: rgba(4, 170, 109, 0.3);
+    color: white;
+}
+
+/* Motivational messages */
+.motivational-message {
+    padding: 0.75rem;
+    background-color: rgba(4, 170, 109, 0.1);
+    border-left: 4px solid #04AA6D;
+    color: #04AA6D;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+}
+
+/* Navigation buttons */
+.question-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.prev-btn, .next-btn, .submit-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.prev-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+}
+
+.next-btn {
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    color: white;
+    margin-left: auto;
+}
+
+.submit-btn {
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    color: white;
+    margin-left: auto;
+    padding: 1rem 2rem;
+}
+
+.prev-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.next-btn:hover, .submit-btn:hover {
+    background: linear-gradient(90deg, #038857, #04AA6D);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(4, 170, 109, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .survey-header h1 {
+        font-size: 2rem;
+    }
+    
+    .question-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .likert-scale {
+        flex-direction: column;
+    }
+    
+    .likert-option {
+        margin-bottom: 0.5rem;
+    }
+    
+    .question-slide {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .survey-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .gender-options {
+        flex-direction: column;
+    }
+    
+    .gender-option {
+        width: 100%;
+    }
+    
+    .question-nav {
+        flex-direction: column;
+    }
+    
+    .prev-btn, .next-btn, .submit-btn {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+    }
+}

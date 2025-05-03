@@ -1,0 +1,582 @@
+/* Mood Results Page Styles */
+
+/* Background styles (reused from home.css) */
+.led-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/pic/background.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    opacity: 0.6;
+    z-index: -2;
+}
+
+.bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 70%);
+    z-index: -1;
+}
+
+/* Results container */
+.results-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Results header */
+.results-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.results-header h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #aaa;
+}
+
+/* Mood analysis section */
+.mood-analysis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.mood-category {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mood-category h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.mood-category #mood-name {
+    color: #04AA6D;
+    font-weight: bold;
+}
+
+.mood-description {
+    color: #ddd;
+    line-height: 1.6;
+}
+
+.mood-scores {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mood-scores h3 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.score-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.score-item {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.score-label {
+    color: #aaa;
+    font-weight: bold;
+}
+
+.score-bar {
+    height: 10px;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    border-radius: 5px;
+}
+
+.score-value {
+    color: #04AA6D;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Lighting recommendation section */
+.lighting-recommendation {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 3rem;
+}
+
+.lighting-recommendation h2 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.color-preview-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.color-preview {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.color-info {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 80%;
+}
+
+.color-info h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.color-info p {
+    color: #ddd;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.color-code {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #fff;
+    font-family: monospace;
+}
+
+/* Lighting effect animations */
+.effect-pulse {
+    animation: pulse 2s infinite;
+}
+
+.effect-breathe {
+    animation: breathe 4s infinite;
+}
+
+.effect-fade {
+    animation: fade 5s infinite;
+}
+
+.effect-rainbow {
+    animation: rainbow 8s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+@keyframes breathe {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fade {
+    0% { filter: brightness(1); }
+    33% { filter: brightness(0.7); }
+    66% { filter: brightness(1.2); }
+    100% { filter: brightness(1); }
+}
+
+@keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+/* Lighting controls */
+.lighting-controls {
+    margin-top: 2rem;
+}
+
+.control-section {
+    background-color: rgba(51, 51, 51, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.control-section h3 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.control-group label {
+    color: #aaa;
+    min-width: 150px;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    height: 10px;
+    -webkit-appearance: none;
+    background-color: rgba(34, 34, 34, 0.8);
+    border-radius: 5px;
+    outline: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.control-group input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.control-group select {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: rgba(34, 34, 34, 0.8);
+    color: #fff;
+    border: 1px solid #444;
+    outline: none;
+}
+
+.control-group #brightness-value {
+    color: #fff;
+    margin-left: 0.5rem;
+    min-width: 40px;
+    text-align: right;
+}
+
+.control-group button {
+    padding: 0.5rem 1rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    color: #04AA6D;
+    border: 1px solid #04AA6D;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-group button:hover {
+    background-color: rgba(4, 170, 109, 0.2);
+    color: #fff;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary, .btn-tertiary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    color: white;
+    box-shadow: 0 4px 8px rgba(4, 170, 109, 0.5);
+}
+
+.btn-secondary {
+    background-color: rgba(51, 51, 51, 0.8);
+    color: #04AA6D;
+    border: 2px solid #04AA6D;
+}
+
+.btn-tertiary {
+    background-color: rgba(51, 51, 51, 0.8);
+    color: #aaa;
+    border: 1px solid #444;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #038857, #04AA6D);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(4, 170, 109, 0.7);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(4, 170, 109, 0.2);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.btn-tertiary:hover {
+    background-color: rgba(51, 51, 51, 0.9);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+/* Mood explanation section */
+.mood-explanation {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+}
+
+.mood-explanation h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.mood-explanation p {
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.science-box {
+    background-color: rgba(51, 51, 51, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #04AA6D;
+}
+
+.science-box h3 {
+    color: #04AA6D;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.science-box p {
+    color: #aaa;
+    margin-bottom: 0;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.modal-content {
+    background-color: rgba(34, 34, 34, 0.9);
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal:hover {
+    color: #fff;
+}
+
+.modal-content h2 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.modal-content p {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #04AA6D;
+}
+
+.form-group button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(90deg, #04AA6D, #038857);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-group button:hover {
+    background: linear-gradient(90deg, #038857, #04AA6D);
+    transform: translateY(-2px);
+}
+
+#connection-status {
+    margin-top: 1rem;
+}
+
+#connection-status .error {
+    color: #ff5e5e;
+}
+
+#connection-status .info {
+    color: #5e8aff;
+}
+
+#connection-status .success {
+    color: #5eff8a;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mood-analysis {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-header h1 {
+        font-size: 2rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-primary, .btn-secondary, .btn-tertiary {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .control-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .control-group label {
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .results-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .lighting-recommendation h2, .mood-explanation h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
