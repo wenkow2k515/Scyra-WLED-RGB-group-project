@@ -50,10 +50,7 @@ http://127.0.0.1:5000/
 
 ### Connecting to WLED
 
-1. Enter your WLED device's IP address
-2. Configure the number of LEDs per group
-3. Use the RGB controller to design your lighting
-4. Save your presets for future use
+[Getting Started - WLED](https://kno.wled.ge/basics/getting-started/)
 
 ## 4. Project Structure 
 
@@ -74,11 +71,9 @@ http://127.0.0.1:5000/
 ## 6. Future Development 
 
 - Community preset sharing platform
-- Advanced effects library
-- Mobile app integration
-- Direct hardware control for popular LED controllers
+- Mobile app
+- Cloud storage for your presets
 
 ## 7. Acknowledgements 
 
-This project builds upon the amazing [WLED project](https://github.com/Aircoookie/WLED), an open-source solution for controlling WS2812B and many other types of digital RGB LEDs.
-
+This project builds upon the amazing [WLED project](https://github.com/Aircoookie/WLED), an open-source solution for controlling many addressable and non-addressable LED strips.
