@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if title %}
-    <title>{{ title }}</title>
+    <title>{{ title }} | MoodBeam</title>
     {% else %}
-    <title>Scyra</title>
+    <title>MoodBeam - Illuminate Your Emotions</title>
     {% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
@@ -15,11 +15,13 @@
     <header>
         <h1>
             <img src="{{ url_for('static', filename='pic/logo.png') }}" class="Logo">
-            <a href="{{ url_for('home') }}">Scyra</a>
+            <a href="{{ url_for('home') }}">MoodBeam</a>
         </h1>
         <nav class="navbar">
             <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('rgb') }}">RGB</a>
+            <a href="{{ url_for('mood_survey') }}">Mood Survey</a>
+            <a href="{{ url_for('mood_dashboard') }}">My Mood</a>
+            <a href="{{ url_for('rgb') }}">Manual Control</a>
             <a href="{{ url_for('presets') }}">Presets</a>
             <a href="{{ url_for('about') }}">About</a>
             <a href="{{ url_for('login') }}">Login</a>
