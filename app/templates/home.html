@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
 <!-- Background elements -->
 <div class="led-bg"></div>
 <div class="bg-gradient"></div>
@@ -12,11 +13,9 @@
 <!-- Hero Section -->
 <section class="hero">
     <h1>Control Your <span class="highlight">LED Lights</span> with Ease</h1>
-    <p>Scyra is a user-friendly web interface for WLED-compatible LED lights that puts privacy and simplicity first.</p>
-    <div class="hero-buttons">
-        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Get Started</a>
-        <a href="{{ url_for('about') }}" class="btn btn-secondary">Learn More</a>
-    </div>
+    <p>Scyra is a user-friendly web interface for WLED- controlled LEDs that puts privacy first.</p>
+
+<!-- Removed/moved buttons to the bottom of the screen -->
     
     <div class="led-strip-illustration">
         <div class="led-segment"></div>
@@ -31,23 +30,25 @@
 </section>
 
 <div class="container">
-    <p>Want to customize your LED lights? Follow these steps to get started:</p>
+    <h1>Follow these steps to get started:</h1>
     
     <div id="step1" class="step">
         <h2>1. Enter your WLED address</h2>
-        <p>Provide the IP address of your WLED device to connect and retrieve its configuration.</p>
+        <p>Simply enter the IP address of your WLED-connected LED light strip.</p>
     </div>
     
     <div id="step2" class="step">
-        <h2>2. LEDs per addressable group</h2>
-        <p>Specify how many LEDs should be grouped together for customization.</p>
-    </div>
-    
-    <div id="step3" class="step">
-        <h2>3. Create your light design</h2>
-        <p>Select colors, adjust brightness, and create custom patterns for your LED setup.</p>
+        <h2>2. Create your light design</h2>
+        <p>Select colors and adjust brightness within a simple to understand visual UI.</p>
     </div>
 
+    <div id="step3" class="step">
+        <h2>3. Save or run your design</h2>
+        <p>Copy your preset into WLED, or activate your preset with just 1 click!</p>
+    </div>
+
+    <br>
+    
     <!-- Redirect Button -->
     <div class="redirect">
         <button onclick="window.location.href='{{ url_for('rgb') }}'">Start Customization →</button>
