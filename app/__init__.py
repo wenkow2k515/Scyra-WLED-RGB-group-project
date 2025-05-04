@@ -1,43 +1,61 @@
-from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask import Flask, url_for, render_template, request, redirect, flash
 from flask_wtf import FlaskForm
-from flask_migrate import Migrate
 from wtforms import StringField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length, NumberRange
-from werkzeug.security import generate_password_hash, check_password_hash
-import os
 
-from .config import config
-from .models import db, User, UploadedData, SharedData
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
 
-# Create a function to create the app with the specified configuration
-def create_app(config_name='default'):
-    app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    
-    # Initialize extensions
-    db.init_app(app)
-    migrate = Migrate(app, db)  # Initialize Flask-Migrate
-    
-    # Initialize Flask-Login
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = 'login'
-    login_manager.login_message = 'Please log in to access this page'
-    login_manager.login_message_category = 'error'
-    
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-    
-    # Register routes
-    # (Your routes would go here...)
-    
-    return app
+@app.route('/')
+def home():
+    return render_template('home.html', title='Home')
 
-# Create app instance with development config by default
-app = create_app('development')
+@app.route('/rgb')  # Fixed route from '/rbg' to '/rgb'
+def rgb():
+    return render_template('rgb.html', title='RGB')
 
-# Import routes at the bottom to avoid circular imports
-from . import routes
+@app.route('/about')
+def about():
+    """Render the about page."""
+    return render_template('about.html', title='About Scyra')
 
+@app.route('/presets')
+def presets():
+    """Render the presets page."""
+    return render_template('presets.html', title='Presets')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print(f"Login attempt: {username}, {password}")  # Debugging output
+        flash('Login functionality not implemented yet.', 'info')
+        return redirect(url_for('login'))
+    return render_template('login.html', title='Login')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        new_username = request.form['new_username']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            flash('Passwords do not match!', 'error')
+            return redirect(url_for('register'))
+
+        # Save the new user (for now, just print it for debugging)
+        print(f"New user registered: {new_username}")
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))  # Redirect to the login page
+
+    return render_template('register.html', title='Register account')
+
+@app.route('/account')
+def account():
+    return render_template('account.html', title='Account')
+
+
+if __name__ == '__main__':
+    app.run()
