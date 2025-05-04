@@ -1,12 +1,5 @@
 #local venv
 application-env/
-venv/
-
-#database
-database/
-
-#files for vscode
-.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
