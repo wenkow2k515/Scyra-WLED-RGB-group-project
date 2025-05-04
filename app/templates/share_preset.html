@@ -1,0 +1,109 @@
+{% extends "body.html" %}
+
+{% block content %}
+<div class="share-preset-container">
+    <h1>Share Preset</h1>
+    <div class="preset-info">
+        <h2>{{ preset.preset_name }}</h2>
+        <p>You will share this preset with other users.</p>
+    </div>
+    
+    <form method="POST" action="{{ url_for('share_preset', preset_id=preset.id) }}">
+        <div class="form-group">
+            <label for="share_email">User Email:</label>
+            <input type="email" id="share_email" name="share_email" required 
+                   class="form-control" placeholder="Enter the email of the user to share with">
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Share</button>
+            <a href="{{ url_for('account') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+    
+    <div class="already-shared">
+        <h3>Already Shared With</h3>
+        {% set shared_users = shared_data|selectattr("preset_id", "equalto", preset.id)|list %}
+        
+        {% if shared_users %}
+            <ul class="shared-list">
+                {% for share in shared_users %}
+                    <li>
+                        {{ share.shared_with.email }}
+                        <form method="POST" action="{{ url_for('unshare_preset', share_id=share.id) }}" 
+                              style="display: inline-block;">
+                            <button type="submit" class="btn-sm btn-danger">Unshare</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>This preset has not been shared with anyone yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .share-preset-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .preset-info {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: #4a90e2;
+        color: white;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .already-shared {
+        margin-top: 30px;
+    }
+    .shared-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    .shared-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.9em;
+    }
+</style>
+{% endblock %}
