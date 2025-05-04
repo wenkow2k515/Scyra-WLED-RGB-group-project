@@ -65,7 +65,7 @@ nav a:hover {
     margin-left: auto;
     gap: 10px;
     flex-shrink: 1;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .navbar a {
@@ -175,13 +175,12 @@ img {
 
 .dropdown-content {
     display: none;
-    position: absolute; /* 改为absolute，不用fixed */
+    position: fixed;
     background-color: #f1f1f1;
     min-width: 120px;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    z-index: 1000; /* 增大z-index值确保显示 */
-    top: 100%; /* 添加此行 - 放置在父元素的下方 */
-    right: 0; /* 与父元素右侧对齐 */
+    z-index: 1;
+    right: 0;
     border-radius: 5px;
 }
 

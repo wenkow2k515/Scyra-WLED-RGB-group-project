@@ -1,7 +1,5 @@
 /* Home Page Specific Styles */
 
-
-
 /* Background styles */
 .led-bg {
     position: fixed;
@@ -34,24 +32,22 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 1rem 2rem;
-    min-height: 10vh;
+    padding: 6rem 2rem;
+    min-height: 80vh;
 }
 
 .hero h1 {
     font-size: 3rem;
-    color:white;
     margin-bottom: 1.5rem;
     line-height: 1.2;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero p {
-    font-size: 1.5rem;
-    color: #ffffff;
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 2.5rem;
     max-width: 600px;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .highlight {
@@ -67,11 +63,10 @@
 /* LED Strip Illustration */
 .led-strip-illustration {
     display: flex;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-top: 3rem;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 1rem;
-    border-radius: 5px;
+    border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     justify-content: space-around;
     max-width: 500px;
@@ -141,22 +136,15 @@
     text-align: center; 
     width: 100%; 
     max-width: 800px; 
-    padding: 0px; 
+    padding: 20px; 
     margin: 0 auto;
-    margin-bottom: 2em;
-}
-
-.container h1{
-    color:white;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Styles for steps */
 .step {
     background-color: rgba(34, 34, 34, 0.8);
-    padding: 12px 20px;
+    padding: 20px;
     margin: 15px 0;
-    text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     text-align: left;
@@ -170,13 +158,13 @@
 }
 
 .step h2 {
-    color: #00aaff;
+    color: #04AA6D;
     margin-top: 0;
     font-size: 1.4em;
 }
 
 .step p {
-    color: #ffffff;
+    color: #ccc;
     line-height: 1.6;
 }
 
@@ -186,11 +174,11 @@
     font-size: 1.2em;
     font-weight: bold;
     color: white;
-    background: linear-gradient(90deg, #00aaff, #653cfadc);
+    background: linear-gradient(90deg, #04AA6D, #038857);
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
+    box-shadow: 0 4px 15px rgba(4, 170, 109, 0.5);
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -198,7 +186,7 @@
 }
 
 .redirect button:hover {
-    background: linear-gradient(90deg, #7050e6dc, #43bfdf);
+    background: linear-gradient(90deg, #038857, #04AA6D);
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
+    box-shadow: 0 6px 20px rgba(4, 170, 109, 0.7);
 }
