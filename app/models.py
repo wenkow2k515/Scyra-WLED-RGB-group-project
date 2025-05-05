@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin  # Add this import
+import json
 
 db = SQLAlchemy()
 
@@ -9,6 +10,10 @@ class User(db.Model, UserMixin):  # Add UserMixin inheritance
     password = db.Column(db.String(128), nullable=False)
     fname = db.Column(db.String(50))
     lname = db.Column(db.String(50))
+    
+    # Password recovery fields
+    security_question = db.Column(db.String(200))
+    security_answer = db.Column(db.String(128))  # Store hashed answer for security
     
     # Relationship to UploadedData
     uploads = db.relationship('UploadedData', backref='user', lazy=True)

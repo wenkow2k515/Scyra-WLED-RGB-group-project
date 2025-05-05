@@ -433,5 +433,143 @@ def load_preset(preset_id):
     # Redirect to RGB editor
     return redirect(url_for('rgb'))
 
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    """Handle forgot password requests."""
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
+        
+    if request.method == 'POST':
+        email = request.form.get('email')
+        
+        # Find user by email
+        user = User.query.filter_by(email=email).first()
+        
+        if not user:
+            flash('Email not found. Please check your email address.', 'error')
+            return redirect(url_for('forgot_password'))
+            
+        # If user has no security question set
+        if not user.security_question:
+            flash('No security question set for this account. Please contact support.', 'error')
+            return redirect(url_for('forgot_password'))
+            
+        # Store email in session and redirect to security question page
+        session['reset_email'] = email
+        return redirect(url_for('security_question'))
+        
+    return render_template('forgot_password.html', title='Forgot Password')
+
+@app.route('/security-question', methods=['GET', 'POST'])
+def security_question():
+    """Display and verify security question."""
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
+        
+    # Get email from session
+    email = session.get('reset_email')
+    if not email:
+        flash('Please start the password reset process again.', 'error')
+        return redirect(url_for('forgot_password'))
+        
+    # Find user
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash('User not found. Please try again.', 'error')
+        return redirect(url_for('forgot_password'))
+        
+    if request.method == 'POST':
+        # Get the answer from the form
+        answer = request.form.get('answer')
+        
+        # Check if answer is correct - compare with stored hashed answer
+        if check_password_hash(user.security_answer, answer):
+            # Generate a token and store in session
+            session['reset_token'] = generate_password_hash(str(user.id) + str(user.email))
+            session['reset_user_id'] = user.id
+            return redirect(url_for('reset_password'))
+        else:
+            flash('Incorrect answer. Please try again.', 'error')
+            
+    return render_template(
+        'security_question.html', 
+        title='Security Question',
+        question=user.security_question
+    )
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    """Reset password after successful security question."""
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
+        
+    # Verify token and user_id from session
+    token = session.get('reset_token')
+    user_id = session.get('reset_user_id')
+    
+    if not token or not user_id:
+        flash('Invalid password reset session. Please start over.', 'error')
+        return redirect(url_for('forgot_password'))
+        
+    # Find user
+    user = User.query.get(user_id)
+    if not user:
+        flash('User not found. Please try again.', 'error')
+        return redirect(url_for('forgot_password'))
+        
+    if request.method == 'POST':
+        # Get passwords from form
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        # Validate passwords
+        if not new_password or not confirm_password:
+            flash('Please fill out all fields.', 'error')
+            return redirect(url_for('reset_password'))
+            
+        if new_password != confirm_password:
+            flash('Passwords do not match.', 'error')
+            return redirect(url_for('reset_password'))
+            
+        # Update user's password
+        user.password = generate_password_hash(new_password, method='pbkdf2')
+        db.session.commit()
+        
+        # Clear session data
+        session.pop('reset_email', None)
+        session.pop('reset_token', None)
+        session.pop('reset_user_id', None)
+        
+        flash('Password successfully reset. Please log in with your new password.', 'success')
+        return redirect(url_for('login'))
+        
+    return render_template('reset_password.html', title='Reset Password')
+
+@app.route('/set-security-question', methods=['GET', 'POST'])
+@login_required
+def set_security_question():
+    """Allow users to set or update their security question."""
+    if request.method == 'POST':
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        
+        if not question or not answer:
+            flash('Please provide both a security question and answer.', 'error')
+            return redirect(url_for('set_security_question'))
+            
+        # Update user's security question and answer
+        current_user.security_question = question
+        current_user.security_answer = generate_password_hash(answer, method='pbkdf2')
+        db.session.commit()
+        
+        flash('Security question and answer updated successfully.', 'success')
+        return redirect(url_for('account'))
+        
+    return render_template(
+        'set_security_question.html', 
+        title='Set Security Question',
+        current_question=current_user.security_question
+    )
+
 if __name__ == '__main__':
     app.run()

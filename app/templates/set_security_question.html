@@ -1,0 +1,39 @@
+<head>
+    <link rel="stylesheet" href="/static/css/l_r.css">
+</head>
+{% extends "body.html" %}
+{% block content %}
+<h2>Set Security Question</h2>
+<p>Set a security question to help recover your account in case you forget your password.</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<form action="{{ url_for('set_security_question') }}" method="POST">
+    <label for="question">Choose a Security Question:</label>
+    <select id="question" name="question" required>
+        <option value="">-- Select a question --</option>
+        <option value="What was the name of your first pet?" {% if current_question == "What was the name of your first pet?" %}selected{% endif %}>What was the name of your first pet?</option>
+        <option value="What is your mother's maiden name?" {% if current_question == "What is your mother's maiden name?" %}selected{% endif %}>What is your mother's maiden name?</option>
+        <option value="What was the name of your primary school?" {% if current_question == "What was the name of your primary school?" %}selected{% endif %}>What was the name of your primary school?</option>
+        <option value="In what city were you born?" {% if current_question == "In what city were you born?" %}selected{% endif %}>In what city were you born?</option>
+        <option value="What is the name of your favorite movie?" {% if current_question == "What is the name of your favorite movie?" %}selected{% endif %}>What is the name of your favorite movie?</option>
+        <option value="What was your childhood nickname?" {% if current_question == "What was your childhood nickname?" %}selected{% endif %}>What was your childhood nickname?</option>
+    </select>
+    
+    <label for="answer">Your Answer:</label>
+    <input type="text" id="answer" name="answer" required>
+    <small>Remember this answer exactly as you'll need it to recover your password.</small>
+    
+    <button type="submit">Save Security Question</button>
+</form>
+
+<p><a href="{{ url_for('account') }}">Back to Account</a></p>
+{% endblock %} 

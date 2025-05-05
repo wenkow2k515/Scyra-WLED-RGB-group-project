@@ -1,0 +1,41 @@
+<head>
+    <link rel="stylesheet" href="/static/css/l_r.css">
+</head>
+{% extends "body.html" %}
+{% block content %}
+<h2>Security Question</h2>
+<p>Please answer your security question to reset your password.</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<form action="{{ url_for('security_question') }}" method="POST">
+    <label for="question">Your Security Question:</label>
+    <div class="question-display">{{ question }}</div>
+    
+    <label for="answer">Your Answer:</label>
+    <input type="text" id="answer" name="answer" required>
+    
+    <button type="submit">Submit Answer</button>
+</form>
+
+<p><a href="{{ url_for('forgot_password') }}">Back to Forgot Password</a></p>
+{% endblock %}
+
+<style>
+.question-display {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+</style> 
