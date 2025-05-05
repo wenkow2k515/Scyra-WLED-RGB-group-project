@@ -95,7 +95,7 @@ def register():
             return redirect(url_for('register'))
 
         # Create new user
-        hashed_password = generate_password_hash(new_password)
+        hashed_password = generate_password_hash(new_password, method='pbkdf2')
         new_user = User(
             fname=fname,
             lname=lname,
