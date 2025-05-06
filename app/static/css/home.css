@@ -180,49 +180,25 @@
     line-height: 1.6;
 }
 
-/* Style for the fancy buttons */
-
-/* Simple fix for more spacing */
-
-.redirect {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-/* Base styling for both buttons */
+/* Style for the Start Customization button */
 .redirect button {
     padding: 15px 30px;
     font-size: 1.2em;
     font-weight: bold;
     color: white;
+    background: linear-gradient(90deg, #00aaff, #653cfadc);
     border: none;
     border-radius: 50px;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 30px;
-    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
 }
 
-/* Customize and Survey have a nice mirrored gradient effect */
-.redirect .customize-btn {
-    background: linear-gradient(90deg, #00aaff, #653cfadc);
-}
-.redirect .customize-btn:hover {
+.redirect button:hover {
     background: linear-gradient(90deg, #7050e6dc, #43bfdf);
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
-}
-
-.redirect .survey-btn {
-    background: linear-gradient(90deg, #653cfadc, #00aaff);
-    box-shadow: 0 4px 15px rgba(101, 60, 250, 0.5);
-}
-.redirect .survey-btn:hover {
-    background: linear-gradient(90deg, #43bfdf, #7050e6dc);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(101, 60, 250, 0.7);
 }
