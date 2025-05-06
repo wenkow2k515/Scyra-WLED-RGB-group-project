@@ -1,0 +1,269 @@
+{% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Use semantic main tag for primary content -->
+<main class="mood-container">
+    <!-- ======== BACKGROUND ELEMENTS ======== -->
+    <div class="led-bg" aria-hidden="true"></div>
+    <div class="bg-gradient" aria-hidden="true"></div>
+
+    <!-- ======== PAGE HEADER ======== -->
+    <header class="page-header">
+        <h1>Mood Lighting Dashboard</h1>
+        <p class="subtitle">Personalized lighting recommendations based on your mood</p>
+    </header>
+    
+    <!-- ======== ACTION BUTTONS ======== -->
+    <div class="action-buttons">
+        <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Mood Survey</a>
+        <a href="{{ url_for('mood.history') }}" class="btn btn-secondary">View History</a>
+    </div>
+    
+    <!-- ======== DASHBOARD CONTENT ======== -->
+    <div class="dashboard-content">
+        <!-- Recent Mood Section -->
+        <section class="dashboard-section">
+            <h2>Your Current Mood</h2>
+            
+            {% if mood_entries %}
+                {% set latest_entry = mood_entries[0] %}
+                {% set latest_suggestion = latest_entry.color_suggestion %}
+                
+                <div class="mood-card">
+                    <div class="mood-header">
+                        <div class="mood-date">{{ latest_entry.timestamp.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                    </div>
+                    
+                    <div class="mood-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Energy</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.energy_level * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.energy_level }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Happiness</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.happiness * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.happiness }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Anxiety</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.anxiety * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.anxiety }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Stress</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.stress * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.stress }}/10</span>
+                        </div>
+                    </div>
+                    
+                    {% if latest_suggestion %}
+                    <div class="color-preview">
+                        <h3>Recommended Colors</h3>
+                        <div class="color-swatches">
+                            <div class="color-swatch primary" style="background-color: #{{ latest_suggestion.primary_color }}"></div>
+                            <div class="color-swatch secondary" style="background-color: #{{ latest_suggestion.secondary_color }}"></div>
+                            <div class="color-swatch accent" style="background-color: #{{ latest_suggestion.accent_color }}"></div>
+                        </div>
+                        <div class="color-info">
+                            <p>Effect: {{ latest_suggestion.effect_name }}</p>
+                            <p>Brightness: {{ latest_suggestion.brightness }}/255</p>
+                        </div>
+                        
+                        <div class="color-actions">
+                            <button class="btn btn-primary apply-colors" 
+                                    data-suggestion-id="{{ latest_suggestion.id }}">
+                                Apply to LED Lights
+                            </button>
+                            <a href="{{ url_for('mood.results', mood_entry_id=latest_entry.id) }}" 
+                               class="btn btn-secondary">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if latest_entry.notes %}
+                    <div class="mood-notes">
+                        <h3>Notes</h3>
+                        <p>{{ latest_entry.notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You haven't recorded your mood yet.</p>
+                    <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Your First Mood Survey</a>
+                </div>
+            {% endif %}
+        </section>
+        
+        <!-- Recent History Section -->
+        <section class="dashboard-section">
+            <h2>Recent Mood History</h2>
+            
+            {% if mood_entries and mood_entries|length > 1 %}
+                <div class="mood-history-preview">
+                    <div class="history-chart">
+                        <!-- Chart would be rendered with JavaScript here -->
+                        <p class="chart-placeholder">Mood trends chart loading...</p>
+                    </div>
+                    
+                    <div class="recent-entries">
+                        {% for entry in mood_entries[1:4] %}
+                        <div class="history-entry">
+                            <div class="entry-date">{{ entry.timestamp.strftime('%b %d, %Y') }}</div>
+                            <div class="entry-metrics">
+                                <div class="mini-metric">
+                                    <span class="mini-label">Energy</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Happiness</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('mood.results', mood_entry_id=entry.id) }}" class="view-link">View</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="view-all-link">
+                    <a href="{{ url_for('mood.history') }}">View All History</a>
+                </div>
+            {% elif mood_entries %}
+                <div class="empty-state">
+                    <p>You only have one mood entry so far.</p>
+                    <p>Take more surveys to see your mood history!</p>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No mood history available yet.</p>
+                </div>
+            {% endif %}
+        </section>
+        
+        <!-- Info Section -->
+        <section class="dashboard-section info-section">
+            <h2>About Mood Lighting</h2>
+            <p>Our mood lighting system uses color psychology principles to recommend lighting colors that complement your current emotional state or help you achieve a desired mood.</p>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Why Mood Lighting?</h3>
+                    <p>Studies show that ambient lighting can significantly impact our emotional wellbeing. The right colors can help reduce stress, increase focus, or energize you when needed.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>How It Works</h3>
+                    <p>Complete a short survey about your current emotions, and our algorithm will generate personalized color schemes for your LED lights based on color psychology principles.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Apply colors button functionality
+        const applyButtons = document.querySelectorAll('.apply-colors');
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const suggestionId = this.getAttribute('data-suggestion-id');
+                applySuggestion(suggestionId);
+            });
+        });
+        
+        function applySuggestion(suggestionId) {
+            // Show loading state
+            const button = document.querySelector(`[data-suggestion-id="${suggestionId}"]`);
+            const originalText = button.textContent;
+            button.textContent = 'Applying...';
+            button.disabled = true;
+            
+            // Send AJAX request to apply colors
+            fetch(`/mood/apply/${suggestionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Apply the colors to the WLED setup
+                    applyColorsToWLED(data.colors);
+                    
+                    // Update button
+                    button.textContent = 'Applied!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                } else {
+                    button.textContent = 'Error';
+                    console.error('Failed to apply colors:', data.error);
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            });
+        }
+        
+        function applyColorsToWLED(colors) {
+            // Get WLED IP from local storage
+            const wledIP = localStorage.getItem('wledIP');
+            if (!wledIP) {
+                alert('WLED address not found. Please set up your WLED connection first.');
+                return;
+            }
+            
+            // This function would integrate with the existing WLED connection code
+            // For now, just log what would happen
+            console.log('Applying colors to WLED at', wledIP, colors);
+            
+            // In a real implementation, this would send the colors to the WLED API
+            // Redirect to the RGB page with the color data
+            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
+            window.location.href = rgbUrl;
+        }
+        
+        // Here you would implement chart rendering for the mood history
+        // Example: using Chart.js or a similar library
+        // renderMoodChart();
+    });
+</script>
+{% endblock %}

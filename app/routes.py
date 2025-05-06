@@ -19,7 +19,29 @@ def rgb():
     view_mode = session.pop('view_mode', False)
     edit_mode = session.pop('edit_mode', False)
     
-    if preset_id:
+    # Check for autoload parameters (for mood color suggestions)
+    autoload = request.args.get('autoload', False)
+    if autoload:
+        # Create a preset data structure from query parameters
+        primary_color = request.args.get('primary', '')
+        secondary_color = request.args.get('secondary', '')
+        accent_color = request.args.get('accent', '')
+        brightness = request.args.get('brightness', 255)
+        effect = request.args.get('effect', 'Solid')
+        
+        # Create a simple preset structure
+        preset_data = {
+            'primary_color': primary_color,
+            'secondary_color': secondary_color,
+            'accent_color': accent_color,
+            'brightness': brightness,
+            'effect': effect,
+            'from_mood': True  # Flag to indicate this is from mood analysis
+        }
+        preset_name = "Mood Suggestion"
+    
+    # If no autoload parameters, check for preset ID
+    elif preset_id:
         # Get the preset from database
         preset = UploadedData.query.get(preset_id)
         if preset:
@@ -95,7 +117,7 @@ def register():
             return redirect(url_for('register'))
 
         # Create new user
-        hashed_password = generate_password_hash(new_password)
+        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
         new_user = User(
             fname=fname,
             lname=lname,

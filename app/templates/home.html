@@ -15,6 +15,12 @@
     <h1>Control Your <span class="highlight">LED Lights</span> with Ease</h1>
     <p>Scyra is a user-friendly web interface for WLED- controlled LEDs that puts privacy first.</p>
 
+    <div class="hero-buttons">
+        <a href="{{ url_for('rgb') }}" class="btn btn-primary">LED Controller</a>
+        <a href="{{ url_for('mood.index') }}" class="btn btn-secondary">Mood Lighting</a>
+    </div>
+    
+
 <!-- Removed/moved buttons to the bottom of the screen -->
     
     <div class="led-strip-illustration">
@@ -45,6 +51,11 @@
     <div id="step3" class="step">
         <h2>3. Save or run your design</h2>
         <p>Copy your preset into WLED, or activate your preset with just 1 click!</p>
+    </div>
+
+    <div id="step4" class="step">
+        <h2>4. Try our Mood Lighting</h2>
+        <p>Complete a short mood survey and get personalized lighting recommendations based on color psychology principles.</p>
     </div>
 
     <br>

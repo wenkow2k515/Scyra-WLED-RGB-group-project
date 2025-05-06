@@ -1,0 +1,1058 @@
+/* Mood Analysis System Styles */
+
+/* Common background and container styles (matching about.css) */
+.led-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/pic/background.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    opacity: 0.6;
+    z-index: -2;
+}
+
+.bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 70%);
+    z-index: -1;
+}
+
+/* Main container */
+.mood-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Page header */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.page-header::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #04AA6D; /* Matching your theme color */
+    margin: 1.5rem auto 0;
+    border-radius: 2px;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #aaa;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.dashboard-section {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-section h2 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    position: relative;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.75rem;
+}
+
+/* Survey Container */
+.survey-container {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #04AA6D; /* Matching your theme color */
+}
+
+/* Mood Sliders */
+.mood-slider .question {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.mood-slider .value-display {
+    float: right;
+    font-size: 1.1rem;
+    color: #04AA6D; /* Matching your theme color */
+    font-weight: bold;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.slider-label {
+    color: #aaa;
+    width: 120px;
+    font-size: 0.9rem;
+}
+
+.slider-label.low {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.slider-label.high {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.mood-range {
+    flex: 1;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg, #333 0%, #04AA6D 100%);
+    border-radius: 5px;
+    outline: none;
+}
+
+.mood-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #04AA6D; /* Matching your theme color */
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.mood-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #04AA6D; /* Matching your theme color */
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.slider-help {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+
+.help-text {
+    color: #888;
+    font-size: 0.85rem;
+    font-style: italic;
+    max-width: 45%;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Mood Card */
+.mood-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mood-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #444;
+    color: #aaa;
+}
+
+.mood-date {
+    font-size: 0.95rem;
+}
+
+.mood-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.metric-label {
+    width: 80px;
+    color: #ddd;
+    text-align: right;
+}
+
+.metric-bar {
+    flex: 1;
+    height: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.metric-fill {
+    height: 100%;
+    background-color: #04AA6D; /* Matching your theme color */
+    border-radius: 5px;
+}
+
+.metric-value {
+    width: 50px;
+    color: #ddd;
+}
+
+.mood-notes {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1.5rem;
+}
+
+.mood-notes h3 {
+    color: #04AA6D; /* Matching your theme color */
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.mood-notes p {
+    color: #ddd;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Color Preview */
+.color-preview {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #444;
+}
+
+.color-preview h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.color-swatches {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.color-swatch {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.color-info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    color: #ddd;
+}
+
+.color-info p {
+    margin: 0;
+}
+
+.color-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.color-swatch .color-label {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #ddd;
+    font-size: 0.85rem;
+}
+
+.color-swatch .color-hex {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #ddd;
+    font-size: 0.85rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: rgba(51, 51, 51, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.empty-state h2 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Info Cards */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.info-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.info-card h3 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.info-card p {
+    color: #ddd;
+    line-height: 1.6;
+}
+
+/* Info Box */
+.info-box {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.info-box h3 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.info-box p {
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Color Psychology Grid */
+.color-psychology-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+}
+
+.color-info {
+    text-align: center;
+}
+
+.color-info .color-swatch {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+}
+
+.color-info h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.color-info p {
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Results Container */
+.results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.results-section {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.results-section h2 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    position: relative;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.75rem;
+}
+
+/* Mood Profile Card */
+.mood-profile-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mood-metrics-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.mood-chart {
+    flex: 1;
+    min-width: 250px;
+}
+
+.chart-placeholder {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-style: italic;
+}
+
+/* Color Recommendation Card */
+.color-recommendation-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.color-palette {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.settings-recommendation {
+    margin-bottom: 2rem;
+}
+
+.settings-recommendation h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.settings-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.settings-list li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.setting-label {
+    color: #aaa;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.setting-value {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.color-explanation {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.color-explanation h3 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.color-explanation p {
+    color: #ddd;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Star Rating */
+.rating-container {
+    text-align: center;
+}
+
+.rating-container p {
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.star {
+    font-size: 1.8rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.star:hover,
+.star.active {
+    color: #FFD700; /* Gold color for stars */
+}
+
+/* Navigation Buttons */
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* History Container */
+.history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.history-section {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.history-section h2 {
+    color: #04AA6D; /* Matching your theme color */
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    position: relative;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.75rem;
+}
+
+/* Chart Card */
+.chart-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chart-tabs {
+    display: flex;
+    border-bottom: 1px solid #444;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+}
+
+.chart-tab {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #aaa;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.chart-tab:hover {
+    color: #04AA6D; /* Matching your theme color */
+}
+
+.chart-tab.active {
+    color: #04AA6D; /* Matching your theme color */
+    border-bottom: 3px solid #04AA6D; /* Matching your theme color */
+}
+
+.chart-container {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1.5rem;
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ddd;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Color History */
+.color-history-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.section-intro {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.color-timeline {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background-color: #222;
+    border-radius: 30px;
+    padding: 0 10px;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    justify-content: space-around;
+}
+
+.color-point {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.color-point:hover {
+    transform: scale(1.5);
+}
+
+.color-stats {
+    margin-top: 2rem;
+}
+
+.color-stats h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.color-frequency {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.color-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.color-sample {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.color-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    color: #ddd;
+}
+
+.color-percentage {
+    color: #04AA6D; /* Matching your theme color */
+    font-weight: 500;
+}
+
+/* Mood Log */
+.mood-log-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.mood-log-filters input,
+.mood-log-filters select {
+    padding: 0.6rem 1rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.mood-log-filters input {
+    flex: 1;
+}
+
+.mood-entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.mood-entry-card {
+    background-color: rgba(51, 51, 51, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #444;
+    color: #aaa;
+}
+
+.entry-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mini-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.mini-label {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.mini-bar {
+    height: 6px;
+    background-color: #333;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.mini-fill {
+    height: 100%;
+    background-color: #04AA6D; /* Matching your theme color */
+    border-radius: 3px;
+}
+
+.mini-value {
+    color: #aaa;
+    font-size: 0.85rem;
+    align-self: flex-end;
+}
+
+.entry-notes {
+    background-color: rgba(34, 34, 34, 0.8);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.entry-notes p {
+    color: #ddd;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.entry-colors {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.mini-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.entry-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    background-color: rgba(51, 51, 51, 0.8);
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-indicator {
+    color: #aaa;
+}
+
+/* Button Styles (matching your theme) */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background-color: #04AA6D; /* Matching your theme color */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #038857; /* Darker shade for hover */
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .dashboard-section h2,
+    .results-section h2,
+    .history-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .mood-metrics-container {
+        flex-direction: column;
+    }
+    
+    .color-palette {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .settings-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mood-log-filters {
+        flex-direction: column;
+    }
+    
+    .entry-metrics {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .dashboard-section,
+    .survey-container,
+    .results-section,
+    .history-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .chart-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .slider-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .slider-label {
+        width: 100%;
+        text-align: left;
+        padding: 0;
+    }
+}
