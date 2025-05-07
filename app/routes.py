@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import app
 from .models import db, User, UploadedData, SharedData
-from .forms import LoginForm, RegisterForm, SharePresetForm
 
 @app.route('/')
 def home():
@@ -40,53 +39,78 @@ def rgb():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # If user is already logged in, redirect to account page
     if current_user.is_authenticated:
         return redirect(url_for('account'))
-    
-    form = LoginForm()
-    
-    if form.validate_on_submit():
-        # This automatically checks CSRF token
-        user = User.query.filter_by(email=form.email.data).first()
         
-        if user and check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
+    if request.method == 'POST':
+        email = request.form['username']  # Assuming username is email
+        password = request.form['password']
+        remember = 'remember' in request.form  # Check if "remember me" was checked
+        
+        # Look up the user in the database
+        user = User.query.filter_by(email=email).first()
+        
+        # Check if user exists and password is correct
+        if user and check_password_hash(user.password, password):
+            # Log in the user with Flask-Login
+            login_user(user, remember=remember)
+            
+            # Check if user was redirected to login from another page
             next_page = request.args.get('next')
+            
             flash('Login successful!', 'success')
             return redirect(next_page or url_for('account'))
         else:
-            flash('Login unsuccessful. Please check email and password', 'error')
+            flash('Login failed. Please check your email and password.', 'error')
+            return redirect(url_for('login'))
     
-    return render_template('login.html', title='Login', form=form)
+    # This handles GET requests
+    return render_template('login.html', title='Login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # If user is already logged in, redirect to account page
     if current_user.is_authenticated:
         return redirect(url_for('account'))
-    
-    form = RegisterForm()
-    
-    if form.validate_on_submit():
-        # This automatically checks CSRF token
-        hashed_password = generate_password_hash(form.password.data)
         
-        user = User(
-            email=form.email.data, 
+    if request.method == 'POST':
+        # Get first name and last name from form
+        fname = request.form.get('fname', '')
+        lname = request.form.get('lname', '')
+        email = request.form['email']
+        # Get password and confirm password from form
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        # Check if passwords match
+        if new_password != confirm_password:
+            flash('Passwords do not match!', 'error')
+            return redirect(url_for('register'))
+
+        # Check if user already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email already registered!', 'error')
+            return redirect(url_for('register'))
+
+        # Create new user
+        hashed_password = generate_password_hash(new_password)
+        new_user = User(
+            fname=fname,
+            lname=lname,
             password=hashed_password,
-            fname=form.fname.data,
-            lname=form.lname.data
+            email=email
         )
         
-        db.session.add(user)
-        try:
-            db.session.commit()
-            flash('Your account has been created! You can now log in', 'success')
-            return redirect(url_for('login'))
-        except IntegrityError:
-            db.session.rollback()
-            flash('That email is already registered. Please use a different one.', 'error')
-    
-    return render_template('register.html', title='Register', form=form)
+        # Add user to database
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html', title='Register account')
 
 @app.route('/account')
 @login_required  # Protect this route - user must be logged in
@@ -255,13 +279,13 @@ def share_preset(preset_id):
         flash('You do not have permission to share this preset', 'error')
         return redirect(url_for('account'))
     
-    # Get all current shares for this preset
-    shared_data = SharedData.query.filter_by(preset_id=preset_id).all()
-    
-    form = SharePresetForm()  # Create an instance of the form
-    
-    if form.validate_on_submit():  # This checks the CSRF token
-        share_email = form.share_email.data
+    if request.method == 'POST':
+        # Get the email of the user to share with
+        share_email = request.form.get('share_email')
+        
+        if not share_email:
+            flash('Please enter a valid email address', 'error')
+            return redirect(url_for('share_preset', preset_id=preset_id))
         
         # Find user
         user = User.query.filter_by(email=share_email).first()
@@ -300,9 +324,7 @@ def share_preset(preset_id):
     return render_template(
         'share_preset.html',
         title='Share Preset',
-        preset=preset,
-        shared_data=shared_data,
-        form=form  # Pass the form to the template
+        preset=preset
     )
 
 @app.route('/unshare-preset/<int:share_id>', methods=['POST'])

@@ -5,50 +5,23 @@
 {% block content %}
 <h2>Register</h2>
 <form id="register-form" action="{{ url_for('register') }}" method="POST">
-    {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
     
-    <div>
-        {{ form.email.label }}
-        {{ form.email(required=true) }}
-        {% if form.email.errors %}
-            <span class="error">{{ form.email.errors[0] }}</span>
-        {% endif %}
-    </div>
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname" required>
     
-    <div>
-        {{ form.fname.label }}
-        {{ form.fname(required=true) }}
-        {% if form.fname.errors %}
-            <span class="error">{{ form.fname.errors[0] }}</span>
-        {% endif %}
-    </div>
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname" required>
     
-    <div>
-        {{ form.lname.label }}
-        {{ form.lname(required=true) }}
-        {% if form.lname.errors %}
-            <span class="error">{{ form.lname.errors[0] }}</span>
-        {% endif %}
-    </div>
+    <label for="new_password">Password:</label>
+    <input type="password" id="new_password" name="new_password" required>
     
-    <div>
-        {{ form.password.label }}
-        {{ form.password(required=true, id="new_password") }}
-        {% if form.password.errors %}
-            <span class="error">{{ form.password.errors[0] }}</span>
-        {% endif %}
-    </div>
+    <label for="confirm_password">Confirm Password:</label>
+    <input type="password" id="confirm_password" name="confirm_password" required>
     
-    <div>
-        {{ form.confirm_password.label }}
-        {{ form.confirm_password(required=true, id="confirm_password") }}
-        {% if form.confirm_password.errors %}
-            <span class="error">{{ form.confirm_password.errors[0] }}</span>
-        {% endif %}
-    </div>
-    
-    {{ form.submit() }}
+    <button type="submit">Register</button>
 </form>
 <p id="error-message" style="color: red; display: none;">Passwords do not match!</p>
-<script src="/static/js/register.js"></script>
+<script src = "/static/js/register.js"></script>
 {% endblock %}
