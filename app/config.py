@@ -10,7 +10,7 @@ database_dir = os.path.join(basedir, 'database')
 os.makedirs(database_dir, exist_ok=True)
 
 class Config:
-    SECRET_KEY = 'your_secret_key'  # Better: os.environ.get('SECRET_KEY') or 'fallback_key'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'default-key-for-dev'  # Better: os.environ.get('SECRET_KEY') or 'fallback_key'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(database_dir, 'site.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
