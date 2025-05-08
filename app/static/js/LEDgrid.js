@@ -358,10 +358,10 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.dataset.color = JSON.stringify([r, g, b]);
           }
           
-          // Add selection if in view mode
-          if (window.view_mode && cellData.selected) {
-            cell.classList.add('selected');
-          }
+          // // Add selection if in view mode
+          // if (window.view_mode && cellData.selected) {
+          //   cell.classList.add('selected');
+          // }
         }
       });
     }
