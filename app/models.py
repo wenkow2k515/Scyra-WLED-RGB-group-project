@@ -10,6 +10,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(128), nullable=False)
     fname = db.Column(db.String(50))
     lname = db.Column(db.String(50))
+    secret_question = db.Column(db.String(200), nullable=True)
+    secret_answer = db.Column(db.String(200), nullable=True)
     
     # Relationship to UploadedData
     uploads = db.relationship('UploadedData', backref='user', lazy=True)

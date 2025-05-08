@@ -1,9 +1,15 @@
 from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
+from datetime import datetime, timedelta
 
 from . import app
 from .models import db, User, UploadedData, SharedData
+
+# Dictionary to store password reset tokens
+# Format: {token: {'user_id': user_id, 'expires': datetime_object}}
+reset_tokens = {}
 
 @app.route('/')
 def home():
@@ -104,6 +110,9 @@ def register():
         # Get password and confirm password from form
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
+        # Get secret question and answer
+        secret_question = request.form.get('secret_question', '')
+        secret_answer = request.form.get('secret_answer', '')
 
         # Check if passwords match
         if new_password != confirm_password:
@@ -122,7 +131,9 @@ def register():
             fname=fname,
             lname=lname,
             password=hashed_password,
-            email=email
+            email=email,
+            secret_question=secret_question,
+            secret_answer=secret_answer
         )
         
         # Add user to database
@@ -454,6 +465,96 @@ def load_preset(preset_id):
     
     # Redirect to RGB editor
     return redirect(url_for('rgb'))
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('account'))
+        
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            # Generate a unique token
+            token = secrets.token_urlsafe(32)
+            # Token expires in 1 hour
+            expires = datetime.utcnow() + timedelta(hours=1)
+            
+            # Store token in our dictionary
+            reset_tokens[token] = {
+                'user_id': user.id,
+                'expires': expires
+            }
+            
+            flash('If your email is registered, you will be redirected to the security question page.', 'info')
+            return redirect(url_for('security_question', token=token))
+        else:
+            # Don't reveal if email exists or not (security best practice)
+            flash('If your email is registered, you will be redirected to the security question page.', 'info')
+            # Add a small delay to prevent timing attacks
+            import time
+            time.sleep(1)
+            return redirect(url_for('login'))
+            
+    return render_template('forgot_password.html', title='Reset Password')
+
+@app.route('/security-question/<token>', methods=['GET', 'POST'])
+def security_question(token):
+    # Check if token exists and is valid
+    if token not in reset_tokens or reset_tokens[token]['expires'] < datetime.utcnow():
+        flash('Invalid or expired reset link. Please try again.', 'error')
+        return redirect(url_for('forgot_password'))
+    
+    # Get user from token
+    user_id = reset_tokens[token]['user_id']
+    user = User.query.get(user_id)
+    
+    if not user or not user.secret_question:
+        flash('Account does not have a security question set up. Please contact support.', 'error')
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        answer = request.form.get('security_answer')
+        
+        # Check if the answer is correct (case insensitive)
+        if answer.lower() == user.secret_answer.lower():
+            return redirect(url_for('reset_password', token=token))
+        else:
+            flash('Incorrect answer. Please try again.', 'error')
+    
+    return render_template('security_question.html', token=token, question=user.secret_question)
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    # Check if token exists and is valid
+    if token not in reset_tokens or reset_tokens[token]['expires'] < datetime.utcnow():
+        flash('Invalid or expired reset link. Please try again.', 'error')
+        return redirect(url_for('forgot_password'))
+    
+    # Get user from token
+    user_id = reset_tokens[token]['user_id']
+    user = User.query.get(user_id)
+    
+    if request.method == 'POST':
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if new_password != confirm_password:
+            flash('Passwords do not match!', 'error')
+            return redirect(url_for('reset_password', token=token))
+        
+        # Update user's password
+        user.password = generate_password_hash(new_password, method='pbkdf2:sha256')
+        db.session.commit()
+        
+        # Remove the used token
+        del reset_tokens[token]
+        
+        flash('Your password has been reset successfully! Please log in with your new password.', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('reset_password.html', token=token)
 
 if __name__ == '__main__':
     app.run()

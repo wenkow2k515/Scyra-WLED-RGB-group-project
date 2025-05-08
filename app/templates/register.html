@@ -20,6 +20,19 @@
     <label for="confirm_password">Confirm Password:</label>
     <input type="password" id="confirm_password" name="confirm_password" required>
     
+    <label for="secret_question">Secret Question:</label>
+    <select id="secret_question" name="secret_question" required>
+        <option value="" disabled selected>Select a question</option>
+        <option value="What was your first pet's name?">What was your first pet's name?</option>
+        <option value="In what city were you born?">In what city were you born?</option>
+        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+        <option value="What high school did you attend?">What high school did you attend?</option>
+        <option value="What was your childhood nickname?">What was your childhood nickname?</option>
+    </select>
+    
+    <label for="secret_answer">Answer:</label>
+    <input type="text" id="secret_answer" name="secret_answer" required>
+    
     <button type="submit">Register</button>
 </form>
 <p id="error-message" style="color: red; display: none;">Passwords do not match!</p>

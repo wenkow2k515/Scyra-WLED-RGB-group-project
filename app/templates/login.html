@@ -1,5 +1,4 @@
 <head>
-    <script src = "/static/js/.js"></script>
     <link rel="stylesheet" href="/static/css/l_r.css">
 </head>
 {% extends "body.html" %}
@@ -13,5 +12,8 @@
     <button type="submit">Login</button>
 </form>
 
-<p>Don't have an account? <a href="{{ url_for('register') }}" class="register-button">Register here</a></p>
+<div class="login-options">
+    <p>Don't have an account? <a href="{{ url_for('register') }}" class="register-button">Register here</a></p>
+    <p>Forgot your password? <a href="{{ url_for('forgot_password') }}" class="register-button">Reset Password</a></p>
+</div>
 {% endblock %}

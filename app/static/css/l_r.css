@@ -12,7 +12,7 @@ form label {
     font-weight: bold;
 }
 
-form input {
+form input, form select {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -61,4 +61,17 @@ form button:hover {
 
 .register-button:hover {
     background-color: #555;
+}
+
+.login-options {
+    margin-top: 20px;
+}
+
+#error-message {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    color: #721c24;
 }
