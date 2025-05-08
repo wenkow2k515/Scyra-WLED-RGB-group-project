@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
+from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
 from wtforms import StringField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length, NumberRange
@@ -18,6 +19,9 @@ def create_app(config_name='default'):
     # Initialize extensions
     db.init_app(app)
     migrate = Migrate(app, db)  # Initialize Flask-Migrate
+    
+    # Initialize CSRF protection
+    csrf = CSRFProtect(app)
     
     # Initialize Flask-Login
     login_manager = LoginManager()

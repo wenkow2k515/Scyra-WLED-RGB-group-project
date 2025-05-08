@@ -63,6 +63,7 @@ form button:hover {
     background-color: #555;
 }
 
+<<<<<<< HEAD
 .login-options {
     margin-top: 20px;
 }
@@ -74,4 +75,72 @@ form button:hover {
     border: 1px solid #f5c6cb;
     border-radius: 5px;
     color: #721c24;
+=======
+/* Checkbox Container */
+.remember-container {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.remember-container input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+}
+
+/* Custom checkbox */
+.checkmark {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 8px;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+/* Checkmark (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Show the checkmark when checked */
+.remember-container input[type="checkbox"]:checked ~ .checkmark {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.remember-container input[type="checkbox"]:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the label */
+.remember-label {
+    font-size: 14px;
+    color: #555;
+    user-select: none;
+}
+
+/* Hover and focus effects */
+.remember-container:hover .checkmark {
+    border-color: #999;
+}
+
+.remember-container input[type="checkbox"]:focus ~ .checkmark {
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+>>>>>>> main
 }
