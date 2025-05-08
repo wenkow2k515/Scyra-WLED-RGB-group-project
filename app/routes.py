@@ -98,7 +98,6 @@ def register():
         # This automatically checks CSRF token
         hashed_password = generate_password_hash(form.password.data)
         
-<<<<<<< HEAD
     if request.method == 'POST':
         # Get first name and last name from form
         fname = request.form.get('fname', '')
@@ -131,13 +130,6 @@ def register():
             email=email,
             secret_question=secret_question,
             secret_answer=secret_answer
-=======
-        user = User(
-            email=form.email.data, 
-            password=hashed_password,
-            fname=form.fname.data,
-            lname=form.lname.data
->>>>>>> main
         )
         
         db.session.add(user)
