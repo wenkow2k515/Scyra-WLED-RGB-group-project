@@ -14,15 +14,15 @@
     <!-- ======== PAGE HEADER ======== -->
     <header class="page-header">
         <h1>About Scyra</h1>
-        
+        <p class="subtitle">A user-friendly web interface for WLED-compatible LED lights</p>
     </header>
     
     <div class="about-content">
         <!-- ======== MISSION SECTION ======== -->
         <section class="about-section">
             <h2>Our Mission</h2>
-            <p>Scyra was created with a dual mission: to make LED lighting control accessible to everyone and to enhance human wellbeing through the science of color psychology. We believe that smart lighting should not only be simple and intuitive but also contribute positively to your mood and mental state.</p>
-            <p>Our web interface requires no downloads or specialized knowledge - just connect to your WLED-compatible device and start creating beautiful, mood-enhancing lighting scenes in seconds. Whether you're looking to boost productivity, create a relaxing atmosphere, or set the perfect ambiance for any occasion, Scyra puts the power of light and color at your fingertips.</p>
+            <p>Scyra was created with one goal in mind: to make LED lighting control accessible to everyone. We believe that smart lighting should be simple, intuitive, and respectful of user privacy.</p>
+            <p>Our web interface requires no downloads or specialized knowledge - just connect to your WLED-compatible device and start creating beautiful lighting scenes in seconds.</p>
         </section>
         
         <!-- ======== FEATURES SECTION ======== -->
@@ -79,19 +79,6 @@
                     <h3>Effects Library</h3>
                     <p>Multiple pre-designed light effects and animations for any occasion.</p>
                 </div>
-                
-                <!-- NEW Feature 5: Mood Analysis -->
-                <div class="feature-item">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Mood analysis icon">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <path d="M3.27 6.96L12 12.01l8.73-5.05"></path>
-                            <path d="M12 22.08V12"></path>
-                        </svg>
-                    </div>
-                    <h3>Mood Analysis</h3>
-                    <p>Intelligent system that analyzes and suggests optimal lighting based on your desired mood and activity.</p>
-                </div>
             </div>
         </section>
         
@@ -120,8 +107,8 @@
                 <!-- Step 3 -->
                 <div class="step-item">
                     <div class="step-number" aria-label="Step 3">3</div>
-                    <h3>Select Your Mood</h3>
-                    <p>Choose a desired mood or activity for optimal color suggestions.</p>
+                    <h3>Control Segments</h3>
+                    <p>Select segments and set colors and brightness.</p>
                 </div>
                 
                 <div class="step-arrow" aria-hidden="true">→</div>
@@ -129,8 +116,8 @@
                 <!-- Step 4 -->
                 <div class="step-item">
                     <div class="step-number" aria-label="Step 4">4</div>
-                    <h3>Customize & Apply</h3>
-                    <p>Fine-tune colors and send the configuration to your device.</p>
+                    <h3>Apply Changes</h3>
+                    <p>Send the configuration to your WLED device.</p>
                 </div>
             </div>
         </section>
@@ -157,45 +144,10 @@
             <p>We're committed to the open-source philosophy and are grateful to the WLED community for making projects like ours possible.</p>
         </section>
         
-        <!-- ======== COLOR PSYCHOLOGY SECTION ======== -->
-        <section class="about-section color-psychology-section">
-            <h2>Color Psychology & Mood Analysis</h2>
-            <p>We understand the profound impact colors have on human emotions and well-being. Scyra incorporates color psychology principles to help you create lighting environments that positively influence your mood.</p>
-            
-            <div class="features-grid">
-                <!-- Color Psychology Feature -->
-                <div class="feature-item color-psychology-feature">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Color psychology icon">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 8v8"></path>
-                            <path d="M8 12h8"></path>
-                        </svg>
-                    </div>
-                    <h3>Mood Enhancement</h3>
-                    <p>Choose colors scientifically proven to enhance focus, relaxation, creativity, or energy based on your needs.</p>
-                </div>
-                
-                <!-- Mood Analysis Feature -->
-                <div class="feature-item color-psychology-feature">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="#04AA6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Mood analysis icon">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <circle cx="12" cy="12" r="4"></circle>
-                        </svg>
-                    </div>
-                    <h3>Intelligent Suggestions</h3>
-                    <p>Our system suggests color combinations based on the time of day, season, and desired emotional response.</p>
-                </div>
-            </div>
-            
-            <p>Whether you're looking to improve productivity in a home office, create a calming bedroom environment, or set the perfect mood for entertainment, Scyra's color psychology features help optimize your lighting for wellbeing.</p>
-        </section>
-        
         <!-- ======== CTA SECTION ======== -->
         <section class="about-section cta-section">
             <h2>Ready to Get Started?</h2>
-            <p>Transform your space and enhance your mood with Scyra's intelligent lighting control.</p>
+            <p>Jump right in and start controlling your LED lights with Scyra's intuitive interface.</p>
             <!-- Call to action buttons -->
             <div class="cta-buttons">
                 <a href="{{ url_for('rgb') }}" class="btn btn-primary">Launch Controller</a>
