@@ -12,8 +12,8 @@
 
 <!-- Hero Section -->
 <section class="hero">
-    <h1>Control Your <span class="highlight">LED Lights</span> with Ease</h1>
-    <p>Scyra is a user-friendly web interface for WLED- controlled LEDs that puts privacy first.</p>
+    <h1>Simple<span class="highlight">.</span> Succinct<span class="highlight">.</span><span class="highlight"> Scyra</span>.</h1>
+    <p>Scyra is an easy-to-use web interface for controlling WLED lights. Because lighting should be for everyone.</p>
 
 <!-- Removed/moved buttons to the bottom of the screen -->
     
@@ -30,29 +30,42 @@
 </section>
 
 <div class="container">
-    <h1>Follow these steps to get started:</h1>
-    
+
+    <h1>Why should you use Scyra?</h1>
+
     <div id="step1" class="step">
-        <h2>1. Enter your WLED address</h2>
-        <p>Simply enter the IP address of your WLED-connected LED light strip.</p>
+        <h2>1. Simple to use</h2>
+        <p>No coding required! Simply create your preset through our intuitive visual interface.</p>
     </div>
     
     <div id="step2" class="step">
-        <h2>2. Create your light design</h2>
-        <p>Select colors and adjust brightness within a simple to understand visual UI.</p>
+        <h2>2. Mood Lighting</h2>
+        <p>Take a short survey to learn more about yourself, and match your lights to your mood!</p>
     </div>
 
     <div id="step3" class="step">
-        <h2>3. Save or run your design</h2>
-        <p>Copy your preset into WLED, or activate your preset with just 1 click!</p>
+        <h2>3. Cloud Storage</h2>
+        <p>When you make an account, your presets are safe with us.</p>
     </div>
 
+    <div id="step4" class="step">
+        <h2>4. Join our community!</h2>
+        <p>Share your lighting with others and experiment with new colors in just a few clicks!</p>
+    </div>
     <br>
     
-    <!-- Redirect Button -->
+    <!-- Redirect Buttons -->
     <div class="redirect">
-        <button onclick="window.location.href='{{ url_for('rgb') }}'">Start Customization →</button>
+        <button class="survey-btn"
+                onclick="window.location.href='{{ url_for('mood.index') }}'">
+            Take Survey →
+        </button>
+        <button class="customize-btn"
+                onclick="window.location.href='{{ url_for('rgb') }}'">
+            Custom LEDs →
+        </button>
     </div>
+
 </div>
 {% endblock %}
 

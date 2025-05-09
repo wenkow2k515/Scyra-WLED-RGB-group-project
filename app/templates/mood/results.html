@@ -1,0 +1,329 @@
+{% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Use semantic main tag for primary content -->
+<main class="mood-container">
+    <!-- ======== BACKGROUND ELEMENTS ======== -->
+    <div class="led-bg" aria-hidden="true"></div>
+    <div class="bg-gradient" aria-hidden="true"></div>
+
+    <!-- ======== PAGE HEADER ======== -->
+    <header class="page-header">
+        <h1>Mood Analysis Results</h1>
+        <p class="subtitle">Your personalized lighting recommendation</p>
+    </header>
+    
+    <!-- ======== RESULTS CONTENT ======== -->
+    <div class="results-container">
+        <!-- Mood Summary -->
+        <section class="results-section mood-summary">
+            <h2>Your Mood Profile</h2>
+            <div class="mood-profile-card">
+                <div class="mood-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ mood_entry.timestamp.strftime('%B %d, %Y at %I:%M %p') }}
+                </div>
+                
+                <div class="mood-metrics-container">
+                    <div class="mood-chart">
+                        <!-- Radar chart would be rendered here with JavaScript -->
+                        <div class="chart-placeholder">
+                            <canvas id="moodRadarChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="mood-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Energy</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.energy_level * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.energy_level }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Happiness</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.happiness * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.happiness }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Anxiety</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.anxiety * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.anxiety }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Stress</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.stress * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.stress }}/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if mood_entry.notes %}
+                <div class="mood-notes">
+                    <h3>Your Notes</h3>
+                    <p>{{ mood_entry.notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        
+        <!-- Color Recommendation -->
+        <section class="results-section color-recommendation">
+            <h2>Your Color Recommendation</h2>
+            
+            {% if color_suggestion %}
+            <div class="color-recommendation-card">
+                <div class="color-preview">
+                    <div class="color-palette">
+                        <div class="color-swatch primary" style="background-color: #{{ color_suggestion.primary_color }}">
+                            <span class="color-label">Primary</span>
+                            <span class="color-hex">#{{ color_suggestion.primary_color }}</span>
+                        </div>
+                        <div class="color-swatch secondary" style="background-color: #{{ color_suggestion.secondary_color }}">
+                            <span class="color-label">Secondary</span>
+                            <span class="color-hex">#{{ color_suggestion.secondary_color }}</span>
+                        </div>
+                        <div class="color-swatch accent" style="background-color: #{{ color_suggestion.accent_color }}">
+                            <span class="color-label">Accent</span>
+                            <span class="color-hex">#{{ color_suggestion.accent_color }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-recommendation">
+                    <h3>Recommended Settings</h3>
+                    <ul class="settings-list">
+                        <li>
+                            <span class="setting-label">Effect Mode:</span>
+                            <span class="setting-value">{{ color_suggestion.effect_name }}</span>
+                        </li>
+                        <li>
+                            <span class="setting-label">Brightness:</span>
+                            <span class="setting-value">{{ color_suggestion.brightness }}/255</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="color-explanation">
+                    <h3>Why These Colors?</h3>
+                    
+                    {% if mood_entry.energy_level > 7 and mood_entry.happiness > 6 %}
+                    <p>Bright, warm colors like orange and yellow are recommended for your energetic and positive mood. These colors can help maintain your enthusiasm while providing a vibrant atmosphere.</p>
+                    
+                    {% elif mood_entry.energy_level < 4 %}
+                    <p>Based on your lower energy levels, we've selected colors that can help provide a gentle boost without being overwhelming. Soft warm tones can create a comforting environment.</p>
+                    
+                    {% elif mood_entry.anxiety > 7 or mood_entry.stress > 7 %}
+                    <p>Cool blues and soft tones have been selected to help reduce anxiety and stress. These colors have calming properties that can help create a more peaceful environment.</p>
+                    
+                    {% elif mood_entry.happiness < 4 %}
+                    <p>To help elevate your mood, we've selected colors that can promote positivity and warmth. These gentle hues aim to create a comforting and uplifting atmosphere.</p>
+                    
+                    {% else %}
+                    <p>Based on your balanced mood profile, we've selected a harmonious color palette that complements your current emotional state while providing a pleasant atmosphere.</p>
+                    {% endif %}
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary apply-colors" data-suggestion-id="{{ color_suggestion.id }}">
+                        Apply to LED Lights
+                    </button>
+                    
+                    <div class="rating-container">
+                        <p>Rate this recommendation:</p>
+                        <div class="star-rating" data-suggestion-id="{{ color_suggestion.id }}">
+                            {% for i in range(1, 6) %}
+                            <span class="star {% if color_suggestion.user_rating and i <= color_suggestion.user_rating %}active{% endif %}" data-rating="{{ i }}">★</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="error-message">
+                <p>No color suggestion found for this mood entry.</p>
+            </div>
+            {% endif %}
+        </section>
+        
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="{{ url_for('mood.index') }}" class="btn btn-secondary">Back to Dashboard</a>
+            <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Another Survey</a>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Render the radar chart for mood metrics
+        const ctx = document.getElementById('moodRadarChart').getContext('2d');
+        const moodRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Energy', 'Happiness', 'Calm (10-Anxiety)', 'Relaxed (10-Stress)'],
+                datasets: [{
+                    label: 'Your Mood',
+                    data: [
+                        {{ mood_entry.energy_level }},
+                        {{ mood_entry.happiness }},
+                        {{ 10 - mood_entry.anxiety }},  // Invert so "better" is always higher
+                        {{ 10 - mood_entry.stress }}    // Invert so "better" is always higher
+                    ],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        
+        // Apply colors button functionality
+        const applyButton = document.querySelector('.apply-colors');
+        if (applyButton) {
+            applyButton.addEventListener('click', function() {
+                const suggestionId = this.getAttribute('data-suggestion-id');
+                applySuggestion(suggestionId);
+            });
+        }
+        
+        function applySuggestion(suggestionId) {
+            // Show loading state
+            const button = document.querySelector(`[data-suggestion-id="${suggestionId}"]`);
+            const originalText = button.textContent;
+            button.textContent = 'Applying...';
+            button.disabled = true;
+            
+            // Send AJAX request to apply colors
+            fetch(`/mood/apply/${suggestionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Apply the colors to the WLED controller
+                    applyColorsToWLED(data.colors);
+                    
+                    // Update button
+                    button.textContent = 'Applied!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                } else {
+                    button.textContent = 'Error';
+                    console.error('Failed to apply colors:', data.error);
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            });
+        }
+        
+        function applyColorsToWLED(colors) {
+            // Get WLED IP from local storage
+            const wledIP = localStorage.getItem('wledIP');
+            if (!wledIP) {
+                alert('WLED address not found. Please set up your WLED connection first.');
+                return;
+            }
+            
+            // This function would integrate with the existing WLED connection code
+            console.log('Applying colors to WLED at', wledIP, colors);
+            
+            // Redirect to the RGB page with the color data
+            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
+            window.location.href = rgbUrl;
+        }
+        
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                const suggestionId = this.parentElement.getAttribute('data-suggestion-id');
+                submitRating(suggestionId, rating);
+                
+                // Update UI immediately for feedback
+                stars.forEach(s => {
+                    const sRating = parseInt(s.getAttribute('data-rating'));
+                    if (sRating <= rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        function submitRating(suggestionId, rating) {
+            fetch(`/mood/rate/${suggestionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rating: rating }),
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error('Failed to save rating:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+</script>
+{% endblock %}
