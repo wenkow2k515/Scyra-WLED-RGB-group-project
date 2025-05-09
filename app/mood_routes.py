@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from datetime import datetime
 
 from app.models import db, MoodEntry, ColorSuggestion
+from app.forms import MoodSurveyForm
 
 # Create a Blueprint
 mood = Blueprint('mood', __name__, url_prefix='/mood')
@@ -36,16 +37,16 @@ def index():
 @mood.route('/survey', methods=['GET', 'POST'])
 @login_required
 def survey():
-    """Mood survey form and submission"""
-    if request.method == 'POST':
-        # Get form data
-        energy_level = int(request.form.get('energy_level', 5))
-        happiness = int(request.form.get('happiness', 5))
-        anxiety = int(request.form.get('anxiety', 5))
-        stress = int(request.form.get('stress', 5))
-        notes = request.form.get('notes', '')
-        
-        # Create new mood entry
+    form = MoodSurveyForm()  # 创建表单实例
+    if form.validate_on_submit():  # 检查表单是否提交并验证通过
+        # 处理表单数据
+        energy_level = form.energy_level.data
+        happiness = form.happiness.data
+        anxiety = form.anxiety.data
+        stress = form.stress.data
+        notes = form.notes.data
+
+        # 保存数据到数据库
         mood_entry = MoodEntry(
             user_id=current_user.id,
             energy_level=energy_level,
@@ -55,17 +56,13 @@ def survey():
             notes=notes
         )
         db.session.add(mood_entry)
-        db.session.flush()  # Get ID before committing
-        
-        # Generate color suggestion
-        color_suggestion = generate_color_suggestion(mood_entry)
-        db.session.add(color_suggestion)
         db.session.commit()
-        
-        flash('Mood recorded and colors generated!', 'success')
-        return redirect(url_for('mood.results', mood_entry_id=mood_entry.id))
-    
-    return render_template('mood/survey.html', title='Mood Survey')
+
+        flash('Mood survey submitted successfully!', 'success')
+        return redirect(url_for('mood.index'))
+
+    # 渲染模板时传递 `form`
+    return render_template('mood/survey.html', title='Mood Survey', form=form)
 
 def generate_color_suggestion(mood_entry):
     """Generate color suggestion based on mood metrics"""
