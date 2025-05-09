@@ -58,10 +58,14 @@ def survey():
         db.session.add(mood_entry)
         db.session.commit()
 
+        # Generate and save color suggestion
+        color_suggestion = generate_color_suggestion(mood_entry)
+        db.session.add(color_suggestion)
+        db.session.commit()
+
         flash('Mood survey submitted successfully!', 'success')
         return redirect(url_for('mood.index'))
 
-    # 渲染模板时传递 `form`
     return render_template('mood/survey.html', title='Mood Survey', form=form)
 
 def generate_color_suggestion(mood_entry):
