@@ -37,16 +37,16 @@ def index():
 @mood.route('/survey', methods=['GET', 'POST'])
 @login_required
 def survey():
-    form = MoodSurveyForm()  # 创建表单实例
-    if form.validate_on_submit():  # 检查表单是否提交并验证通过
-        # 处理表单数据
+    form = MoodSurveyForm()  # Create form instance
+    if form.validate_on_submit():  # Check if form is submitted and validated
+        # Process form data
         energy_level = form.energy_level.data
         happiness = form.happiness.data
         anxiety = form.anxiety.data
         stress = form.stress.data
         notes = form.notes.data
 
-        # 保存数据到数据库
+        # Save data to the database
         mood_entry = MoodEntry(
             user_id=current_user.id,
             energy_level=energy_level,
