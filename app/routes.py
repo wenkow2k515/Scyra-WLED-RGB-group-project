@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import app
 from .models import db, User, UploadedData, SharedData
-from .forms import LoginForm, RegisterForm, SharePresetForm
+from .forms import LoginForm, RegisterForm, SharePresetForm, ForgotPasswordForm
 
 @app.route('/')
 def home():
@@ -413,12 +413,13 @@ def load_preset(preset_id):
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
-    if request.method == 'POST':
-        email = request.form.get('email')
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():  # This automatically checks the CSRF token
+        email = form.email.data
         flash('If this email is registered, a password reset link has been sent.', 'info')
         return redirect(url_for('login'))
     
-    return render_template('forgot_password.html', title='Forgot Password')
+    return render_template('forgot_password.html', title='Forgot Password', form=form)
 
 if __name__ == '__main__':
     app.run()

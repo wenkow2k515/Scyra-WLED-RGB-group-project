@@ -33,3 +33,7 @@ class MoodSurveyForm(FlaskForm):
     stress = IntegerField('Stress', validators=[DataRequired(), NumberRange(min=1, max=10)])
     notes = TextAreaField('Notes')
     submit = SubmitField('Submit')
+
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Continue')
