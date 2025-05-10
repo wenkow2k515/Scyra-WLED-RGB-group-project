@@ -66,8 +66,7 @@ def register():
     
     form = RegisterForm()
     
-    if form.validate_on_submit():
-        # This automatically checks CSRF token
+    if form.validate_on_submit():  # This automatically checks the CSRF token
         hashed_password = generate_password_hash(form.password.data)
         
         user = User(

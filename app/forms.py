@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 
 class LoginForm(FlaskForm):
@@ -9,12 +9,22 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class RegisterForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
     fname = StringField('First Name', validators=[DataRequired()])
     lname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', 
-                                    validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[
+        DataRequired(),
+        EqualTo('confirm_password', message='Passwords must match')
+    ])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
+    secret_question = SelectField('Secret Question', choices=[
+        ('What was your first pet\'s name?', 'What was your first pet\'s name?'),
+        ('In what city were you born?', 'In what city were you born?'),
+        ('What is your mother\'s maiden name?', 'What is your mother\'s maiden name?'),
+        ('What high school did you attend?', 'What high school did you attend?'),
+        ('What was your childhood nickname?', 'What was your childhood nickname?')
+    ], validators=[DataRequired()])
+    secret_answer = StringField('Answer', validators=[DataRequired()])
     submit = SubmitField('Register')
 
 class PresetForm(FlaskForm):
