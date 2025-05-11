@@ -1,233 +1,308 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>RGB Editor</title>
-    <script src="/static/js/LEDgrid.js" defer></script>
-    <link rel="stylesheet" href="/static/css/rgb.css">
-    <script>
-        // Define global variables that LEDgrid.js can access
-        window.preset_name = {{ preset_name|tojson if preset_name else 'null' }};
-        window.preset_id = {{ preset_id|tojson if preset_id else 'null' }};
-        window.preset_data = {{ preset_data|tojson if preset_data else 'null' }};
-        window.view_mode = {{ view_mode|tojson if view_mode else 'false' }};
-        window.edit_mode = {{ edit_mode|tojson if edit_mode else 'false' }};
-    </script>
-    <style>
-      body, html {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          font-family: Arial, sans-serif;
-      }
-      /* Center a single pane */
-      .setup-container {
-        position: fixed;
-        top: 4rem; /* Adjust this to match the height of the navbar */
-        left: 0;
-        width: 100vw;
-        height: calc(100vh - 4rem); /* Adjust to fill remaining space below navbar */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: white;
-        z-index: 999;
-      }
+/* Base Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
 
-      .setup-pane {
-          width: 100%;
-          max-width: 400px;
-          padding: 2rem;
-          box-sizing: border-box;
-          text-align: center;
-      }
-      .setup-pane h2 {
-          margin-bottom: 1rem;
-      }
-      .setup-pane input,
-      .setup-pane button {
-          margin-top: 0.5rem;
-          padding: 0.5rem;
-          font-size: 1rem;
-          width: 100%;
-          max-width: 300px;
-      }
-      .setup-pane p {
-          margin-top: 1rem;
-          color: #555;
-      }
-      .hidden {
-          display: none;
-      }
-      #editor {
-          padding: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-      }
+/* Setup Container */
+.setup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white; /* optional background */
+  z-index: 999;
+}
 
-      .cell.selected::before {
-          content: "✓";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 24px;
-          color: white;
-          text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-          pointer-events: none;
-      }
-      .cell {
-          position: relative;  /* Needed for absolute positioning of the checkmark */
-          width: 50px;
-          height: 50px;
-          border: 2px solid #ddd;
-          cursor: pointer;
-          transition: all 0.2s;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-      .cell.selected {
-          border-color: #000;
-          transform: scale(1.1);
-      }
-      #output-container {
-          margin-top: 1rem;
-          background: #eee;
-          border-radius: 8px;
-          padding: 1rem;
-          max-height: 300px;
-          overflow-y: auto;
-      }
-      #output {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-          margin: 0;
-      }
-      .json-controls {
-          display: flex;
-          gap: 10px;
-          margin-top: 10px;
-      }
-      .save-btn {
-          background-color: #4a90e2;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-          font-weight: bold;
-      }
-      .save-btn:hover {
-          background-color: #3a80d2;
-      }
-      .save-preset-container {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          margin: 1rem 0;
-      }
-      .public-toggle {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-      }
-      .tooltip {
-          cursor: help;
-          font-size: 12px;
-          background-color: #f0f0f0;
-          border-radius: 50%;
-          width: 16px;
-          height: 16px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-      }
-      /* Style for feedback messages */
-      .feedback-message {
-          padding: 10px;
-          margin-top: 10px;
-          border-radius: 4px;
-          display: none;
-      }
-      .success-message {
-          background-color: #d4edda;
-          color: #155724;
-          border: 1px solid #c3e6cb;
-      }
-      .error-message {
-          background-color: #f8d7da;
-          color: #721c24;
-          border: 1px solid #f5c6cb;
-      }
-    </style>
-</head>
-{% if view_mode %}
-<style>
-    #view-flag {
-        display: none;
-    }
-</style>
-{% endif %}
+.setup-pane {
+  text-align: center;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background: #fff;
+}
 
-{% extends "body.html" %}
+.setup-pane h2 {
+  margin-bottom: 1rem;
+}
 
-{% block content %}
+.setup-pane input,
+.setup-pane button {
+  display: block;
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 250px;
+}
 
-<!-- Setup Phase: single centered pane -->
-<div id="setup" class="setup-container">
-  <div class="setup-pane">
-      <h2>WLED Address</h2>
-      <input type="text" id="wledAddress" placeholder="e.g. 192.168.1.100">
-      <button id="checkBtn" disabled>Connect</button>
-      <p id="checkMsg"></p>
-  </div>
-</div>
+/* Editor Styles */
+#editor {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-<!-- Editor Phase -->
-<div id="editor" class="hidden">
-  <h2>Build Your Preset</h2>
+.editor-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-  <div class="color-grid" id="grid"></div>
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 10px;
+  margin: 1rem auto;
+  justify-content: center;
+  max-width: 1200px;
+}
 
-  <div id = "view-flag">
-  <div style="margin-top:1rem;">
-    <label for="colorPicker">Pick Color:</label>
-    <input type="color" id="colorPicker" value="#ffffff">
+.cell {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-    <label for="briSlider" style="margin-left:1rem;">Brightness:</label>
-    <input type="range" id="briSlider" min="0" max="255" value="255">
-    <span id="briValue">255</span>
+.cell.selected {
+  border-color: #000;
+  transform: scale(1.1);
+}
 
-    
-    <div style="margin-top:1rem;">
-      <button id="applyColor">Apply Color</button>
-      <button id="defaultBtn">Set Default (50% Blue)</button>
-      <button id="createBtn">Create JSON</button>
-    </div>
-  </div>
+.cell.selected::before {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: white;
+  text-shadow: 0 0 3px black;
+  pointer-events: none;
+}
 
-  {% if current_user.is_authenticated %}
-  <div class="save-preset-container" style="margin-top:1rem;">
-    <button id="saveToAccount" class="save-btn">Save to Account</button>
-    <div class="public-toggle">
-      <input type="checkbox" id="isPublic" name="isPublic">
-      <label for="isPublic">Make preset public</label>
-      <span class="tooltip" title="Public presets can be viewed by all users">?</span>
-    </div>
-  </div>
-  {% endif %}
+/* Controls */
+.controls-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: center;
+}
 
-  <div id="output-container" class="hidden">
-    <h3>Generated Preset</h3>
-    <pre id="output"></pre>
-    <div class="json-controls">
-      <button id="copyJson">Copy to Clipboard</button>
-      <button id="sendToWled">Send to WLED</button>
-    </div>
-  </div>
-  </div>
+.color-controls {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-  <div id="saveMessage" class="feedback-message"></div>
-</div>
+.action-buttons {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 
-{% endblock %}
+/* Output Section */
+#output-container {
+  margin: 2rem auto;
+  background: #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.output-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#output {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.json-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Form Elements */
+.save-preset-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.public-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tooltip {
+  cursor: help;
+  font-size: 12px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Feedback Messages */
+.feedback-message {
+  padding: 1rem;
+  margin: 1rem auto;
+  border-radius: 4px;
+  max-width: 1200px;
+  text-align: center;
+  display: none;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* JSON Text Box */
+#jsonTextBox {
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem auto;
+  padding: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  border: 1px solid #eeff00;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
+
+.save-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+.save-btn:hover {
+  background-color: #3a80d2;
+}
+
+#editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-grid {
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 0px; /* the gap is annoying */
+  margin: 1rem auto;
+  justify-content: center;
+  width: fit-content;
+
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-controls,
+.action-buttons,
+.json-controls {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.action-buttons button,
+.json-controls button {
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-buttons button:hover,
+.json-controls button:hover {
+  background-color: #3a80d2;
+}
+
+
+#output-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.save-preset-container {
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+
+.tooltip {
+  border: 1px solid #ccc;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.editor-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
