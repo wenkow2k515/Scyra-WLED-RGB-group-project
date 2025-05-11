@@ -15,8 +15,10 @@
 <body>
     <header>
         <h1>
-            <img src="{{ url_for('static', filename='pic/logo.png') }}" class="Logo">
-            <a href="{{ url_for('home') }}">Scyra</a>
+            <a href="{{ url_for('home') }}" class="logo-container">
+                <img src="{{ url_for('static', filename='pic/logo.png') }}" class="Logo">
+                <span>Scyra</span>
+            </a>
         </h1>
         
 <nav class="navbar">
