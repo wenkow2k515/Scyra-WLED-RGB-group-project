@@ -20,14 +20,20 @@
           height: 100%;
           font-family: Arial, sans-serif;
       }
-      /* Center a single pane */
+      /* FIXED INVISBLE NAVBAR - CONTAINER WAS TOO LARGE */
       .setup-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100vw;
-          height: 100vh;
+        position: fixed;
+        top: 4rem; /* Make some space for the navbar functionality */
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 4rem); /* This should avoid functionality issues from changing size */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        z-index: 999;
       }
+
       .setup-pane {
           width: 100%;
           max-width: 400px;
