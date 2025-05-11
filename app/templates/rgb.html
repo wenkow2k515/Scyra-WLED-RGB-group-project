@@ -20,13 +20,13 @@
           height: 100%;
           font-family: Arial, sans-serif;
       }
-      /* FIXED INVISBLE NAVBAR - CONTAINER WAS TOO LARGE */
+      /* Center a single pane */
       .setup-container {
         position: fixed;
-        top: 4rem; /* Make some space for the navbar functionality */
+        top: 4rem; /* Adjust this to match the height of the navbar */
         left: 0;
         width: 100vw;
-        height: calc(100vh - 4rem); /* This should avoid functionality issues from changing size */
+        height: calc(100vh - 4rem); /* Adjust to fill remaining space below navbar */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -64,12 +64,7 @@
           max-width: 1200px;
           margin: 0 auto;
       }
-      .color-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-          gap: 10px;
-          margin: 1rem 0;
-      }
+
       .cell.selected::before {
           content: "✓";
           position: absolute;
