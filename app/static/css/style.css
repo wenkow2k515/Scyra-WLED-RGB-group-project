@@ -13,7 +13,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(90deg, #5a4264, #33436e);
+    background-color: black;
     color: white;
     padding: 15px 20px;
     box-sizing: border-box;
