@@ -1,10 +1,15 @@
 {% extends "body.html" %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/account.css">
+<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
 {% block content %}
-<head>
-    <link rel="stylesheet" href="/static/css/account.css">
-    <script src = "/static/js/account.js"></script>
-</head>
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
 <div class="account-container">
     <div class="account-header">
         <h1>Welcome, {{ current_user.fname }} {{ current_user.lname }}</h1>
@@ -30,7 +35,7 @@
                         <a href="{{ url_for('view_preset', preset_id=preset.id) }}" class="btn btn-sm">view</a>
                         <a href="{{ url_for('edit_preset', preset_id=preset.id) }}" class="btn btn-sm">edit</a>
                         <a href="{{ url_for('share_preset', preset_id=preset.id) }}" class="btn btn-sm btn-share">share</a>
-                        <button onclick="confirmDelete({{ preset.id }})" class="btn btn-sm btn-danger" id = 'confirmDeleteBtn'>delete</button>
+                        <button onclick="confirmDelete({{ preset.id }})" class="btn btn-sm btn-danger" id="confirmDeleteBtn">delete</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -38,7 +43,7 @@
         {% else %}
             <div class="no-presets">
                 <p>You haven't saved any presets yet.</p>
-                <p>Go to the <a href="{{ url_for('rgb') }}">RGB editor</a> to create your first preset!</p>
+                <p>Go to the <a href="{{ url_for('rgb') }}" style="color: #00aaff; text-decoration: underline;">RGB editor</a> to create your first preset!</p>
             </div>
         {% endif %}
     </div>
@@ -78,4 +83,6 @@
         </div>
     </div>
 </div>
+
+<script src="/static/js/account.js"></script>
 {% endblock %}

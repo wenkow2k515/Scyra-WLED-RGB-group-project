@@ -1,39 +1,49 @@
-<head>
-    <link rel="stylesheet" href="/static/css/l_r.css">
-</head>
 {% extends "body.html" %}
-{% block content %}
-<h2>Login</h2>
-<form action="{{ url_for('login') }}" method="POST">
-    {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
-    
-    <div>
-        {{ form.email.label }}
-        {{ form.email(required=true) }}
-        {% if form.email.errors %}
-            <span class="error">{{ form.email.errors[0] }}</span>
-        {% endif %}
-    </div>
-    
-    <div>
-        {{ form.password.label }}
-        {{ form.password(required=true) }}
-        {% if form.password.errors %}
-            <span class="error">{{ form.password.errors[0] }}</span>
-        {% endif %}
-    </div>
-    
-    <div class="remember-container">
-        {{ form.remember(class="remember-checkbox") }}
-        <span class="checkmark"></span>
-        {{ form.remember.label(class="remember-label") }}
-    </div>
-    
-    {{ form.submit() }}
-</form>
 
-<div class="login-options">
-    <p>Don't have an account? <a href="{{ url_for('register') }}" class="register-button">Register here</a></p>
-    <p>Forgot your password? <a href="{{ url_for('forgot_password') }}" class="register-button">Reset Password</a></p>
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/l_r.css">
+<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block content %}
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
+<div style="max-width: 500px; margin: 0 auto; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 20px;">Login</h2>
+    
+    <form action="{{ url_for('login') }}" method="POST">
+        {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
+        
+        <div>
+            {{ form.email.label }}
+            {{ form.email(required=true) }}
+            {% if form.email.errors %}
+                <span class="error">{{ form.email.errors[0] }}</span>
+            {% endif %}
+        </div>
+        
+        <div>
+            {{ form.password.label }}
+            {{ form.password(required=true) }}
+            {% if form.password.errors %}
+                <span class="error">{{ form.password.errors[0] }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="remember-container">
+            {{ form.remember(class="remember-checkbox") }}
+            <span class="checkmark"></span>
+            {{ form.remember.label(class="remember-label") }}
+        </div>
+        
+        {{ form.submit() }}
+    </form>
+
+    <div class="login-options">
+        <p>Don't have an account? <a href="{{ url_for('register') }}" class="register-button">Register here</a></p>
+        <p>Forgot your password? <a href="{{ url_for('forgot_password') }}" class="register-button">Reset Password</a></p>
+    </div>
 </div>
 {% endblock %}

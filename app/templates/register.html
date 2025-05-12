@@ -1,40 +1,58 @@
-<head>
-    <link rel="stylesheet" href="/static/css/l_r.css">
-</head>
 {% extends "body.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/l_r.css">
+<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
 {% block content %}
-<h2>Register</h2>
-<form id="register-form" action="{{ url_for('register') }}" method="POST">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
+<div style="max-width: 500px; margin: 0 auto; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 20px;">Register</h2>
     
-    <label for="fname">First Name:</label>
-    <input type="text" id="fname" name="fname" required>
+    <form id="register-form" action="{{ url_for('register') }}" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" required>
+        
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" required>
+        
+        <label for="new_password">Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+        
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+        
+        <label for="secret_question">Secret Question:</label>
+        <select id="secret_question" name="secret_question" required>
+            <option value="" disabled selected>Select a question</option>
+            <option value="What was your first pet's name?">What was your first pet's name?</option>
+            <option value="In what city were you born?">In what city were you born?</option>
+            <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+            <option value="What high school did you attend?">What high school did you attend?</option>
+            <option value="What was your childhood nickname?">What was your childhood nickname?</option>
+        </select>
+        
+        <label for="secret_answer">Answer:</label>
+        <input type="text" id="secret_answer" name="secret_answer" required>
+        
+        <button type="submit">Register</button>
+    </form>
     
-    <label for="lname">Last Name:</label>
-    <input type="text" id="lname" name="lname" required>
+    <p id="error-message" style="color: red; display: none;">Passwords do not match!</p>
     
-    <label for="new_password">Password:</label>
-    <input type="password" id="new_password" name="new_password" required>
-    
-    <label for="confirm_password">Confirm Password:</label>
-    <input type="password" id="confirm_password" name="confirm_password" required>
-    
-    <label for="secret_question">Secret Question:</label>
-    <select id="secret_question" name="secret_question" required>
-        <option value="" disabled selected>Select a question</option>
-        <option value="What was your first pet's name?">What was your first pet's name?</option>
-        <option value="In what city were you born?">In what city were you born?</option>
-        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-        <option value="What high school did you attend?">What high school did you attend?</option>
-        <option value="What was your childhood nickname?">What was your childhood nickname?</option>
-    </select>
-    
-    <label for="secret_answer">Answer:</label>
-    <input type="text" id="secret_answer" name="secret_answer" required>
-    
-    <button type="submit">Register</button>
-</form>
-<p id="error-message" style="color: red; display: none;">Passwords do not match!</p>
-<script src = "/static/js/register.js"></script>
+    <div class="login-options">
+        <p>Already have an account? <a href="{{ url_for('login') }}" class="register-button">Login here</a></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/register.js"></script>
 {% endblock %}

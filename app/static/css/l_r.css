@@ -1,77 +1,163 @@
 form {
-    margin: 20px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    margin: 20px auto;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(34, 34, 34, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 form label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: white;
 }
 
 form input, form select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
+    padding: 10px 15px;
+    margin-bottom: 15px;
     border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+form input:focus, form select:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #00aaff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+}
+
+form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+form select option {
+    background-color: #1a1a1a;
+    color: white;
 }
 
 form button {
-    padding: 10px 15px;
-    background-color: #333;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #00aaff, #653cfadc);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
 }
 
 form button:hover {
-    background-color: #555;
+    background: linear-gradient(90deg, #7050e6dc, #43bfdf);
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
 }
 
 .flashes {
     list-style: none;
     padding: 0;
+    margin: 20px auto;
+    max-width: 500px;
 }
 
 .flashes li {
     margin: 10px 0;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 5px;
+    color: white;
 }
 
 .flashes .info {
-    background-color: #d1ecf1;
-    color: #0c5460;
+    background-color: rgba(3, 169, 244, 0.7);
+    border-left: 4px solid #03a9f4;
+}
+
+.flashes .error {
+    background-color: rgba(255, 82, 82, 0.7);
+    border-left: 4px solid #ff5252;
+}
+
+.flashes .success {
+    background-color: rgba(0, 200, 83, 0.7);
+    border-left: 4px solid #00c853;
 }
 
 .register-button {
     display: inline-block;
-    padding: 10px 15px;
-    background-color: #333;
+    padding: 8px 15px;
+    background: linear-gradient(90deg, #00aaff, #653cfadc);
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 50px;
     margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
 }
 
 .register-button:hover {
-    background-color: #555;
+    background: linear-gradient(90deg, #7050e6dc, #43bfdf);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
 }
 
 .login-options {
     margin-top: 20px;
+    text-align: center;
+    color: white;
+}
+
+.remember-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.remember-checkbox {
+    width: auto !important;
+    margin-right: 8px;
+}
+
+.remember-label {
+    color: white;
+    display: inline !important;
+    margin-bottom: 0 !important;
+}
+
+.error {
+    color: #ff5252;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
 }
 
 #error-message {
     margin-top: 10px;
     padding: 8px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: rgba(255, 82, 82, 0.7);
+    border-left: 4px solid #ff5252;
     border-radius: 5px;
-    color: #721c24;
+    color: white;
+    max-width: 500px;
+    margin: 10px auto;
+    text-align: center;
 }

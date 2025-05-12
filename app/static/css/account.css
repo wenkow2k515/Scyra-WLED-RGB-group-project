@@ -6,12 +6,12 @@
 
 .account-header {
     margin-bottom: 30px;
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding-bottom: 15px;
 }
 
 .account-email {
-    color: #666;
+    color: #c9d1d9;
     margin-top: -10px;
 }
 
@@ -31,16 +31,22 @@
 }
 
 .preset-card {
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 15px;
-    background: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background: rgba(34, 34, 34, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.preset-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .preset-card.shared {
-    background: #f0f7ff;
-    border-color: #cce0ff;
+    background: rgba(0, 137, 255, 0.15);
+    border-color: rgba(0, 170, 255, 0.3);
 }
 
 .preset-header {
@@ -49,11 +55,12 @@
 
 .preset-header h3 {
     margin: 0 0 5px 0;
+    color: #00aaff;
 }
 
 .preset-date, .shared-by {
     font-size: 0.8rem;
-    color: #777;
+    color: #c9d1d9;
     display: block;
 }
 
@@ -70,8 +77,13 @@
     border: none;
     cursor: pointer;
     font-size: 14px;
-    background: #eee;
-    color: #333;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .btn-sm {
@@ -80,19 +92,27 @@
 }
 
 .btn-primary {
-    background: #4CAF50;
+    background: linear-gradient(90deg, #00aaff, #653cfadc);
     color: white;
 }
 
+.btn-primary:hover {
+    background: linear-gradient(90deg, #43bfdf, #7050e6dc);
+}
+
 .btn-danger {
-    background: #f44336;
+    background: rgba(255, 82, 82, 0.7);
     color: white;
+}
+
+.btn-danger:hover {
+    background: rgba(255, 82, 82, 0.9);
 }
 
 .no-presets {
     text-align: center;
     padding: 40px;
-    background: #f9f9f9;
+    background: rgba(34, 34, 34, 0.8);
     border-radius: 8px;
     margin-top: 20px;
 }
@@ -104,17 +124,18 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.7);
     align-items: center;
     justify-content: center;
     z-index: 1000;
 }
 
 .modal-content {
-    background: white;
+    background: rgba(34, 34, 34, 0.95);
+    color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .modal-actions {
