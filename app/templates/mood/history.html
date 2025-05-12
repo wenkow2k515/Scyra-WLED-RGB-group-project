@@ -411,6 +411,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // Add CSRF token here
                 },
                 credentials: 'same-origin'
             })

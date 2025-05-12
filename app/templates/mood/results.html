@@ -171,6 +171,10 @@
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Render the radar chart for mood metrics
         const ctx = document.getElementById('moodRadarChart').getContext('2d');
@@ -235,6 +239,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // Add CSRF token here
                 },
                 credentials: 'same-origin'
             })

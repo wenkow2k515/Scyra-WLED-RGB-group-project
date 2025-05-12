@@ -20,6 +20,7 @@
     <!-- ======== SURVEY FORM ======== -->
     <div class="survey-container">
         <form id="mood-survey-form" method="POST" action="{{ url_for('mood.survey') }}">
+            {{ form.hidden_tag() }}  <!-- CSRF Token -->
             <!-- Energy Level -->
             <div class="form-group mood-slider">
                 <label for="energy_level">
