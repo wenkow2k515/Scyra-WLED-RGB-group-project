@@ -68,13 +68,38 @@
                             </div>
                             <span class="metric-value">{{ mood_entry.stress }}/10</span>
                         </div>
+                        
+                        <!-- New mood metrics -->
+                        <div class="metric">
+                            <span class="metric-label">Focus</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.focus * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.focus }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Irritability</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.irritability * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.irritability }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Calmness</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.calmness * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.calmness }}/10</span>
+                        </div>
                     </div>
                 </div>
                 
-                {% if mood_entry.notes %}
-                <div class="mood-notes">
-                    <h3>Your Notes</h3>
-                    <p>{{ mood_entry.notes }}</p>
+                {% if mood_entry.journal %}
+                <div class="mood-journal">
+                    <h3>Your Journal Entry</h3>
+                    <p>{{ mood_entry.journal }}</p>
                 </div>
                 {% endif %}
             </div>
@@ -132,6 +157,15 @@
                     {% elif mood_entry.happiness < 4 %}
                     <p>To help elevate your mood, we've selected colors that can promote positivity and warmth. These gentle hues aim to create a comforting and uplifting atmosphere.</p>
                     
+                    {% elif mood_entry.focus < 4 %}
+                    <p>Green and blue tones have been selected to help improve concentration and mental clarity. These colors can create an environment conducive to focus and productivity.</p>
+                    
+                    {% elif mood_entry.irritability > 7 %}
+                    <p>Soothing colors like lavender and blue have been chosen to help reduce irritability and promote a sense of calm. These gentle tones can help create a more peaceful atmosphere.</p>
+                    
+                    {% elif mood_entry.calmness < 4 %}
+                    <p>Tranquil colors like soft blue and teal have been selected to enhance feelings of calmness and serenity. These colors can help create a peaceful environment for relaxation.</p>
+                    
                     {% else %}
                     <p>Based on your balanced mood profile, we've selected a harmonious color palette that complements your current emotional state while providing a pleasant atmosphere.</p>
                     {% endif %}
@@ -181,14 +215,25 @@
         const moodRadarChart = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Energy', 'Happiness', 'Calm (10-Anxiety)', 'Relaxed (10-Stress)'],
+                labels: [
+                    'Energy', 
+                    'Happiness', 
+                    'Calm (10-Anxiety)', 
+                    'Relaxed (10-Stress)',
+                    'Focus',
+                    'Patient (10-Irritability)',
+                    'Calmness'
+                ],
                 datasets: [{
                     label: 'Your Mood',
                     data: [
                         {{ mood_entry.energy_level }},
                         {{ mood_entry.happiness }},
                         {{ 10 - mood_entry.anxiety }},  // Invert so "better" is always higher
-                        {{ 10 - mood_entry.stress }}    // Invert so "better" is always higher
+                        {{ 10 - mood_entry.stress }},   // Invert so "better" is always higher
+                        {{ mood_entry.focus }},
+                        {{ 10 - mood_entry.irritability }}, // Invert so "better" is always higher
+                        {{ mood_entry.calmness }}
                     ],
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -329,6 +374,3 @@
                 console.error('Error:', error);
             });
         }
-    });
-</script>
-{% endblock %}

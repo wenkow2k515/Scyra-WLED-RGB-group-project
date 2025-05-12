@@ -39,6 +39,7 @@
                     </div>
                     
                     <div class="mood-metrics">
+                        <!-- Original metrics -->
                         <div class="metric">
                             <span class="metric-label">Energy</span>
                             <div class="metric-bar">
@@ -70,6 +71,31 @@
                             </div>
                             <span class="metric-value">{{ latest_entry.stress }}/10</span>
                         </div>
+                        
+                        <!-- New metrics -->
+                        <div class="metric">
+                            <span class="metric-label">Focus</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.focus * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.focus }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Irritability</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.irritability * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.irritability }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Calmness</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ latest_entry.calmness * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ latest_entry.calmness }}/10</span>
+                        </div>
                     </div>
                     
                     {% if latest_suggestion %}
@@ -98,10 +124,10 @@
                     </div>
                     {% endif %}
                     
-                    {% if latest_entry.notes %}
-                    <div class="mood-notes">
-                        <h3>Notes</h3>
-                        <p>{{ latest_entry.notes }}</p>
+                    {% if latest_entry.journal %}
+                    <div class="mood-journal">
+                        <h3>Journal Entry</h3>
+                        <p>{{ latest_entry.journal }}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -121,7 +147,7 @@
                 <div class="mood-history-preview">
                     <div class="history-chart">
                         <!-- Chart would be rendered with JavaScript here -->
-                        <p class="chart-placeholder">Mood trends chart loading...</p>
+                        <canvas id="moodHistoryChart"></canvas>
                     </div>
                     
                     <div class="recent-entries">
@@ -140,6 +166,20 @@
                                     <span class="mini-label">Happiness</span>
                                     <div class="mini-bar">
                                         <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Focus</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.focus * 10 }}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Calmness</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.calmness * 10 }}%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -186,6 +226,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Apply colors button functionality
@@ -252,18 +293,92 @@
             }
             
             // This function would integrate with the existing WLED connection code
-            // For now, just log what would happen
             console.log('Applying colors to WLED at', wledIP, colors);
             
-            // In a real implementation, this would send the colors to the WLED API
             // Redirect to the RGB page with the color data
             const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
             window.location.href = rgbUrl;
         }
         
-        // Here you would implement chart rendering for the mood history
-        // Example: using Chart.js or a similar library
-        // renderMoodChart();
+        // Render the mood history chart
+        const moodHistoryChartElem = document.getElementById('moodHistoryChart');
+        if (moodHistoryChartElem) {
+            const ctx = moodHistoryChartElem.getContext('2d');
+            const moodHistoryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [
+                        {% for entry in mood_entries %}
+                        '{{ entry.timestamp.strftime("%m/%d") }}',
+                        {% endfor %}
+                    ],
+                    datasets: [
+                        {
+                            label: 'Energy',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.energy_level }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Happiness',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.happiness }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Focus',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.focus }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Calmness',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.calmness }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Mood Trends'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 {% endblock %}

@@ -4,11 +4,12 @@ from datetime import datetime
 
 from app.models import db, MoodEntry, ColorSuggestion
 from app.forms import MoodSurveyForm
+from app.color_recommendation import get_color_recommendation  # Import the new color recommendation logic
 
 # Create a Blueprint
 mood = Blueprint('mood', __name__, url_prefix='/mood')
 
-# Color psychology mappings
+# Keep the old color mappings for backward compatibility
 MOOD_COLOR_MAPPINGS = {
     'energetic': {'primary': 'FF5500', 'secondary': 'FFAA00', 'accent': 'FFFF00'},   # Orange/Yellow
     'calm': {'primary': '0066FF', 'secondary': '00CCFF', 'accent': 'E0F7FA'},        # Blue
@@ -32,7 +33,7 @@ def index():
     """Mood analysis dashboard"""
     # Get user's mood entries (most recent first)
     mood_entries = MoodEntry.query.filter_by(user_id=current_user.id).order_by(MoodEntry.timestamp.desc()).all()
-    return render_template('mood/index.html', title='Mood Dashboard', mood_entries=mood_entries)
+    return render_template('index.html', title='Mood Dashboard', mood_entries=mood_entries)
 
 @mood.route('/survey', methods=['GET', 'POST'])
 @login_required
@@ -44,7 +45,14 @@ def survey():
         happiness = form.happiness.data
         anxiety = form.anxiety.data
         stress = form.stress.data
-        notes = form.notes.data
+        
+        # New fields
+        focus = form.focus.data if hasattr(form, 'focus') and form.focus.data is not None else 5
+        irritability = form.irritability.data if hasattr(form, 'irritability') and form.irritability.data is not None else 5
+        calmness = form.calmness.data if hasattr(form, 'calmness') and form.calmness.data is not None else 5
+        
+        # Handle both journal and notes (for backward compatibility)
+        journal_content = form.journal.data if hasattr(form, 'journal') and form.journal.data else form.notes.data
 
         # Save data to the database
         mood_entry = MoodEntry(
@@ -53,23 +61,55 @@ def survey():
             happiness=happiness,
             anxiety=anxiety,
             stress=stress,
-            notes=notes
+            focus=focus,
+            irritability=irritability,
+            calmness=calmness,
+            journal=journal_content
         )
         db.session.add(mood_entry)
         db.session.commit()
 
-        # Generate and save color suggestion
-        color_suggestion = generate_color_suggestion(mood_entry)
+        # Generate and save color suggestion using new algorithm
+        color_suggestion = generate_enhanced_color_suggestion(mood_entry)
         db.session.add(color_suggestion)
         db.session.commit()
 
         flash('Mood survey submitted successfully!', 'success')
-        return redirect(url_for('mood.index'))
+        return redirect(url_for('mood.results', mood_entry_id=mood_entry.id))
 
-    return render_template('mood/survey.html', title='Mood Survey', form=form)
+    return render_template('survey.html', title='Mood Survey', form=form)
 
+def generate_enhanced_color_suggestion(mood_entry):
+    """Generate color suggestion based on mood metrics using the enhanced algorithm"""
+    # Prepare mood data for the recommendation algorithm
+    mood_data = {
+        'energy_level': mood_entry.energy_level,
+        'happiness': mood_entry.happiness,
+        'anxiety': mood_entry.anxiety,
+        'stress': mood_entry.stress,
+        'focus': mood_entry.focus,
+        'irritability': mood_entry.irritability,
+        'calmness': mood_entry.calmness
+    }
+    
+    # Use the new color recommendation algorithm
+    recommendation = get_color_recommendation(mood_data)
+    
+    # Create color suggestion
+    suggestion = ColorSuggestion(
+        mood_entry_id=mood_entry.id,
+        primary_color=recommendation['primary_color'],
+        secondary_color=recommendation['secondary_color'],
+        accent_color=recommendation['accent_color'],
+        effect_name=recommendation['effect_name'],
+        brightness=recommendation['brightness']
+    )
+    
+    return suggestion
+
+# Keeping the original function for backward compatibility
 def generate_color_suggestion(mood_entry):
-    """Generate color suggestion based on mood metrics"""
+    """Generate color suggestion based on mood metrics (original algorithm)"""
     # Determine primary mood based on highest/lowest values
     primary_mood = 'calm'  # Default
     
@@ -133,7 +173,7 @@ def results(mood_entry_id):
     color_suggestion = ColorSuggestion.query.filter_by(mood_entry_id=mood_entry_id).first()
     
     return render_template(
-        'mood/results.html', 
+        'results.html', 
         title='Mood Analysis Results', 
         mood_entry=mood_entry,
         color_suggestion=color_suggestion
@@ -200,11 +240,8 @@ def history():
     # Get all mood entries for the current user
     mood_entries = MoodEntry.query.filter_by(user_id=current_user.id).order_by(MoodEntry.timestamp.desc()).all()
     
-    # Group entries by week/month for trend analysis
-    # This would be implemented with more sophisticated analytics in a real app
-    
     return render_template(
-        'mood/history.html',
+        'history.html',
         title='Mood History',
         mood_entries=mood_entries
     )

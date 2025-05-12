@@ -42,20 +42,23 @@ class SharedData(db.Model):
     shared_with = db.relationship('User', foreign_keys=[shared_with_id], backref=db.backref('shared_data_received', lazy=True))                     
     preset = db.relationship('UploadedData', foreign_keys=[preset_id], backref=db.backref('shared_instances', lazy=True))
 
-# New models for Mood Analysis
+# Updated MoodEntry model for Mood Analysis with 7 metrics
 class MoodEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
-    # Mood metrics (scale of 1-10)
-    energy_level = db.Column(db.Integer, nullable=False)
-    happiness = db.Column(db.Integer, nullable=False)
-    anxiety = db.Column(db.Integer, nullable=False)
-    stress = db.Column(db.Integer, nullable=False)
+    # 7 Mood metrics (scale of 1-10)
+    energy_level = db.Column(db.Integer, nullable=False)  # Existing
+    happiness = db.Column(db.Integer, nullable=False)     # Existing
+    anxiety = db.Column(db.Integer, nullable=False)       # Existing
+    stress = db.Column(db.Integer, nullable=False)        # Existing
+    focus = db.Column(db.Integer, nullable=False)         # New
+    irritability = db.Column(db.Integer, nullable=False)  # New
+    calmness = db.Column(db.Integer, nullable=False)      # New
     
-    # Optional notes
-    notes = db.Column(db.Text)
+    # Journal entry (expanded from notes)
+    journal = db.Column(db.Text)  # Renamed from notes to journal
     
     # Relationship to ColorSuggestion
     color_suggestion = db.relationship('ColorSuggestion', backref='mood_entry', uselist=False, lazy=True)
