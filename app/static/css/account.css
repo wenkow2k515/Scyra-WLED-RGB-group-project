@@ -2,102 +2,127 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+    color: #e0e0e0;
 }
 
 .account-header {
     margin-bottom: 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(0, 170, 255, 0.2);
     padding-bottom: 15px;
 }
 
+.account-header h1 {
+    color: white;
+    text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+    margin-bottom: 10px;
+}
+
 .account-email {
-    color: #c9d1d9;
+    color: #a0a0a0;
     margin-top: -10px;
+    font-size: 1.1em;
 }
 
 .account-actions {
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .account-section {
-    margin-top: 40px;
+    margin-top: 50px;
+}
+
+.account-section h2 {
+    color: #00aaff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+    border-bottom: 1px solid rgba(0, 170, 255, 0.1);
+    padding-bottom: 10px;
 }
 
 .preset-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    gap: 25px;
+    margin-top: 25px;
 }
 
 .preset-card {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-    background: rgba(34, 34, 34, 0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 170, 255, 0.15);
+    border-radius: 10px;
+    padding: 20px;
+    background: rgba(25, 25, 35, 0.75);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .preset-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.preset-card.shared {
-    background: rgba(0, 137, 255, 0.15);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.2);
     border-color: rgba(0, 170, 255, 0.3);
 }
 
+.preset-card.shared {
+    background: rgba(22, 28, 45, 0.75);
+    border-color: rgba(0, 170, 255, 0.25);
+}
+
 .preset-header {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .preset-header h3 {
-    margin: 0 0 5px 0;
+    margin: 0 0 8px 0;
     color: #00aaff;
+    font-size: 1.3em;
 }
 
 .preset-date, .shared-by {
-    font-size: 0.8rem;
-    color: #c9d1d9;
+    font-size: 0.9rem;
+    color: #a0a0a0;
     display: block;
+    margin-top: 5px;
 }
 
 .preset-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .btn {
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 8px 15px;
+    border-radius: 5px;
     text-decoration: none;
     border: none;
     cursor: pointer;
     font-size: 14px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.07);
     color: white;
     transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 .btn-sm {
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 4px;
 }
 
 .btn-primary {
     background: linear-gradient(90deg, #00aaff, #653cfadc);
     color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover {
     background: linear-gradient(90deg, #43bfdf, #7050e6dc);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn-danger {
@@ -109,12 +134,27 @@
     background: rgba(255, 82, 82, 0.9);
 }
 
+.btn-share {
+    background: rgba(0, 170, 255, 0.2);
+}
+
+.btn-share:hover {
+    background: rgba(0, 170, 255, 0.3);
+}
+
 .no-presets {
     text-align: center;
     padding: 40px;
-    background: rgba(34, 34, 34, 0.8);
-    border-radius: 8px;
+    background: rgba(25, 25, 35, 0.75);
+    border-radius: 10px;
     margin-top: 20px;
+    border: 1px solid rgba(0, 170, 255, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.no-presets p {
+    margin: 10px 0;
+    color: #e0e0e0;
 }
 
 .modal {
@@ -124,23 +164,32 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: rgba(34, 34, 34, 0.95);
+    background: rgba(25, 25, 35, 0.95);
     color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.2);
+    max-width: 500px;
+    border: 1px solid rgba(0, 170, 255, 0.15);
+}
+
+.modal-content h2 {
+    color: #00aaff;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 .modal-actions {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 15px;
 }

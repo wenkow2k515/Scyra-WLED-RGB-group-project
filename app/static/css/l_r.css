@@ -1,58 +1,65 @@
 form {
     margin: 20px auto;
     max-width: 500px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: rgba(34, 34, 34, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 10px;
+    background-color: rgba(25, 25, 35, 0.75);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 170, 255, 0.15);
 }
 
 form:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.3);
 }
 
 form label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
-    color: white;
+    color: #00aaff;
+    letter-spacing: 0.5px;
 }
 
 form input, form select {
     width: 100%;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(0, 170, 255, 0.2);
+    color: #ffffff;
     transition: all 0.3s ease;
+    font-size: 15px;
 }
 
 form input:focus, form select:focus {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.12);
     border-color: #00aaff;
     outline: none;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+}
+
+form input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
 form select {
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300aaff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 20px;
 }
 
 form select option {
-    background-color: #1a1a1a;
+    background-color: #1a1a2a;
     color: white;
 }
 
 form button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     background: linear-gradient(90deg, #00aaff, #653cfadc);
     color: white;
     border: none;
@@ -63,13 +70,14 @@ form button {
     letter-spacing: 1px;
     width: 100%;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
+    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.3);
+    margin-top: 10px;
 }
 
 form button:hover {
     background: linear-gradient(90deg, #7050e6dc, #43bfdf);
     transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
+    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.5);
 }
 
 .flashes {
@@ -81,9 +89,10 @@ form button:hover {
 
 .flashes li {
     margin: 10px 0;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 12px 15px;
+    border-radius: 6px;
     color: white;
+    font-weight: 500;
 }
 
 .flashes .info {
@@ -110,54 +119,62 @@ form button:hover {
     border-radius: 50px;
     margin-top: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.5);
+    box-shadow: 0 4px 15px rgba(1, 149, 247, 0.3);
+    font-weight: 500;
 }
 
 .register-button:hover {
     background: linear-gradient(90deg, #7050e6dc, #43bfdf);
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
+    box-shadow: 0 6px 20px rgba(37, 174, 243, 0.5);
 }
 
 .login-options {
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
-    color: white;
+    color: #e0e0e0;
+}
+
+.login-options p {
+    margin: 8px 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .remember-container {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .remember-checkbox {
     width: auto !important;
-    margin-right: 8px;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .remember-label {
-    color: white;
+    color: #e0e0e0;
     display: inline !important;
     margin-bottom: 0 !important;
+    cursor: pointer;
 }
 
 .error {
     color: #ff5252;
     font-size: 0.9rem;
-    margin-top: -10px;
-    margin-bottom: 10px;
+    margin-top: -12px;
+    margin-bottom: 12px;
     display: block;
 }
 
 #error-message {
-    margin-top: 10px;
-    padding: 8px;
+    margin: 15px auto;
+    padding: 10px;
     background-color: rgba(255, 82, 82, 0.7);
     border-left: 4px solid #ff5252;
-    border-radius: 5px;
+    border-radius: 6px;
     color: white;
     max-width: 500px;
-    margin: 10px auto;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }

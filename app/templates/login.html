@@ -11,22 +11,22 @@
 <div class="bg-gradient"></div>
 
 <div style="max-width: 500px; margin: 0 auto; padding: 20px;">
-    <h2 style="text-align: center; margin-bottom: 20px;">Login</h2>
+    <h2 style="text-align: center; margin-bottom: 25px; color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);">Sign In to Your Account</h2>
     
     <form action="{{ url_for('login') }}" method="POST">
         {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
         
         <div>
-            {{ form.email.label }}
-            {{ form.email(required=true) }}
+            {{ form.email.label(class="theme-label") }}
+            {{ form.email(required=true, placeholder="Enter your email") }}
             {% if form.email.errors %}
                 <span class="error">{{ form.email.errors[0] }}</span>
             {% endif %}
         </div>
         
         <div>
-            {{ form.password.label }}
-            {{ form.password(required=true) }}
+            {{ form.password.label(class="theme-label") }}
+            {{ form.password(required=true, placeholder="Enter your password") }}
             {% if form.password.errors %}
                 <span class="error">{{ form.password.errors[0] }}</span>
             {% endif %}
@@ -34,11 +34,10 @@
         
         <div class="remember-container">
             {{ form.remember(class="remember-checkbox") }}
-            <span class="checkmark"></span>
             {{ form.remember.label(class="remember-label") }}
         </div>
         
-        {{ form.submit() }}
+        {{ form.submit(class="theme-btn") }}
     </form>
 
     <div class="login-options">
