@@ -1,3 +1,4 @@
+// LEDgrid.js
 document.addEventListener('DOMContentLoaded', () => {
   // State
   let wledAddress = '';
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const cell  = grid.querySelector(`.cell[data-idx="${i}"]`);
       const color = JSON.parse(cell.dataset.color);
-      const bri   = parseInt(cell.dataset.bri,10);
+      const bri   = parseInt(cell.dataset.bri, 10);
 
       segments.push({
         start,
@@ -163,9 +164,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    const preset = { on: true, seg: segments };
-    output.textContent = JSON.stringify(preset, null, 2);
+    const preset     = { on: true, seg: segments };
+    const jsonString = JSON.stringify(preset, null, 2);
+
+    // still set the output text so copy/send work,
+    // but the <pre> is hidden via CSS
+    output.textContent = jsonString;
+
+    // un-hide the container so the buttons (and heading) appear
     outputContainer.classList.remove('hidden');
+
+    // show only the two JSON action buttons
+    document.querySelector('.json-controls').style.display = 'flex';
+
+    // show the save-to-account & public-toggle UI
+    document.querySelector('.save-preset-container').style.display = 'flex';
   });
 
   // Copy JSON
