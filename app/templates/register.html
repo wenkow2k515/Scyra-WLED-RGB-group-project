@@ -6,55 +6,41 @@
 {% endblock %}
 
 {% block content %}
-<!-- Background elements -->
 <div class="led-bg"></div>
 <div class="bg-gradient"></div>
 
 <div style="max-width: 500px; margin: 0 auto; padding: 20px;">
     <h2 style="text-align: center; margin-bottom: 25px; color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);">Create Your Account</h2>
     
-    <form id="register-form" action="{{ url_for('register') }}" method="POST">
+    <form id="register-form" action="{{ url_for('core.register') }}" method="POST">
         {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
         
         <label for="email" class="theme-label">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+        {{ form.email(class="form-control", placeholder="Enter your email address") }}
         
         <label for="fname" class="theme-label">First Name:</label>
-        <input type="text" id="fname" name="fname" placeholder="Enter your first name" required>
+        {{ form.fname(class="form-control", placeholder="Enter your first name") }}
         
         <label for="lname" class="theme-label">Last Name:</label>
-        <input type="text" id="lname" name="lname" placeholder="Enter your last name" required>
+        {{ form.lname(class="form-control", placeholder="Enter your last name") }}
         
-        <label for="new_password" class="theme-label">Password:</label>
-        <input type="password" id="new_password" name="new_password" placeholder="Create a secure password" required>
+        <label for="password" class="theme-label">Password:</label>
+        {{ form.password(class="form-control", placeholder="Create a secure password") }}
         
         <label for="confirm_password" class="theme-label">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+        {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
         
         <label for="secret_question" class="theme-label">Secret Question:</label>
-        <select id="secret_question" name="secret_question" required>
-            <option value="" disabled selected>Select a question</option>
-            <option value="What was your first pet's name?">What was your first pet's name?</option>
-            <option value="In what city were you born?">In what city were you born?</option>
-            <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-            <option value="What high school did you attend?">What high school did you attend?</option>
-            <option value="What was your childhood nickname?">What was your childhood nickname?</option>
-        </select>
+        {{ form.secret_question(class="form-control") }}
         
         <label for="secret_answer" class="theme-label">Answer:</label>
-        <input type="text" id="secret_answer" name="secret_answer" placeholder="Enter your answer" required>
+        {{ form.secret_answer(class="form-control", placeholder="Enter your answer") }}
         
-        <button type="submit">Create Account</button>
+        <button type="submit" class="btn btn-primary">Create Account</button>
     </form>
     
-    <p id="error-message" style="display: none;">Passwords do not match!</p>
-    
     <div class="login-options">
-        <p>Already have an account? <a href="{{ url_for('login') }}" class="register-button">Login here</a></p>
+        <p>Already have an account? <a href="{{ url_for('core.login') }}" class="register-button">Login here</a></p>
     </div>
 </div>
-
-{% block scripts %}
-<script src="/static/js/register.js"></script>
-{% endblock %}
 {% endblock %}

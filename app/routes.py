@@ -1,16 +1,18 @@
-from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify
+from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import app
 from .models import db, User, UploadedData, SharedData
 from .forms import LoginForm, RegisterForm, SharePresetForm
 
-@app.route('/')
+# Create a blueprint for core routes
+core = Blueprint('core', __name__)
+
+@core.route('/')
 def home():
     return render_template('home.html', title='Home')
 
-@app.route('/rgb')
+@core.route('/rgb')
 def rgb():
     """Render the RGB control page."""
     # Check if there's a preset to load from session
@@ -38,10 +40,10 @@ def rgb():
         edit_mode=edit_mode
     )
 
-@app.route('/login', methods=['GET', 'POST'])
+@core.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     form = LoginForm()
     
@@ -53,42 +55,36 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             flash('Login successful!', 'success')
-            return redirect(next_page or url_for('account'))
+            return redirect(next_page or url_for('core.account'))
         else:
             flash('Login unsuccessful. Please check email and password', 'error')
     
     return render_template('login.html', title='Login', form=form)
 
-@app.route('/register', methods=['GET', 'POST'])
+@core.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('account'))
-    
     form = RegisterForm()
-    
-    if form.validate_on_submit():
-        # This automatically checks CSRF token
+    if form.validate_on_submit():  # This automatically validates the CSRF token
         hashed_password = generate_password_hash(form.password.data)
-        
         user = User(
-            email=form.email.data, 
+            email=form.email.data,
             password=hashed_password,
             fname=form.fname.data,
-            lname=form.lname.data
+            lname=form.lname.data,
+            secret_question=form.secret_question.data,
+            secret_answer=form.secret_answer.data
         )
-        
         db.session.add(user)
         try:
             db.session.commit()
-            flash('Your account has been created! You can now log in', 'success')
-            return redirect(url_for('login'))
-        except IntegrityError:
+            flash('Your account has been created! You can now log in.', 'success')
+            return redirect(url_for('core.login'))
+        except Exception:
             db.session.rollback()
-            flash('That email is already registered. Please use a different one.', 'error')
-    
-    return render_template('register.html', title='Register', form=form)
+            flash('An error occurred. Please try again.', 'danger')
+    return render_template('register.html', form=form)
 
-@app.route('/account')
+@core.route('/account')
 @login_required  # Protect this route - user must be logged in
 def account():
     # Get user's uploaded data
@@ -105,19 +101,19 @@ def account():
         uploads=user_uploads
     )
 
-@app.route('/logout')
+@core.route('/logout')
 @login_required  # Only logged-in users can log out
 def logout():
     logout_user()  # Use Flask-Login's logout function
     flash('You have been logged out', 'info')
-    return redirect(url_for('login'))
+    return redirect(url_for('core.login'))
 
-@app.route('/about')
+@core.route('/about')
 def about():
     """Render the about page."""
     return render_template('about.html', title='About Scyra')
 
-@app.route('/presets')
+@core.route('/presets')
 def presets():
     """Render the presets page with presets from the database."""
     # Get all public presets
@@ -133,7 +129,7 @@ def presets():
         for data in shared_data:
             preset = UploadedData.query.get(data.preset_id)
             if preset:
-                shared_presets.append(preset)
+                shared_presets.coreend(preset)
     
     # Get user's private presets
     user_presets = []
@@ -148,7 +144,7 @@ def presets():
         shared_presets=shared_presets
     )
 
-@app.route('/save-preset', methods=['POST'])
+@core.route('/save-preset', methods=['POST'])
 @login_required
 def save_preset():
     """Save preset to user account."""
@@ -217,7 +213,7 @@ def save_preset():
         db.session.rollback()
         return jsonify({'success': False, 'error': str(e)})
 
-@app.route('/presets/<int:preset_id>/delete', methods=['GET', 'POST'])
+@core.route('/presets/<int:preset_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_preset(preset_id):
     """Delete preset."""
@@ -227,7 +223,7 @@ def delete_preset(preset_id):
     # Verify ownership
     if preset.user_id != current_user.id:
         flash('You do not have permission to delete this preset', 'error')
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     try:
         # First delete related shared data
@@ -241,9 +237,9 @@ def delete_preset(preset_id):
         db.session.rollback()
         flash(f'Deletion failed: {str(e)}', 'error')
     
-    return redirect(url_for('account'))
+    return redirect(url_for('core.account'))
 
-@app.route('/share-preset/<int:preset_id>', methods=['GET', 'POST'])
+@core.route('/share-preset/<int:preset_id>', methods=['GET', 'POST'])
 @login_required
 def share_preset(preset_id):
     """Share preset with other users."""
@@ -253,7 +249,7 @@ def share_preset(preset_id):
     # Verify ownership
     if preset.user_id != current_user.id:
         flash('You do not have permission to share this preset', 'error')
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     # Get all current shares for this preset
     shared_data = SharedData.query.filter_by(preset_id=preset_id).all()
@@ -267,12 +263,12 @@ def share_preset(preset_id):
         user = User.query.filter_by(email=share_email).first()
         if not user:
             flash('User not found', 'error')
-            return redirect(url_for('share_preset', preset_id=preset_id))
+            return redirect(url_for('core.share_preset', preset_id=preset_id))
         
         # Ensure it's not the current user
         if user.id == current_user.id:
             flash('You cannot share a preset with yourself', 'error')
-            return redirect(url_for('share_preset', preset_id=preset_id))
+            return redirect(url_for('core.share_preset', preset_id=preset_id))
         
         # Check if already shared
         existing_share = SharedData.query.filter_by(
@@ -282,7 +278,7 @@ def share_preset(preset_id):
         
         if existing_share:
             flash('This preset is already shared with the user', 'info')
-            return redirect(url_for('share_preset', preset_id=preset_id))
+            return redirect(url_for('core.share_preset', preset_id=preset_id))
         
         # Create a new share
         new_share = SharedData(
@@ -294,7 +290,7 @@ def share_preset(preset_id):
         db.session.commit()
         
         flash(f'Preset successfully shared with {user.email}', 'success')
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     # GET request - show share form
     return render_template(
@@ -305,7 +301,7 @@ def share_preset(preset_id):
         form=form  # Pass the form to the template
     )
 
-@app.route('/unshare-preset/<int:share_id>', methods=['POST'])
+@core.route('/unshare-preset/<int:share_id>', methods=['POST'])
 @login_required
 def unshare_preset(share_id):
     """Unshare preset with a user."""
@@ -317,16 +313,16 @@ def unshare_preset(share_id):
     preset = UploadedData.query.get(preset_id)
     if not preset or preset.user_id != current_user.id:
         flash('You do not have permission to modify this share', 'error')
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     # Delete share
     db.session.delete(shared_data)
     db.session.commit()
     
     flash('Share successfully removed', 'success')
-    return redirect(url_for('share_preset', preset_id=preset_id))
+    return redirect(url_for('core.share_preset', preset_id=preset_id))
 
-@app.route('/presets/<int:preset_id>/view')
+@core.route('/presets/<int:preset_id>/view')
 def view_preset(preset_id):
     """View preset (read-only mode)."""
     # Get preset
@@ -353,15 +349,15 @@ def view_preset(preset_id):
     
     if not has_access:
         flash('You do not have permission to view this preset', 'error')
-        return redirect(url_for('presets'))
+        return redirect(url_for('core.presets'))
     
     # Set view_mode to True and pass preset data
     session['load_preset_id'] = preset_id
     session['view_mode'] = True
 
-    return redirect(url_for('rgb'))
+    return redirect(url_for('core.rgb'))
 
-@app.route('/presets/<int:preset_id>/edit')
+@core.route('/presets/<int:preset_id>/edit')
 @login_required
 def edit_preset(preset_id):
     """Edit an existing preset."""
@@ -371,16 +367,16 @@ def edit_preset(preset_id):
     # Verify ownership
     if preset.user_id != current_user.id:
         flash('You do not have permission to edit this preset', 'error')
-        return redirect(url_for('account'))
+        return redirect(url_for('core.account'))
     
     # Store preset ID in session for RGB editor to load
     session['load_preset_id'] = preset_id
     session['edit_mode'] = True
     
     # Redirect to RGB editor
-    return redirect(url_for('rgb'))
+    return redirect(url_for('core.rgb'))
 
-@app.route('/presets/<int:preset_id>/load')
+@core.route('/presets/<int:preset_id>/load')
 def load_preset(preset_id):
     """Load preset into RGB editor."""
     # Get preset
@@ -403,22 +399,22 @@ def load_preset(preset_id):
     
     if not has_access:
         flash('You do not have permission to load this preset', 'error')
-        return redirect(url_for('presets'))
+        return redirect(url_for('core.presets'))
     
     # Store preset ID in session for RGB editor to load
     session['load_preset_id'] = preset_id
     
     # Redirect to RGB editor
-    return redirect(url_for('rgb'))
+    return redirect(url_for('core.rgb'))
 
-@app.route('/forgot_password', methods=['GET', 'POST'])
+@core.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form.get('email')
         flash('If this email is registered, a password reset link has been sent.', 'info')
-        return redirect(url_for('login'))
+        return redirect(url_for('core.login'))
     
     return render_template('forgot_password.html', title='Forgot Password')
 
 if __name__ == '__main__':
-    app.run()
+    core.run()
