@@ -120,6 +120,39 @@
         margin-bottom: 8px;
     }
     
+    .entry-ai-feedback {
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.15);
+        margin-top: 15px;
+        border-left: 3px solid #7928CA;
+    }
+    
+    .entry-ai-feedback h4 {
+        color: #00aaff;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+    
+    .entry-ai-feedback p {
+        color: #e0e0e0;
+        line-height: 1.5;
+        font-size: 1.05rem;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    }
+    
+    .ai-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #7928CA, #FF0080);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 12px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+    
     .mini-metric {
         margin-bottom: 10px;
     }
@@ -370,6 +403,13 @@
                         <div class="entry-journal">
                             <h4>Journal Entry</h4>
                             <p>{{ entry.journal }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        {% if entry.ai_feedback %}
+                        <div class="entry-ai-feedback">
+                            <h4>AI Feedback <span class="ai-badge">AI</span></h4>
+                            <p>{{ entry.ai_feedback }}</p>
                         </div>
                         {% endif %}
                         
