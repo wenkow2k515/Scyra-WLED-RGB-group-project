@@ -230,3 +230,79 @@ body, html {
 .save-btn:hover {
   background-color: #3a80d2;
 }
+
+#editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-grid {
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 0px; /* the gap is annoying */
+  margin: 1rem auto;
+  justify-content: center;
+  width: fit-content;
+
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-controls,
+.action-buttons,
+.json-controls {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.action-buttons button,
+.json-controls button {
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-buttons button:hover,
+.json-controls button:hover {
+  background-color: #3a80d2;
+}
+
+
+#output-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.save-preset-container {
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+
+.tooltip {
+  border: 1px solid #ccc;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.editor-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
