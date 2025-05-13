@@ -4,6 +4,7 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: Arial, sans-serif;
+  background-color: #2b2b2b;
 }
 
 /* Setup Container */
@@ -16,7 +17,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
+  background-color: #2b2b2b;
   z-index: 999;
 }
 
@@ -24,6 +25,7 @@ body, html {
   width: 100%;
   max-width: 400px;
   padding: 2rem;
+  color: #00aaff;   
   box-sizing: border-box;
   text-align: center;
 }
@@ -39,6 +41,40 @@ body, html {
   font-size: 1rem;
   width: 100%;
   max-width: 300px;
+}
+
+/* New IP input & Connect button styles */
+#setup .setup-pane input[type="text"] {
+  border-radius: 6px;
+  border: 1px solid #00aaff;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+#setup .setup-pane input[type="text"]:hover {
+  border-color: #00aaff;
+  transform: scale(1.05); /* slight expand on hover, makes it easier to see */
+}
+
+#checkBtn {
+  background: linear-gradient(90deg, #653cfadc, #00aaff);
+  box-shadow: 0 4px 15px rgba(101, 60, 250, 0.5);
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+#checkBtn:hover {
+  background: linear-gradient(90deg, #7050e6dc, #43bfdf);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
 }
 
 .setup-pane p {
@@ -69,7 +105,7 @@ body, html {
 .color-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  gap: 0px; /* gap removed as per your note */
+  gap: 0px; 
   margin: 1rem auto;
   justify-content: center;
   width: fit-content;
