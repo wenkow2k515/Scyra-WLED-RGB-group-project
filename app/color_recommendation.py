@@ -6,6 +6,14 @@ Maps emotional states to color recommendations based on color psychology.
 import random
 from datetime import datetime
 
+# Function to convert hex to RGB
+def hex_to_rgb(hex_color):
+    """Convert hex color (without #) to RGB tuple"""
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    return (r, g, b)
+
 # Color definitions in hex (without #)
 COLORS = {
     # Primary colors
@@ -58,7 +66,7 @@ def get_color_recommendation(mood_data):
             - calmness: How calm/peaceful the person feels
             
     Returns:
-        A dictionary with color recommendations
+        A dictionary with color recommendations in RGB format
     """
     # Extract mood values (all 1-10 scale)
     energy = mood_data.get('energy_level', 5)
@@ -161,14 +169,24 @@ def get_color_recommendation(mood_data):
         secondary_color = COLORS['yellow']
         accent_color = COLORS['amber']
     
+    # Convert hex colors to RGB
+    primary_rgb = hex_to_rgb(primary_color)
+    secondary_rgb = hex_to_rgb(secondary_color)
+    accent_rgb = hex_to_rgb(accent_color)
+    
     # Prepare the result
     result = {
-        'primary_color': primary_color,
-        'secondary_color': secondary_color,
-        'accent_color': accent_color,
+        'primary_color': f"rgb({primary_rgb[0]},{primary_rgb[1]},{primary_rgb[2]})",
+        'secondary_color': f"rgb({secondary_rgb[0]},{secondary_rgb[1]},{secondary_rgb[2]})",
+        'accent_color': f"rgb({accent_rgb[0]},{accent_rgb[1]},{accent_rgb[2]})",
         'brightness': brightness,
         'timestamp': datetime.now().isoformat()
     }
+    
+    # Also include the hex values for backwards compatibility
+    result['primary_hex'] = primary_color
+    result['secondary_hex'] = secondary_color
+    result['accent_hex'] = accent_color
     
     return result
 

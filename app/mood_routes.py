@@ -4,7 +4,7 @@ from datetime import datetime
 
 from app.models import db, MoodEntry, ColorSuggestion
 from app.forms import MoodSurveyForm
-from app.color_recommendation import get_color_recommendation  # Import the new color recommendation logic
+from app.color_recommendation import get_color_recommendation, hex_to_rgb  # Import hex_to_rgb function
 
 # Create a Blueprint
 mood = Blueprint('mood', __name__, url_prefix='/mood')
@@ -95,12 +95,12 @@ def generate_enhanced_color_suggestion(mood_entry):
     # Use the new color recommendation algorithm
     recommendation = get_color_recommendation(mood_data)
     
-    # Create color suggestion
+    # Create color suggestion - we're still storing hex in the database for compatibility
     suggestion = ColorSuggestion(
         mood_entry_id=mood_entry.id,
-        primary_color=recommendation['primary_color'],
-        secondary_color=recommendation['secondary_color'],
-        accent_color=recommendation['accent_color'],
+        primary_color=recommendation['primary_hex'],
+        secondary_color=recommendation['secondary_hex'],
+        accent_color=recommendation['accent_hex'],
         brightness=recommendation['brightness']
     )
     
@@ -169,7 +169,22 @@ def results(mood_entry_id):
         return redirect(url_for('mood.index'))
     
     # Get the associated color suggestion
-    color_suggestion = ColorSuggestion.query.filter_by(mood_entry_id=mood_entry_id).first()
+    db_color_suggestion = ColorSuggestion.query.filter_by(mood_entry_id=mood_entry_id).first()
+    
+    # Convert hex colors to RGB format for display
+    if db_color_suggestion:
+        color_suggestion = db_color_suggestion.__dict__.copy()
+        
+        # Convert hex to RGB format
+        primary_rgb = hex_to_rgb(db_color_suggestion.primary_color)
+        secondary_rgb = hex_to_rgb(db_color_suggestion.secondary_color)
+        accent_rgb = hex_to_rgb(db_color_suggestion.accent_color)
+        
+        color_suggestion['primary_color'] = f"rgb({primary_rgb[0]},{primary_rgb[1]},{primary_rgb[2]})"
+        color_suggestion['secondary_color'] = f"rgb({secondary_rgb[0]},{secondary_rgb[1]},{secondary_rgb[2]})"
+        color_suggestion['accent_color'] = f"rgb({accent_rgb[0]},{accent_rgb[1]},{accent_rgb[2]})"
+    else:
+        color_suggestion = None
     
     return render_template(
         'mood/results.html', 
@@ -194,11 +209,16 @@ def apply_suggestion(suggestion_id):
     suggestion.applied_at = datetime.utcnow()
     db.session.commit()
     
-    # Prepare the color data for the WLED controller
+    # Convert hex to RGB
+    primary_rgb = hex_to_rgb(suggestion.primary_color)
+    secondary_rgb = hex_to_rgb(suggestion.secondary_color)
+    accent_rgb = hex_to_rgb(suggestion.accent_color)
+    
+    # Prepare the color data for the WLED controller in RGB format
     colors = {
-        'primary': suggestion.primary_color,
-        'secondary': suggestion.secondary_color,
-        'accent': suggestion.accent_color,
+        'primary': f"rgb({primary_rgb[0]},{primary_rgb[1]},{primary_rgb[2]})",
+        'secondary': f"rgb({secondary_rgb[0]},{secondary_rgb[1]},{secondary_rgb[2]})",
+        'accent': f"rgb({accent_rgb[0]},{accent_rgb[1]},{accent_rgb[2]})",
         'brightness': suggestion.brightness
     }
     
