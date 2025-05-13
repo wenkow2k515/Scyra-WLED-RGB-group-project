@@ -9,23 +9,23 @@ body, html {
 /* Setup Container */
 .setup-container {
   position: fixed;
-  top: 0;
+  top: 4rem; /* Adjust this to match the height of the navbar */
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 4rem); /* Adjust to fill remaining space below navbar */
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white; /* optional background */
+  background: white;
   z-index: 999;
 }
 
 .setup-pane {
-  text-align: center;
+  width: 100%;
+  max-width: 400px;
   padding: 2rem;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  background: #fff;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .setup-pane h2 {
@@ -34,11 +34,16 @@ body, html {
 
 .setup-pane input,
 .setup-pane button {
-  display: block;
-  margin: 0.5rem auto;
+  margin-top: 0.5rem;
   padding: 0.5rem;
   font-size: 1rem;
-  width: 250px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.setup-pane p {
+  margin-top: 1rem;
+  color: #555;
 }
 
 /* Editor Styles */
@@ -46,21 +51,28 @@ body, html {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.editor-title {
+/* Title */
+.editor-title,
+#editor h2 {
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
+/* Grid */
 .color-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 0px; /* gap removed as per your note */
   margin: 1rem auto;
   justify-content: center;
+  width: fit-content;
   max-width: 1200px;
 }
 
@@ -87,48 +99,55 @@ body, html {
   transform: translate(-50%, -50%);
   font-size: 24px;
   color: white;
-  text-shadow: 0 0 3px black;
+  text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
   pointer-events: none;
 }
 
 /* Controls */
-.controls-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  text-align: center;
-}
-
-.color-controls {
-  margin: 1rem 0;
+.controls-container,
+.color-controls,
+.action-buttons,
+.json-controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
+  margin: 1rem 0;
 }
 
-.action-buttons {
-  margin: 1.5rem 0;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+.action-buttons button,
+.json-controls button,
+.save-btn {
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Output Section */
+.action-buttons button:hover,
+.json-controls button:hover,
+.save-btn:hover {
+  background-color: #3a80d2;
+}
+
+/* Output */
 #output-container {
-  margin: 2rem auto;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
   background: #eee;
   border-radius: 8px;
-  padding: 1.5rem;
-  max-width: 1200px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.output-title {
-  text-align: center;
-  margin-bottom: 1rem;
+  padding: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 #output {
@@ -140,26 +159,21 @@ body, html {
   border-radius: 4px;
 }
 
-.json-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
 /* Form Elements */
 .save-preset-container {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  justify-content: center;
+  gap: 15px;
+  margin: 1rem 0;
+  text-align: center;
 }
 
 .public-toggle {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 5px;
 }
 
 .tooltip {
@@ -172,16 +186,18 @@ body, html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  line-height: 1;
 }
 
 /* Feedback Messages */
 .feedback-message {
-  padding: 1rem;
-  margin: 1rem auto;
+  padding: 10px;
+  margin-top: 10px;
   border-radius: 4px;
-  max-width: 1200px;
-  text-align: center;
   display: none;
+  text-align: center;
 }
 
 .success-message {
@@ -196,113 +212,7 @@ body, html {
   border: 1px solid #f5c6cb;
 }
 
-/* JSON Text Box */
-#jsonTextBox {
-  width: 100%;
-  max-width: 100%;
-  margin: 1rem auto;
-  padding: 1rem;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  border: 1px solid #eeff00;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-/* Utility Classes */
+/* Utility */
 .hidden {
   display: none;
-}
-
-.save-btn {
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: bold;
-}
-
-.save-btn:hover {
-  background-color: #3a80d2;
-}
-
-#editor {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.color-grid {
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  gap: 0px; /* the gap is annoying */
-  margin: 1rem auto;
-  justify-content: center;
-  width: fit-content;
-
-}
-
-.controls-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.color-controls,
-.action-buttons,
-.json-controls {
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.action-buttons button,
-.json-controls button {
-  padding: 0.8rem 1.5rem;
-  font-weight: bold;
-  border-radius: 4px;
-  border: none;
-  background-color: #4a90e2;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.action-buttons button:hover,
-.json-controls button:hover {
-  background-color: #3a80d2;
-}
-
-
-#output-container {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-.save-preset-container {
-  flex-wrap: wrap;
-  text-align: center;
-  justify-content: center;
-}
-
-
-.tooltip {
-  border: 1px solid #ccc;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.editor-title {
-  font-size: 1.5rem;
-  font-weight: bold;
 }
