@@ -3,6 +3,14 @@
 {% block extra_css %}
 <link rel="stylesheet" href="/static/css/l_r.css">
 <link rel="stylesheet" href="/static/css/home.css">
+<style>
+    .form-error {
+        color: #ff4d4d;
+        font-size: 0.85rem;
+        margin-top: 2px;
+        margin-bottom: 10px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,35 +22,65 @@
     <h2 style="text-align: center; margin-bottom: 25px; color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);">Create Your Account</h2>
     
     <form id="register-form" action="{{ url_for('register') }}" method="POST">
+        {{ form.hidden_tag() }}
+        
         <label for="email" class="theme-label">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+        {{ form.email(placeholder="Enter your email address", class="input-field") }}
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
         <label for="fname" class="theme-label">First Name:</label>
-        <input type="text" id="fname" name="fname" placeholder="Enter your first name" required>
+        {{ form.fname(placeholder="Enter your first name", class="input-field") }}
+        {% if form.fname.errors %}
+            {% for error in form.fname.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
         <label for="lname" class="theme-label">Last Name:</label>
-        <input type="text" id="lname" name="lname" placeholder="Enter your last name" required>
+        {{ form.lname(placeholder="Enter your last name", class="input-field") }}
+        {% if form.lname.errors %}
+            {% for error in form.lname.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
-        <label for="new_password" class="theme-label">Password:</label>
-        <input type="password" id="new_password" name="new_password" placeholder="Create a secure password" required>
+        <label for="password" class="theme-label">Password:</label>
+        {{ form.password(placeholder="Create a secure password", class="input-field") }}
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
         <label for="confirm_password" class="theme-label">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+        {{ form.confirm_password(placeholder="Confirm your password", class="input-field") }}
+        {% if form.confirm_password.errors %}
+            {% for error in form.confirm_password.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
         <label for="secret_question" class="theme-label">Secret Question:</label>
-        <select id="secret_question" name="secret_question" required>
-            <option value="" disabled selected>Select a question</option>
-            <option value="What was your first pet's name?">What was your first pet's name?</option>
-            <option value="In what city were you born?">In what city were you born?</option>
-            <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-            <option value="What high school did you attend?">What high school did you attend?</option>
-            <option value="What was your childhood nickname?">What was your childhood nickname?</option>
-        </select>
+        {{ form.secret_question(class="input-field") }}
+        {% if form.secret_question.errors %}
+            {% for error in form.secret_question.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
         <label for="secret_answer" class="theme-label">Answer:</label>
-        <input type="text" id="secret_answer" name="secret_answer" placeholder="Enter your answer" required>
+        {{ form.secret_answer(placeholder="Enter your answer", class="input-field") }}
+        {% if form.secret_answer.errors %}
+            {% for error in form.secret_answer.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
         
-        <button type="submit">Create Account</button>
+        {{ form.submit(class="btn") }}
     </form>
     
     <p id="error-message" style="display: none;">Passwords do not match!</p>

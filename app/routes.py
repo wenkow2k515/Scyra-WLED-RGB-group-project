@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.exc import IntegrityError
 
 from . import app
 from .models import db, User, UploadedData, SharedData
@@ -68,13 +69,15 @@ def register():
     
     if form.validate_on_submit():
         # This automatically checks CSRF token
-        hashed_password = generate_password_hash(form.password.data)
+        hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
         
         user = User(
             email=form.email.data, 
             password=hashed_password,
             fname=form.fname.data,
-            lname=form.lname.data
+            lname=form.lname.data,
+            secret_question=form.secret_question.data,
+            secret_answer=form.secret_answer.data
         )
         
         db.session.add(user)
