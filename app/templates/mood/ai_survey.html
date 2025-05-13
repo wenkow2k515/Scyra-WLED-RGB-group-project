@@ -1,0 +1,269 @@
+{% extends "body.html" %}
+
+{# 
+  NOTE: This template is deprecated since we've integrated AI feedback directly 
+  into the regular mood survey workflow. It's kept for reference purposes only.
+#}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+<style>
+    .mood-form {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.2);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        margin-bottom: 25px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .slider-container {
+        margin: 10px 0;
+    }
+    
+    .slider {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 10px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgb(0, 170, 255);
+        cursor: pointer;
+    }
+    
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 5px;
+    }
+    
+    .radio-options {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        resize: vertical;
+    }
+    
+    .submit-button {
+        background: linear-gradient(to right, #0066ff, #00aaff);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    .submit-button:hover {
+        background: linear-gradient(to right, #0055dd, #0099ee);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 100, 255, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Use semantic main tag for primary content -->
+<main class="mood-container">
+    <!-- ======== BACKGROUND ELEMENTS ======== -->
+    <div class="led-bg" aria-hidden="true"></div>
+    <div class="bg-gradient" aria-hidden="true"></div>
+
+    <!-- ======== PAGE HEADER ======== -->
+    <header class="page-header">
+        <h1>AI Mood Analysis</h1>
+        <p class="subtitle">Get personalized feedback and lighting based on your current mood</p>
+    </header>
+    
+    <!-- ======== ALERT MESSAGES ======== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alerts-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- ======== SURVEY FORM ======== -->
+    <div class="mood-form-container">
+        <form class="mood-form" method="POST" action="{{ url_for('mood.ai_analysis') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="form-group">
+                <label for="energy">Energy Level</label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="energy" name="energy" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+                <div class="slider-description">
+                    <span class="min-label">Low Energy</span>
+                    <span class="max-label">High Energy</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="happiness">Happiness Level</label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="happiness" name="happiness" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+                <div class="slider-description">
+                    <span class="min-label">Sad</span>
+                    <span class="max-label">Happy</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="stress">Stress Level</label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="stress" name="stress" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+                <div class="slider-description">
+                    <span class="min-label">Relaxed</span>
+                    <span class="max-label">Stressed</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="anxiety">Anxiety Level</label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="anxiety" name="anxiety" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+                <div class="slider-description">
+                    <span class="min-label">Calm</span>
+                    <span class="max-label">Anxious</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="creativity">Creativity Level</label>
+                <div class="slider-container">
+                    <input type="range" class="slider" id="creativity" name="creativity" min="1" max="10" value="5">
+                    <div class="slider-labels">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                        <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+                <div class="slider-description">
+                    <span class="min-label">Not Creative</span>
+                    <span class="max-label">Very Creative</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Do you want to relax?</label>
+                <div class="radio-options">
+                    <div class="radio-option">
+                        <input type="radio" id="relax_yes" name="relax" value="yes">
+                        <label for="relax_yes">Yes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="relax_no" name="relax" value="no" checked>
+                        <label for="relax_no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Do you want to focus?</label>
+                <div class="radio-options">
+                    <div class="radio-option">
+                        <input type="radio" id="focus_yes" name="focus" value="yes">
+                        <label for="focus_yes">Yes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="focus_no" name="focus" value="no" checked>
+                        <label for="focus_no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="journal">How are you feeling today? (Optional)</label>
+                <textarea id="journal" name="journal" placeholder="Write a few sentences about your current mood, thoughts, or what's on your mind..."></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="submit-button">Get AI Recommendation</button>
+            </div>
+        </form>
+        
+        <!-- Back button -->
+        <div class="navigation-buttons">
+            <a href="{{ url_for('mood.index') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update slider values on change
+        const sliders = document.querySelectorAll('.slider');
+        sliders.forEach(slider => {
+            const valueDisplay = document.createElement('span');
+            valueDisplay.className = 'current-value';
+            valueDisplay.textContent = slider.value;
+            slider.parentNode.appendChild(valueDisplay);
+            
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+            });
+        });
+    });
+</script>
+{% endblock %} 
