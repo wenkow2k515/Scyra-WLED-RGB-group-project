@@ -1,3 +1,4 @@
+// LEDgrid.js
 document.addEventListener('DOMContentLoaded', () => {
   // State
   let wledAddress = '';
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.innerHTML = '';
       for (let i = 0; i < segmentCount; i++) {
         const cell = document.createElement('div');
-        cell.className   = 'cell';
+        cell.className   = 'cell selected';
         cell.dataset.idx = i;
         cell.style.backgroundColor = '#ffffff';
         cell.dataset.color = JSON.stringify([255,255,255]);
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.innerHTML = '';
       for (let i = 0; i < segmentCount; i++) {
         const cell = document.createElement('div');
-        cell.className   = 'cell';
+        cell.className   = 'cell selected';
         cell.dataset.idx = i;
         cell.style.backgroundColor = '#ffffff';
         cell.dataset.color = JSON.stringify([255,255,255]);
@@ -129,16 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Default: select all, 50% blue
-  defaultBtn.addEventListener('click', () => {
-    briSlider.value = 128;
-    briValue.textContent = '128';
-    document.querySelectorAll('.cell').forEach(cell => {
-      cell.classList.add('selected');
-      cell.style.backgroundColor = '#0000ff';
-      cell.dataset.color = JSON.stringify([0,0,255]);
-      cell.dataset.bri   = '128';
+  if (defaultBtn) {
+    defaultBtn.addEventListener('click', () => {
+      briSlider.value = 128;
+      briValue.textContent = '128';
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.add('selected');
+        cell.style.backgroundColor = '#0000ff';
+        cell.dataset.color = JSON.stringify([0,0,255]);
+        cell.dataset.bri   = '128';
+      });
     });
-  });
+  }
 
   // Generate JSON (solid fx:0)
   createBtn.addEventListener('click', () => {
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const cell  = grid.querySelector(`.cell[data-idx="${i}"]`);
       const color = JSON.parse(cell.dataset.color);
-      const bri   = parseInt(cell.dataset.bri,10);
+      const bri   = parseInt(cell.dataset.bri, 10);
 
       segments.push({
         start,
@@ -161,9 +164,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    const preset = { on: true, seg: segments };
-    output.textContent = JSON.stringify(preset, null, 2);
+    const preset     = { on: true, seg: segments };
+    const jsonString = JSON.stringify(preset, null, 2);
+
+    // still set the output text so copy/send work,
+    // but the <pre> is hidden via CSS
+    output.textContent = jsonString;
+
+    // un-hide the container so the buttons (and heading) appear
     outputContainer.classList.remove('hidden');
+
+    // show only the two JSON action buttons
+    document.querySelector('.json-controls').style.display = 'flex';
+
+    // show the save-to-account & public-toggle UI
+    document.querySelector('.save-preset-container').style.display = 'flex';
   });
 
   // Copy JSON
@@ -201,22 +216,18 @@ document.addEventListener('DOMContentLoaded', () => {
     saveBtn.addEventListener('click', function() {
       // First, make sure to generate the JSON (if it hasn't been generated already)
       if (outputContainer.classList.contains('hidden')) {
-        // Trigger the createBtn click to generate JSON first
         createBtn.click();
       }
       
       // Get preset name
-      const presetName = prompt("Name your preset:", 
-          preset_name || "");
-      
-      if (!presetName || presetName.trim() === "") return; // User canceled or input is empty
+      const presetName = prompt("Name your preset:", preset_name || "");
+      if (!presetName || presetName.trim() === "") return;
       
       // Get RGB configuration data
       const rgbData = getCurrentRgbConfiguration();
       
       // Get public option
       const isPublic = document.getElementById('isPublic')?.checked || false;
-      console.log("Is preset public:", isPublic);
       
       // Show loading state
       saveBtn.disabled = true;
@@ -224,172 +235,122 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Send data to server
       fetch('/save-preset', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              preset_name: presetName,
-              preset_data: rgbData,
-              is_public: isPublic,
-              preset_id: preset_id || null
-          })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          preset_name: presetName,
+          preset_data: rgbData,
+          is_public: isPublic,
+          preset_id: preset_id || null
+        })
       })
       .then(response => response.json())
       .then(data => {
-          // Reset button
-          saveBtn.disabled = false;
-          saveBtn.textContent = "Save to Account";
-          
-          // Show feedback
-          const messageEl = document.getElementById('saveMessage');
-          if (messageEl) {
-            messageEl.style.display = 'block';
-            
-            if (data.success) {
-                messageEl.className = 'feedback-message success-message';
-                messageEl.textContent = data.message || "Preset saved successfully!";
-            } else {
-                messageEl.className = 'feedback-message error-message';
-                messageEl.textContent = data.error || "Error saving preset";
-            }
-            
-            setTimeout(() => {
-                messageEl.style.display = 'none';
-            }, 3000);
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save to Account";
+        const messageEl = document.getElementById('saveMessage');
+        if (messageEl) {
+          messageEl.style.display = 'block';
+          if (data.success) {
+            messageEl.className = 'feedback-message success-message';
+            messageEl.textContent = data.message || "Preset saved successfully!";
+          } else {
+            messageEl.className = 'feedback-message error-message';
+            messageEl.textContent = data.error || "Error saving preset";
           }
+          setTimeout(() => messageEl.style.display = 'none', 3000);
+        }
       })
       .catch(error => {
-          console.error('Error:', error);
-          saveBtn.disabled = false;
-          saveBtn.textContent = "Save to Account";
-          
-          const messageEl = document.getElementById('saveMessage');
-          if (messageEl) {
-            messageEl.style.display = 'block';
-            messageEl.className = 'feedback-message error-message';
-            messageEl.textContent = "Error saving preset";
-            
-            setTimeout(() => {
-                messageEl.style.display = 'none';
-            }, 3000);
-          }
+        console.error('Error:', error);
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save to Account";
+        const messageEl = document.getElementById('saveMessage');
+        if (messageEl) {
+          messageEl.style.display = 'block';
+          messageEl.className = 'feedback-message error-message';
+          messageEl.textContent = "Error saving preset";
+          setTimeout(() => messageEl.style.display = 'none', 3000);
+        }
       });
     });
   }
   
   // Helper function - Get current RGB configuration
   function getCurrentRgbConfiguration() {
-      // Get all cells and their colors
-      const cells = document.querySelectorAll('.cell');
-      const cellsData = Array.from(cells).map(cell => {
-          // Use existing dataset structure
-          const colorData = cell.dataset.color ? JSON.parse(cell.dataset.color) : [0,0,0];
-          const r = colorData[0];
-          const g = colorData[1];
-          const b = colorData[2];
-          
-          return {
-              index: parseInt(cell.dataset.idx || 0),
-              color: `rgb(${r},${g},${b})`,
-              selected: cell.classList.contains('selected')
-          };
-      });
-      
-      // Get primary color from color picker
-      const primaryColor = colorPicker ? colorPicker.value.substring(1) : 'ffffff'; // Remove #
-      
-      // Get brightness value
-      const brightness = briSlider ? parseInt(briSlider.value) : 255;
-      
-      // Add WLED-specific data for restoring presets
+    const cells = document.querySelectorAll('.cell');
+    const cellsData = Array.from(cells).map(cell => {
+      const colorData = cell.dataset.color ? JSON.parse(cell.dataset.color) : [0,0,0];
+      const [r, g, b] = colorData;
       return {
-          primary_color: primaryColor,
-          brightness: brightness,
-          cells: cellsData,
-          wled_config: {
-              segmentCount: segmentCount,
-              segmentSize: segmentSize,
-              totalLEDs: totalLEDs
-          }
+        index: parseInt(cell.dataset.idx || 0),
+        color: `rgb(${r},${g},${b})`,
+        selected: cell.classList.contains('selected')
       };
+    });
+    const primaryColor = colorPicker.value.substring(1);
+    const brightness = parseInt(briSlider.value);
+    return {
+      primary_color: primaryColor,
+      brightness,
+      cells: cellsData,
+      wled_config: { segmentCount, segmentSize, totalLEDs }
+    };
   }
 
   // Apply preset data if available
   if (window.preset_data) {
-    console.log("Loading preset data:", window.preset_data);
-    
-    // Skip setup phase, go directly to editor
     setupContainer.classList.add('hidden');
     editor.classList.remove('hidden');
-    
-    // Set grid dimensions based on saved preset or use defaults
+
     if (window.preset_data.wled_config) {
       segmentCount = window.preset_data.wled_config.segmentCount || 10;
       segmentSize = window.preset_data.wled_config.segmentSize || 1;
       totalLEDs = window.preset_data.wled_config.totalLEDs || 10;
     } else {
-      // Default to debug mode (10 cells)
       segmentCount = 10;
       segmentSize = 1;
       totalLEDs = 10;
     }
-    
-    // Build grid
+
     grid.innerHTML = '';
     for (let i = 0; i < segmentCount; i++) {
       const cell = document.createElement('div');
-      cell.className = 'cell';
+      cell.className   = 'cell selected';
       cell.dataset.idx = i;
-      cell.style.backgroundColor = '#000000'; // Default black
+      cell.style.backgroundColor = '#000000';
       cell.dataset.color = JSON.stringify([0,0,0]);
-      cell.dataset.bri = '255';
+      cell.dataset.bri   = '255';
       grid.appendChild(cell);
     }
-    
-    // Apply cell colors from preset data
+
     if (window.preset_data.cells && Array.isArray(window.preset_data.cells)) {
       window.preset_data.cells.forEach(cellData => {
         const cell = grid.querySelector(`.cell[data-idx="${cellData.index}"]`);
-        if (cell) {
-          // Apply color
-          cell.style.backgroundColor = cellData.color;
-          
-          // Convert the RGB color to dataset format
-          const rgbMatch = cellData.color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-          if (rgbMatch) {
-            const r = parseInt(rgbMatch[1]);
-            const g = parseInt(rgbMatch[2]);
-            const b = parseInt(rgbMatch[3]);
-            cell.dataset.color = JSON.stringify([r, g, b]);
-          }
-          
-          // Add selection if in view mode
-          if (window.view_mode && cellData.selected) {
-            cell.classList.add('selected');
-          }
+        if (!cell) return;
+        cell.style.backgroundColor = cellData.color;
+        const rgbMatch = cellData.color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (rgbMatch) {
+          const [_, r, g, b] = rgbMatch.map(Number);
+          cell.dataset.color = JSON.stringify([r, g, b]);
+        }
+        if (window.view_mode && cellData.selected) {
+          cell.classList.add('selected');
         }
       });
     }
-    
-    // Apply primary color to color picker
+
     if (window.preset_data.primary_color && colorPicker) {
       colorPicker.value = '#' + window.preset_data.primary_color;
     }
-    
-    // Apply brightness to slider
     if (window.preset_data.brightness !== undefined && briSlider) {
       briSlider.value = window.preset_data.brightness;
-      if (briValue) briValue.textContent = window.preset_data.brightness;
+      briValue.textContent = window.preset_data.brightness;
     }
-    
-    // If in view mode, disable interactions
     if (window.view_mode) {
       document.querySelectorAll('.cell').forEach(cell => {
         cell.style.pointerEvents = 'none';
       });
     }
-    
-    console.log("Preset data applied to grid");
   }
 });
