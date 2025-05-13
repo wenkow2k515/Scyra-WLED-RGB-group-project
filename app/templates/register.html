@@ -22,7 +22,7 @@
     <h2 style="text-align: center; margin-bottom: 25px; color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);">Create Your Account</h2>
     
     <form id="register-form" action="{{ url_for('register') }}" method="POST">
-        {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
         
         <label for="email" class="theme-label">Email:</label>
         {{ form.email(placeholder="Enter your email address", class="input-field") }}
