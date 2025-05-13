@@ -2,6 +2,82 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+<style>
+    /* Additional styling for recent mood history */
+    .recent-entries .history-entry {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+    }
+    
+    .recent-entries .entry-date {
+        font-weight: bold;
+        color: #00aaff;
+        margin-bottom: 10px;
+    }
+    
+    .entry-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .mini-metric {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+    
+    .mini-label {
+        font-size: 0.8rem;
+        color: #e0e0e0;
+        margin-bottom: 3px;
+    }
+    
+    .mini-bar {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .mini-fill {
+        height: 100%;
+        border-radius: 3px;
+    }
+    
+    .mini-value {
+        font-size: 0.7rem;
+        color: #a0a0a0;
+        margin-top: 2px;
+        text-align: right;
+    }
+    
+    .mini-metric:nth-child(1) .mini-fill { background-color: rgba(255, 99, 132, 0.8); }
+    .mini-metric:nth-child(2) .mini-fill { background-color: rgba(54, 162, 235, 0.8); }
+    .mini-metric:nth-child(3) .mini-fill { background-color: rgba(255, 206, 86, 0.8); }
+    .mini-metric:nth-child(4) .mini-fill { background-color: rgba(75, 192, 192, 0.8); }
+    .mini-metric:nth-child(5) .mini-fill { background-color: rgba(153, 102, 255, 0.8); }
+    .mini-metric:nth-child(6) .mini-fill { background-color: rgba(255, 159, 64, 0.8); }
+    .mini-metric:nth-child(7) .mini-fill { background-color: rgba(46, 204, 113, 0.8); }
+    
+    .view-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .view-link:hover {
+        color: #43bfdf;
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -160,6 +236,7 @@
                                     <div class="mini-bar">
                                         <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%"></div>
                                     </div>
+                                    <span class="mini-value">{{ entry.energy_level }}/10</span>
                                 </div>
                                 
                                 <div class="mini-metric">
@@ -167,6 +244,23 @@
                                     <div class="mini-bar">
                                         <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%"></div>
                                     </div>
+                                    <span class="mini-value">{{ entry.happiness }}/10</span>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Anxiety</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.anxiety * 10 }}%"></div>
+                                    </div>
+                                    <span class="mini-value">{{ entry.anxiety }}/10</span>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Stress</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.stress * 10 }}%"></div>
+                                    </div>
+                                    <span class="mini-value">{{ entry.stress }}/10</span>
                                 </div>
                                 
                                 <div class="mini-metric">
@@ -174,6 +268,15 @@
                                     <div class="mini-bar">
                                         <div class="mini-fill" style="width: {{ entry.focus * 10 }}%"></div>
                                     </div>
+                                    <span class="mini-value">{{ entry.focus }}/10</span>
+                                </div>
+                                
+                                <div class="mini-metric">
+                                    <span class="mini-label">Irritability</span>
+                                    <div class="mini-bar">
+                                        <div class="mini-fill" style="width: {{ entry.irritability * 10 }}%"></div>
+                                    </div>
+                                    <span class="mini-value">{{ entry.irritability }}/10</span>
                                 </div>
                                 
                                 <div class="mini-metric">
@@ -181,9 +284,10 @@
                                     <div class="mini-bar">
                                         <div class="mini-fill" style="width: {{ entry.calmness * 10 }}%"></div>
                                     </div>
+                                    <span class="mini-value">{{ entry.calmness }}/10</span>
                                 </div>
                             </div>
-                            <a href="{{ url_for('mood.results', mood_entry_id=entry.id) }}" class="view-link">View</a>
+                            <a href="{{ url_for('mood.results', mood_entry_id=entry.id) }}" class="view-link">View Details</a>
                         </div>
                         {% endfor %}
                     </div>
@@ -336,14 +440,47 @@
                             tension: 0.4
                         },
                         {
+                            label: 'Anxiety',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.anxiety }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Stress',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.stress }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            tension: 0.4
+                        },
+                        {
                             label: 'Focus',
                             data: [
                                 {% for entry in mood_entries %}
                                 {{ entry.focus }},
                                 {% endfor %}
                             ],
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Irritability',
+                            data: [
+                                {% for entry in mood_entries %}
+                                {{ entry.irritability }},
+                                {% endfor %}
+                            ],
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
                             tension: 0.4
                         },
                         {
@@ -353,27 +490,67 @@
                                 {{ entry.calmness }},
                                 {% endfor %}
                             ],
-                            borderColor: 'rgba(153, 102, 255, 1)',
-                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.2)',
                             tension: 0.4
                         }
                     ]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 10,
+                                font: {
+                                    size: 12
+                                }
+                            }
                         },
                         title: {
                             display: true,
-                            text: 'Mood Trends'
+                            text: 'Mood Trends',
+                            color: '#e0e0e0',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(0, 170, 255, 0.3)',
+                            borderWidth: 1,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '/10';
+                                }
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 10
+                            max: 10,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#a0a0a0',
+                                stepSize: 2
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#a0a0a0'
+                            }
                         }
                     }
                 }
