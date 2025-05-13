@@ -58,7 +58,7 @@ def get_color_recommendation(mood_data):
             - calmness: How calm/peaceful the person feels
             
     Returns:
-        A dictionary with color and effect recommendations
+        A dictionary with color recommendations
     """
     # Extract mood values (all 1-10 scale)
     energy = mood_data.get('energy_level', 5)
@@ -78,7 +78,6 @@ def get_color_recommendation(mood_data):
     primary_color = COLORS['cool_white']
     secondary_color = COLORS['blue']
     accent_color = COLORS['light_blue']
-    effect_name = 'Solid'
     
     # Default brightness (0-255)
     brightness = 180  # Moderate default
@@ -102,7 +101,6 @@ def get_color_recommendation(mood_data):
         primary_color = COLORS['cyan'] if focus > 5 else COLORS['teal']
         secondary_color = COLORS['light_blue']
         accent_color = COLORS['mint']
-        effect_name = random.choice(EFFECTS['calm'])
     
     # 2. ENERGETIC & HAPPY - Orange/Yellow/Amber tones
     elif energy > 7 and happiness > 6:
@@ -114,70 +112,60 @@ def get_color_recommendation(mood_data):
             primary_color = COLORS['orange']
             secondary_color = COLORS['amber']
             accent_color = COLORS['yellow']
-        effect_name = random.choice(EFFECTS['energetic'])
     
     # 3. LOW ENERGY - Orange/Red gentle stimulation
     elif energy < 4 and happiness < 6:
         primary_color = COLORS['amber']
         secondary_color = COLORS['warm_white']
         accent_color = COLORS['orange']
-        effect_name = 'Breathing'  # Gentle breathing effect
     
     # 4. ANXIOUS/STRESSED - Blue calming tones
     elif anxiety > 7 or stress > 7:
         primary_color = COLORS['deep_blue']
         secondary_color = COLORS['light_blue']
         accent_color = COLORS['teal']
-        effect_name = 'Breathing'  # Calming effect
     
     # 5. IRRITABLE - Lavender/Blue soothing tones
     elif irritability > 7:
         primary_color = COLORS['lavender']
         secondary_color = COLORS['deep_blue']
         accent_color = COLORS['blue']
-        effect_name = 'Solid'  # Stable effect
     
     # 6. UNFOCUSED but needs concentration - Green/Blue focus enhancement
     elif focus < 4 and energy > 3:
         primary_color = COLORS['green']
         secondary_color = COLORS['teal']
         accent_color = COLORS['blue']
-        effect_name = random.choice(EFFECTS['focus'])
     
     # 7. CREATIVE state - Purple/Pink/Magenta
     elif focus > 5 and happiness > 5 and energy > 5:
         primary_color = COLORS['purple']
         secondary_color = COLORS['magenta']
         accent_color = COLORS['pink']
-        effect_name = random.choice(EFFECTS['creative'])
     
     # 8. BALANCE needed (mixed signals) - Teal/Green balance restoration
     elif abs(positive_mood - negative_mood) < 2:
         primary_color = COLORS['teal']
         secondary_color = COLORS['green']
         accent_color = COLORS['blue']
-        effect_name = random.choice(EFFECTS['balance'])
     
     # 9. LOW HAPPINESS - Yellow/Amber to elevate mood
     elif happiness < 4 and energy > 3:
         primary_color = COLORS['yellow']
         secondary_color = COLORS['amber']
         accent_color = COLORS['warm_white']
-        effect_name = 'Solid'
     
     # 10. TIRED BUT HAPPY - Gentle Yellow/White
     elif energy < 4 and happiness > 6:
         primary_color = COLORS['warm_white']
         secondary_color = COLORS['yellow']
         accent_color = COLORS['amber']
-        effect_name = 'Solid'
     
     # Prepare the result
     result = {
         'primary_color': primary_color,
         'secondary_color': secondary_color,
         'accent_color': accent_color,
-        'effect_name': effect_name,
         'brightness': brightness,
         'timestamp': datetime.now().isoformat()
     }

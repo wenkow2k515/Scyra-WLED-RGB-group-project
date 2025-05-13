@@ -101,7 +101,6 @@ def generate_enhanced_color_suggestion(mood_entry):
         primary_color=recommendation['primary_color'],
         secondary_color=recommendation['secondary_color'],
         accent_color=recommendation['accent_color'],
-        effect_name=recommendation['effect_name'],
         brightness=recommendation['brightness']
     )
     
@@ -200,8 +199,7 @@ def apply_suggestion(suggestion_id):
         'primary': suggestion.primary_color,
         'secondary': suggestion.secondary_color,
         'accent': suggestion.accent_color,
-        'brightness': suggestion.brightness,
-        'effect': suggestion.effect_name
+        'brightness': suggestion.brightness
     }
     
     # Return the colors to be applied via JavaScript
