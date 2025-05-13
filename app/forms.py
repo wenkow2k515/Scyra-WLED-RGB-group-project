@@ -9,26 +9,23 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class RegisterForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
     fname = StringField('First Name', validators=[DataRequired()])
     lname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', 
-                                    validators=[DataRequired(), EqualTo('password')])
-    secret_question = SelectField(
-        'Secret Question', 
-        choices=[
-            ('', 'Select a question'),
-            ('What was your first pet\'s name?', 'What was your first pet\'s name?'),
-            ('In what city were you born?', 'In what city were you born?'),
-            ('What is your mother\'s maiden name?', 'What is your mother\'s maiden name?'),
-            ('What high school did you attend?', 'What high school did you attend?'),
-            ('What was your childhood nickname?', 'What was your childhood nickname?')
-        ],
-        validators=[DataRequired()]
-    )
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(),
+        EqualTo('password', message='Passwords must match.')
+    ])
+    secret_question = SelectField('Secret Question', choices=[
+        ("What was your first pet's name?", "What was your first pet's name?"),
+        ("In what city were you born?", "In what city were you born?"),
+        ("What is your mother's maiden name?", "What is your mother's maiden name?"),
+        ("What high school did you attend?", "What high school did you attend?"),
+        ("What was your childhood nickname?", "What was your childhood nickname?")
+    ], validators=[DataRequired()])
     secret_answer = StringField('Answer', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    submit = SubmitField('Create Account')
 
 class PresetForm(FlaskForm):
     preset_name = StringField('Preset Name', validators=[DataRequired()])
@@ -56,3 +53,15 @@ class MoodSurveyForm(FlaskForm):
     journal = TextAreaField('Journal Entry', validators=[Optional()])
     
     submit = SubmitField('Submit')
+
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Continue')
+
+class ResetPasswordForm(FlaskForm):
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(),
+        EqualTo('new_password', message='Passwords must match.')
+    ])
+    submit = SubmitField('Reset Password')
