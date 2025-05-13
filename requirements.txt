@@ -6,7 +6,7 @@ Flask-WTF==1.2.1
 Flask-Migrate==4.0.5
 
 # Database
-SQLAlchemy==2.0.23
+SQLAlchemy==2.0.40
 alembic==1.13.0  # Used by Flask-Migrate
 
 # Forms
