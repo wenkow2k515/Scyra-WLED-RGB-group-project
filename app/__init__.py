@@ -41,10 +41,11 @@ def create_app(config_name='default'):
     with app.app_context():
         # Import and register blueprints inside app context
         try:
-            from .mood_routes import mood
+            from app.mood_routes import mood
             app.register_blueprint(mood)
-        except ImportError:
-            print("Mood blueprint could not be imported - will be skipped")
+            print("Mood blueprint registered successfully.")
+        except ImportError as e:
+            print(f"Mood blueprint could not be imported - will be skipped. Error: {e}")
     
     return app
 
@@ -52,4 +53,4 @@ def create_app(config_name='default'):
 app = create_app('development')
 
 # Import routes at the bottom to avoid circular imports
-from . import routes
+from app import routes

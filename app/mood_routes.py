@@ -33,7 +33,7 @@ def index():
     """Mood analysis dashboard"""
     # Get user's mood entries (most recent first)
     mood_entries = MoodEntry.query.filter_by(user_id=current_user.id).order_by(MoodEntry.timestamp.desc()).all()
-    return render_template('index.html', title='Mood Dashboard', mood_entries=mood_entries)
+    return render_template('mood/index.html', title='Mood Dashboard', mood_entries=mood_entries)
 
 @mood.route('/survey', methods=['GET', 'POST'])
 @login_required
@@ -77,7 +77,7 @@ def survey():
         flash('Mood survey submitted successfully!', 'success')
         return redirect(url_for('mood.results', mood_entry_id=mood_entry.id))
 
-    return render_template('survey.html', title='Mood Survey', form=form)
+    return render_template('mood/survey.html', title='Mood Survey', form=form)
 
 def generate_enhanced_color_suggestion(mood_entry):
     """Generate color suggestion based on mood metrics using the enhanced algorithm"""
@@ -173,7 +173,7 @@ def results(mood_entry_id):
     color_suggestion = ColorSuggestion.query.filter_by(mood_entry_id=mood_entry_id).first()
     
     return render_template(
-        'results.html', 
+        'mood/results.html', 
         title='Mood Analysis Results', 
         mood_entry=mood_entry,
         color_suggestion=color_suggestion
@@ -241,7 +241,7 @@ def history():
     mood_entries = MoodEntry.query.filter_by(user_id=current_user.id).order_by(MoodEntry.timestamp.desc()).all()
     
     return render_template(
-        'history.html',
+        'mood/history.html',
         title='Mood History',
         mood_entries=mood_entries
     )
