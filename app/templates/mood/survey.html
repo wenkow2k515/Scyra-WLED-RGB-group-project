@@ -21,7 +21,8 @@
     <div class="survey-container">
         <form id="mood-survey-form" method="POST" action="{{ url_for('mood.survey') }}">
             {{ form.hidden_tag() }}  <!-- CSRF Token -->
-            <!-- Energy Level -->
+            
+            <!-- 1. Energy Level -->
             <div class="form-group mood-slider">
                 <label for="energy_level">
                     <span class="question">How is your energy level right now?</span>
@@ -38,7 +39,7 @@
                 </div>
             </div>
 
-            <!-- Happiness -->
+            <!-- 2. Happiness -->
             <div class="form-group mood-slider">
                 <label for="happiness">
                     <span class="question">How happy do you feel?</span>
@@ -55,7 +56,7 @@
                 </div>
             </div>
 
-            <!-- Anxiety -->
+            <!-- 3. Anxiety -->
             <div class="form-group mood-slider">
                 <label for="anxiety">
                     <span class="question">How anxious do you feel?</span>
@@ -72,7 +73,7 @@
                 </div>
             </div>
 
-            <!-- Stress -->
+            <!-- 4. Stress -->
             <div class="form-group mood-slider">
                 <label for="stress">
                     <span class="question">How stressed do you feel?</span>
@@ -88,13 +89,64 @@
                     <p class="help-text">High: feeling overwhelmed, tense, or under pressure</p>
                 </div>
             </div>
-
-            <!-- Notes Field -->
-            <div class="form-group">
-                <label for="notes">
-                    <span class="question">Any specific thoughts or feelings? (Optional)</span>
+            
+            <!-- 5. Focus (NEW) -->
+            <div class="form-group mood-slider">
+                <label for="focus">
+                    <span class="question">How focused do you feel?</span>
+                    <span class="value-display"><span id="focus_display">5</span>/10</span>
                 </label>
-                <textarea id="notes" name="notes" rows="3" placeholder="Enter any additional notes about your current mood or what you'd like to achieve with your lighting..."></textarea>
+                <div class="slider-container">
+                    <span class="slider-label low">Unfocused</span>
+                    <input type="range" id="focus" name="focus" min="1" max="10" value="5" class="mood-range">
+                    <span class="slider-label high">Very Focused</span>
+                </div>
+                <div class="slider-help">
+                    <p class="help-text">Low: easily distracted, scattered thoughts, difficulty concentrating</p>
+                    <p class="help-text">High: attentive, mentally clear, able to concentrate well</p>
+                </div>
+            </div>
+            
+            <!-- 6. Irritability (NEW) -->
+            <div class="form-group mood-slider">
+                <label for="irritability">
+                    <span class="question">How irritable do you feel?</span>
+                    <span class="value-display"><span id="irritability_display">5</span>/10</span>
+                </label>
+                <div class="slider-container">
+                    <span class="slider-label low">Not Irritable</span>
+                    <input type="range" id="irritability" name="irritability" min="1" max="10" value="5" class="mood-range">
+                    <span class="slider-label high">Very Irritable</span>
+                </div>
+                <div class="slider-help">
+                    <p class="help-text">Low: patient, even-tempered, tolerant</p>
+                    <p class="help-text">High: easily frustrated, short-tempered, agitated</p>
+                </div>
+            </div>
+            
+            <!-- 7. Calmness (NEW) -->
+            <div class="form-group mood-slider">
+                <label for="calmness">
+                    <span class="question">How calm do you feel?</span>
+                    <span class="value-display"><span id="calmness_display">5</span>/10</span>
+                </label>
+                <div class="slider-container">
+                    <span class="slider-label low">Not Calm</span>
+                    <input type="range" id="calmness" name="calmness" min="1" max="10" value="5" class="mood-range">
+                    <span class="slider-label high">Very Calm</span>
+                </div>
+                <div class="slider-help">
+                    <p class="help-text">Low: restless, unsettled, tense</p>
+                    <p class="help-text">High: tranquil, serene, at peace</p>
+                </div>
+            </div>
+
+            <!-- Journal Field (RENAMED from Notes) -->
+            <div class="form-group">
+                <label for="journal">
+                    <span class="question">Describe your day briefly:</span>
+                </label>
+                <textarea id="journal" name="journal" rows="4" placeholder="How was your day? What activities did you do? How were your interactions with others? What's on your mind?"></textarea>
             </div>
 
             <!-- Submit Button -->
@@ -108,43 +160,55 @@
     <!-- ======== COLOR PSYCHOLOGY INFO ======== -->
     <div class="info-box">
         <h3>About Color Psychology</h3>
-        <p>Different colors can influence our mood and emotions in various ways:</p>
+        <p>Different colors can influence our mood and emotions in various ways. Our system uses these principles to create personalized lighting recommendations:</p>
         
         <div class="color-psychology-grid">
             <div class="color-info">
                 <div class="color-swatch" style="background-color: #FF0000;"></div>
                 <h4>Red</h4>
-                <p>Increases energy, stimulates excitement and passion</p>
+                <p>Increases energy and stimulates excitement</p>
             </div>
             
             <div class="color-info">
-                <div class="color-swatch" style="background-color: #0000FF;"></div>
+                <div class="color-swatch" style="background-color: #0066FF;"></div>
                 <h4>Blue</h4>
-                <p>Promotes calmness, reduces anxiety, improves focus</p>
+                <p>Promotes calmness, reduces anxiety and stress</p>
             </div>
             
             <div class="color-info">
-                <div class="color-swatch" style="background-color: #FFFF00;"></div>
+                <div class="color-swatch" style="background-color: #FFEB3B;"></div>
                 <h4>Yellow</h4>
-                <p>Enhances happiness, optimism, and mental clarity</p>
+                <p>Enhances happiness, optimism, and energy</p>
             </div>
             
             <div class="color-info">
-                <div class="color-swatch" style="background-color: #00FF00;"></div>
+                <div class="color-swatch" style="background-color: #4CAF50;"></div>
                 <h4>Green</h4>
-                <p>Creates balance, encourages rest and restoration</p>
+                <p>Creates balance and improves focus</p>
             </div>
             
             <div class="color-info">
-                <div class="color-swatch" style="background-color: #A020F0;"></div>
+                <div class="color-swatch" style="background-color: #9C27B0;"></div>
                 <h4>Purple</h4>
-                <p>Encourages creativity, spirituality, and relaxation</p>
+                <p>Stimulates creativity and promotes relaxation</p>
             </div>
             
             <div class="color-info">
-                <div class="color-swatch" style="background-color: #FFA500;"></div>
+                <div class="color-swatch" style="background-color: #FF9800;"></div>
                 <h4>Orange</h4>
-                <p>Stimulates enthusiasm, warmth, and social interaction</p>
+                <p>Increases energy and boosts mood</p>
+            </div>
+            
+            <div class="color-info">
+                <div class="color-swatch" style="background-color: #009688;"></div>
+                <h4>Teal</h4>
+                <p>Balances emotions and creates clarity</p>
+            </div>
+            
+            <div class="color-info">
+                <div class="color-swatch" style="background-color: #00BCD4;"></div>
+                <h4>Cyan</h4>
+                <p>Enhances focus while maintaining calmness</p>
             </div>
         </div>
     </div>

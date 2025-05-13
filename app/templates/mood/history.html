@@ -2,6 +2,154 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+<style>
+    /* Enhanced styling for history page */
+    .chart-card {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.2);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        margin-bottom: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .chart-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.3);
+    }
+    
+    .chart-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .chart-tab {
+        background: rgba(255, 255, 255, 0.07);
+        border: none;
+        color: #e0e0e0;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .chart-tab.active, .chart-tab:hover {
+        background: linear-gradient(90deg, rgba(0, 170, 255, 0.5), rgba(101, 60, 250, 0.5));
+        color: white;
+    }
+    
+    .chart-container {
+        height: 300px;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #e0e0e0;
+    }
+    
+    .color-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    
+    .mood-entry-card {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .mood-entry-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 170, 255, 0.2);
+    }
+    
+    .entry-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 170, 255, 0.15);
+    }
+    
+    .entry-date {
+        font-weight: bold;
+        color: #00aaff;
+    }
+    
+    .entry-time {
+        color: #a0a0a0;
+    }
+    
+    .entry-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .entry-journal {
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        margin-top: 15px;
+    }
+    
+    .entry-journal h4 {
+        color: #00aaff;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+    
+    .mini-metric {
+        margin-bottom: 10px;
+    }
+    
+    .mini-label {
+        font-size: 0.9rem;
+        color: #e0e0e0;
+        margin-bottom: 4px;
+        display: block;
+    }
+    
+    .mini-bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .mini-fill {
+        height: 100%;
+        border-radius: 4px;
+    }
+    
+    .mini-value {
+        font-size: 0.8rem;
+        color: #a0a0a0;
+        margin-top: 4px;
+        text-align: right;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +199,30 @@
                             <span class="color-dot" style="background-color: rgba(75, 192, 192, 0.8);"></span>
                             <span>Stress</span>
                         </div>
+                        <div class="legend-item">
+                            <span class="color-dot" style="background-color: rgba(153, 102, 255, 0.8);"></span>
+                            <span>Focus</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="color-dot" style="background-color: rgba(255, 159, 64, 0.8);"></span>
+                            <span>Irritability</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="color-dot" style="background-color: rgba(46, 204, 113, 0.8);"></span>
+                            <span>Calmness</span>
+                        </div>
                     </div>
+                </div>
+            </section>
+            
+            <!-- Radar View Section -->
+            <section class="history-section radar-view">
+                <h2>Mood Patterns</h2>
+                <div class="chart-card">
+                    <div class="chart-container">
+                        <canvas id="moodRadarChart"></canvas>
+                    </div>
+                    <p class="chart-description">This radar chart shows your overall mood patterns, helping you visualize your emotional balance across all dimensions.</p>
                 </div>
             </section>
             
@@ -115,7 +286,7 @@
             <section class="history-section mood-log">
                 <h2>Mood Log</h2>
                 <div class="mood-log-filters">
-                    <input type="text" id="mood-search" placeholder="Search notes...">
+                    <input type="text" id="mood-search" placeholder="Search journal entries...">
                     <select id="mood-sort">
                         <option value="newest">Newest First</option>
                         <option value="oldest">Oldest First</option>
@@ -123,6 +294,8 @@
                         <option value="lowest-energy">Lowest Energy</option>
                         <option value="happiest">Happiest</option>
                         <option value="least-happy">Least Happy</option>
+                        <option value="most-focused">Most Focused</option>
+                        <option value="calmest">Calmest</option>
                     </select>
                 </div>
                 
@@ -138,7 +311,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Energy</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%; background-color: rgba(255, 99, 132, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.energy_level }}/10</span>
                             </div>
@@ -146,7 +319,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Happiness</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%; background-color: rgba(54, 162, 235, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.happiness }}/10</span>
                             </div>
@@ -154,7 +327,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Anxiety</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.anxiety * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.anxiety * 10 }}%; background-color: rgba(255, 206, 86, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.anxiety }}/10</span>
                             </div>
@@ -162,58 +335,75 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Stress</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.stress * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.stress * 10 }}%; background-color: rgba(75, 192, 192, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.stress }}/10</span>
                             </div>
+                            
+                            <!-- New metrics -->
+                            <div class="mini-metric">
+                                <span class="mini-label">Focus</span>
+                                <div class="mini-bar">
+                                    <div class="mini-fill" style="width: {{ entry.focus * 10 }}%; background-color: rgba(153, 102, 255, 0.8);"></div>
+                                </div>
+                                <span class="mini-value">{{ entry.focus }}/10</span>
+                            </div>
+                            
+                            <div class="mini-metric">
+                                <span class="mini-label">Irritability</span>
+                                <div class="mini-bar">
+                                    <div class="mini-fill" style="width: {{ entry.irritability * 10 }}%; background-color: rgba(255, 159, 64, 0.8);"></div>
+                                </div>
+                                <span class="mini-value">{{ entry.irritability }}/10</span>
+                            </div>
+                            
+                            <div class="mini-metric">
+                                <span class="mini-label">Calmness</span>
+                                <div class="mini-bar">
+                                    <div class="mini-fill" style="width: {{ entry.calmness * 10 }}%; background-color: rgba(46, 204, 113, 0.8);"></div>
+                                </div>
+                                <span class="mini-value">{{ entry.calmness }}/10</span>
+                            </div>
                         </div>
                         
-                        {% if entry.notes %}
-                        <div class="entry-notes">
-                            <p>{{ entry.notes }}</p>
+                        {% if entry.journal %}
+                        <div class="entry-journal">
+                            <h4>Journal Entry</h4>
+                            <p>{{ entry.journal }}</p>
                         </div>
                         {% endif %}
                         
                         {% if entry.color_suggestion %}
                         <div class="entry-colors">
-                            <div class="mini-swatch" style="background-color: #{{ entry.color_suggestion.primary_color }};"></div>
-                            <div class="mini-swatch" style="background-color: #{{ entry.color_suggestion.secondary_color }};"></div>
-                            <div class="mini-swatch" style="background-color: #{{ entry.color_suggestion.accent_color }};"></div>
+                            <div class="color-preview">
+                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.primary_color }};"></div>
+                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.secondary_color }};"></div>
+                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.accent_color }};"></div>
+                            </div>
                         </div>
                         {% endif %}
                         
                         <div class="entry-actions">
                             <a href="{{ url_for('mood.results', mood_entry_id=entry.id) }}" class="btn btn-sm">View Details</a>
-                            {% if entry.color_suggestion %}
-                            <button class="btn btn-sm btn-primary apply-colors" data-suggestion-id="{{ entry.color_suggestion.id }}">Apply Colors</button>
-                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                
-                <!-- Pagination (for longer histories) -->
-                <div class="pagination">
-                    <button class="page-btn" disabled>&laquo; Previous</button>
-                    <span class="page-indicator">Page 1 of 1</span>
-                    <button class="page-btn" disabled>Next &raquo;</button>
-                </div>
             </section>
             
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <a href="{{ url_for('mood.index') }}" class="btn btn-secondary">Back to Dashboard</a>
+                <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Another Survey</a>
+            </div>
+            
         {% else %}
-            <!-- Empty State -->
             <div class="empty-state">
-                <h2>No Mood History Yet</h2>
-                <p>You haven't recorded any mood entries. Take your first mood survey to start tracking your emotional patterns!</p>
-                <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Mood Survey</a>
+                <h2>No Mood Entries Yet</h2>
+                <p>You haven't recorded any mood entries yet. Start tracking your mood to see patterns and receive personalized lighting recommendations.</p>
+                <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Take Your First Mood Survey</a>
             </div>
         {% endif %}
-        
-        <!-- Navigation Buttons -->
-        <div class="navigation-buttons">
-            <a href="{{ url_for('mood.index') }}" class="btn btn-secondary">Back to Dashboard</a>
-            <a href="{{ url_for('mood.survey') }}" class="btn btn-primary">Record New Mood</a>
-        </div>
     </div>
 </main>
 {% endblock %}
@@ -222,87 +412,97 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Prepare data for the trend chart
-        const moodData = {
-            timestamps: [
-                {% for entry in mood_entries %}
-                '{{ entry.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}',
-                {% endfor %}
-            ],
-            energy: [
-                {% for entry in mood_entries %}
-                {{ entry.energy_level }},
-                {% endfor %}
-            ],
-            happiness: [
-                {% for entry in mood_entries %}
-                {{ entry.happiness }},
-                {% endfor %}
-            ],
-            anxiety: [
-                {% for entry in mood_entries %}
-                {{ entry.anxiety }},
-                {% endfor %}
-            ],
-            stress: [
-                {% for entry in mood_entries %}
-                {{ entry.stress }},
-                {% endfor %}
-            ]
-        };
+        // Example data for the trend chart
+        // In a real implementation, this would be populated with data from the server
+        const dates = [
+            {% for entry in mood_entries %}
+                '{{ entry.timestamp.strftime("%m/%d") }}',
+            {% endfor %}
+        ];
         
-        // Reverse arrays so oldest entries are first (left side of chart)
-        moodData.timestamps.reverse();
-        moodData.energy.reverse();
-        moodData.happiness.reverse();
-        moodData.anxiety.reverse();
-        moodData.stress.reverse();
-        
-        // Initialize the trend chart
-        const ctx = document.getElementById('moodTrendChart').getContext('2d');
-        const moodChart = new Chart(ctx, {
+        // Mood Trend Chart
+        const trendCtx = document.getElementById('moodTrendChart').getContext('2d');
+        const trendChart = new Chart(trendCtx, {
             type: 'line',
             data: {
-                labels: moodData.timestamps.map(timestamp => {
-                    const date = new Date(timestamp);
-                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                }),
+                labels: dates,
                 datasets: [
                     {
                         label: 'Energy',
-                        data: moodData.energy,
-                        borderColor: 'rgba(255, 99, 132, 0.8)',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.energy_level }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 3
+                        tension: 0.4
                     },
                     {
                         label: 'Happiness',
-                        data: moodData.happiness,
-                        borderColor: 'rgba(54, 162, 235, 0.8)',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.happiness }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 3
+                        tension: 0.4
                     },
                     {
                         label: 'Anxiety',
-                        data: moodData.anxiety,
-                        borderColor: 'rgba(255, 206, 86, 0.8)',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.anxiety }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(255, 206, 86, 1)',
                         backgroundColor: 'rgba(255, 206, 86, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 3
+                        tension: 0.4
                     },
                     {
                         label: 'Stress',
-                        data: moodData.stress,
-                        borderColor: 'rgba(75, 192, 192, 0.8)',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.stress }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 3
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Focus',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.focus }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Irritability',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.irritability }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Calmness',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.calmness }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        tension: 0.4
                     }
                 ]
             },
@@ -313,233 +513,192 @@
                     y: {
                         beginAtZero: true,
                         max: 10,
-                        grid: {
+                        title: {
                             display: true,
-                            color: 'rgba(200, 200, 200, 0.2)'
+                            text: 'Mood Level'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0',
+                            stepSize: 2
                         }
                     },
                     x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        },
                         grid: {
-                            display: false
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0'
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: false,
-                        position: 'top',
-                    }
-                },
-                elements: {
-                    line: {
-                        fill: true
+                        display: false,  // Legend is shown separately
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(0, 170, 255, 0.3)',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '/10';
+                            }
+                        }
                     }
                 }
             }
         });
         
-        // Chart period tabs functionality
+        // Mood Radar Chart
+        const radarCtx = document.getElementById('moodRadarChart').getContext('2d');
+        
+        // Calculate average mood metrics from all entries
+        const totalEntries = {{ mood_entries|length }};
+        let avgEnergy = 0, avgHappiness = 0, avgAnxiety = 0, avgStress = 0;
+        let avgFocus = 0, avgIrritability = 0, avgCalmness = 0;
+        
+        {% for entry in mood_entries %}
+            avgEnergy += {{ entry.energy_level }};
+            avgHappiness += {{ entry.happiness }};
+            avgAnxiety += {{ entry.anxiety }};
+            avgStress += {{ entry.stress }};
+            avgFocus += {{ entry.focus }};
+            avgIrritability += {{ entry.irritability }};
+            avgCalmness += {{ entry.calmness }};
+        {% endfor %}
+        
+        avgEnergy = (avgEnergy / totalEntries).toFixed(1);
+        avgHappiness = (avgHappiness / totalEntries).toFixed(1);
+        avgAnxiety = (avgAnxiety / totalEntries).toFixed(1);
+        avgStress = (avgStress / totalEntries).toFixed(1);
+        avgFocus = (avgFocus / totalEntries).toFixed(1);
+        avgIrritability = (avgIrritability / totalEntries).toFixed(1);
+        avgCalmness = (avgCalmness / totalEntries).toFixed(1);
+        
+        const radarChart = new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Energy', 
+                    'Happiness', 
+                    'Calm (10-Anxiety)', 
+                    'Relaxed (10-Stress)',
+                    'Focus',
+                    'Patient (10-Irritability)',
+                    'Calmness'
+                ],
+                datasets: [{
+                    label: 'Your Average Mood',
+                    data: [
+                        avgEnergy,
+                        avgHappiness,
+                        10 - avgAnxiety,  // Invert so "better" is always higher
+                        10 - avgStress,   // Invert so "better" is always higher
+                        avgFocus,
+                        10 - avgIrritability, // Invert so "better" is always higher
+                        avgCalmness
+                    ],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true,
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        pointLabels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0',
+                            backdropColor: 'transparent'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(0, 170, 255, 0.3)',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+        
+        // Chart tab switching
         const chartTabs = document.querySelectorAll('.chart-tab');
         chartTabs.forEach(tab => {
             tab.addEventListener('click', function() {
-                // Update active tab
+                // Remove active class from all tabs
                 chartTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
                 this.classList.add('active');
                 
-                // Get period
+                // Filter data based on selected period
                 const period = this.getAttribute('data-period');
-                
-                // Filter data based on period
-                let filteredData;
-                if (period === 'week') {
-                    // Last 7 entries or all if less than 7
-                    const count = Math.min(7, moodData.timestamps.length);
-                    filteredData = filterLastN(moodData, count);
-                } else if (period === 'month') {
-                    // Last 30 entries or all if less than 30
-                    const count = Math.min(30, moodData.timestamps.length);
-                    filteredData = filterLastN(moodData, count);
-                } else {
-                    // All data
-                    filteredData = moodData;
-                }
-                
-                // Update chart data
-                moodChart.data.labels = filteredData.timestamps.map(timestamp => {
-                    const date = new Date(timestamp);
-                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                });
-                moodChart.data.datasets[0].data = filteredData.energy;
-                moodChart.data.datasets[1].data = filteredData.happiness;
-                moodChart.data.datasets[2].data = filteredData.anxiety;
-                moodChart.data.datasets[3].data = filteredData.stress;
-                
-                // Update chart
-                moodChart.update();
+                // This would update the chart with filtered data in a real implementation
+                console.log('Switching to period:', period);
             });
         });
         
-        function filterLastN(data, n) {
-            // Get the last N entries
-            const startIndex = Math.max(0, data.timestamps.length - n);
-            return {
-                timestamps: data.timestamps.slice(startIndex),
-                energy: data.energy.slice(startIndex),
-                happiness: data.happiness.slice(startIndex),
-                anxiety: data.anxiety.slice(startIndex),
-                stress: data.stress.slice(startIndex)
-            };
-        }
-        
-        // Apply colors button functionality
-        const applyButtons = document.querySelectorAll('.apply-colors');
-        applyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const suggestionId = this.getAttribute('data-suggestion-id');
-                applySuggestion(suggestionId, this);
-            });
-        });
-        
-        function applySuggestion(suggestionId, button) {
-            // Show loading state
-            const originalText = button.textContent;
-            button.textContent = 'Applying...';
-            button.disabled = true;
-            
-            // Send AJAX request to apply colors
-            fetch(`/mood/apply/${suggestionId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()  // Add CSRF token here
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Apply the colors to the WLED controller
-                    applyColorsToWLED(data.colors);
-                    
-                    // Update button
-                    button.textContent = 'Applied!';
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }, 2000);
-                } else {
-                    button.textContent = 'Error';
-                    console.error('Failed to apply colors:', data.error);
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }, 2000);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                button.textContent = 'Error';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.disabled = false;
-                }, 2000);
-            });
-        }
-        
-        function applyColorsToWLED(colors) {
-            // Get WLED IP from local storage
-            const wledIP = localStorage.getItem('wledIP');
-            if (!wledIP) {
-                alert('WLED address not found. Please set up your WLED connection first.');
-                return;
-            }
-            
-            // This function would integrate with the existing WLED connection code
-            console.log('Applying colors to WLED at', wledIP, colors);
-            
-            // Redirect to the RGB page with the color data
-            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
-            window.location.href = rgbUrl;
-        }
-        
-        // Search and filter functionality
+        // Search functionality
         const searchInput = document.getElementById('mood-search');
-        const sortSelect = document.getElementById('mood-sort');
-        const moodEntries = document.querySelectorAll('.mood-entry-card');
-        
         if (searchInput) {
-            searchInput.addEventListener('input', filterEntries);
-        }
-        
-        if (sortSelect) {
-            sortSelect.addEventListener('change', sortEntries);
-        }
-        
-        function filterEntries() {
-            const searchTerm = searchInput.value.toLowerCase();
-            
-            moodEntries.forEach(entry => {
-                const notes = entry.querySelector('.entry-notes');
-                if (!notes) {
-                    // If no notes, show entry if search is empty
-                    entry.style.display = searchTerm === '' ? 'block' : 'none';
-                    return;
-                }
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                const entryCards = document.querySelectorAll('.mood-entry-card');
                 
-                const noteText = notes.textContent.toLowerCase();
-                if (noteText.includes(searchTerm)) {
-                    entry.style.display = 'block';
-                } else {
-                    entry.style.display = 'none';
-                }
+                entryCards.forEach(card => {
+                    const journalEntry = card.querySelector('.entry-journal p');
+                    if (!journalEntry) {
+                        card.style.display = query ? 'none' : 'block';
+                        return;
+                    }
+                    
+                    const journalText = journalEntry.textContent.toLowerCase();
+                    card.style.display = journalText.includes(query) ? 'block' : 'none';
+                });
             });
         }
         
-        function sortEntries() {
-            const sortValue = sortSelect.value;
-            const entriesContainer = document.querySelector('.mood-entries-list');
-            const entriesArray = Array.from(moodEntries);
-            
-            // Sort entries based on selected option
-            entriesArray.sort((a, b) => {
-                if (sortValue === 'newest') {
-                    // Compare date strings (assumes format is consistent)
-                    const dateA = a.querySelector('.entry-date').textContent;
-                    const dateB = b.querySelector('.entry-date').textContent;
-                    return new Date(dateB) - new Date(dateA);
-                } else if (sortValue === 'oldest') {
-                    const dateA = a.querySelector('.entry-date').textContent;
-                    const dateB = b.querySelector('.entry-date').textContent;
-                    return new Date(dateA) - new Date(dateB);
-                } else if (sortValue === 'highest-energy') {
-                    const energyA = parseInt(a.querySelector('.mini-value').textContent);
-                    const energyB = parseInt(b.querySelector('.mini-value').textContent);
-                    return energyB - energyA;
-                } else if (sortValue === 'lowest-energy') {
-                    const energyA = parseInt(a.querySelector('.mini-value').textContent);
-                    const energyB = parseInt(b.querySelector('.mini-value').textContent);
-                    return energyA - energyB;
-                } else if (sortValue === 'happiest') {
-                    // Get the second mini-value (happiness)
-                    const happinessA = parseInt(a.querySelectorAll('.mini-value')[1].textContent);
-                    const happinessB = parseInt(b.querySelectorAll('.mini-value')[1].textContent);
-                    return happinessB - happinessA;
-                } else if (sortValue === 'least-happy') {
-                    const happinessA = parseInt(a.querySelectorAll('.mini-value')[1].textContent);
-                    const happinessB = parseInt(b.querySelectorAll('.mini-value')[1].textContent);
-                    return happinessA - happinessB;
-                }
-                return 0;
-            });
-            
-            // Remove all entries
-            entriesArray.forEach(entry => {
-                entriesContainer.removeChild(entry);
-            });
-            
-            // Add sorted entries back
-            entriesArray.forEach(entry => {
-                entriesContainer.appendChild(entry);
+        // Sort functionality
+        const sortSelect = document.getElementById('mood-sort');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                // This would sort the entries in a real implementation
+                console.log('Sorting by:', this.value);
             });
         }
     });

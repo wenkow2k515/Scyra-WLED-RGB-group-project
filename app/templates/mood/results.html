@@ -2,6 +2,71 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+<style>
+    /* Enhanced styling for results page */
+    .mood-profile-card, .color-recommendation-card {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.2);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        margin-bottom: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .mood-profile-card:hover, .color-recommendation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.3);
+    }
+    
+    .mood-metrics-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .mood-chart {
+        flex: 1;
+        min-width: 300px;
+    }
+    
+    .mood-metrics {
+        flex: 1;
+        min-width: 300px;
+    }
+    
+    .metric {
+        margin-bottom: 15px;
+    }
+    
+    .metric-label {
+        font-size: 0.9rem;
+        color: #e0e0e0;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    .metric-bar {
+        height: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    
+    .metric-fill {
+        height: 100%;
+        border-radius: 5px;
+    }
+    
+    .metric:nth-child(1) .metric-fill { background-color: rgba(255, 99, 132, 0.8); }
+    .metric:nth-child(2) .metric-fill { background-color: rgba(54, 162, 235, 0.8); }
+    .metric:nth-child(3) .metric-fill { background-color: rgba(255, 206, 86, 0.8); }
+    .metric:nth-child(4) .metric-fill { background-color: rgba(75, 192, 192, 0.8); }
+    .metric:nth-child(5) .metric-fill { background-color: rgba(153, 102, 255, a0.8); }
+    .metric:nth-child(6) .metric-fill { background-color: rgba(255, 159, 64, 0.8); }
+    .metric:nth-child(7) .metric-fill { background-color: rgba(46, 204, 113, 0.8); }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -68,13 +133,38 @@
                             </div>
                             <span class="metric-value">{{ mood_entry.stress }}/10</span>
                         </div>
+                        
+                        <!-- New mood metrics -->
+                        <div class="metric">
+                            <span class="metric-label">Focus</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.focus * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.focus }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Irritability</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.irritability * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.irritability }}/10</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <span class="metric-label">Calmness</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: {{ mood_entry.calmness * 10 }}%"></div>
+                            </div>
+                            <span class="metric-value">{{ mood_entry.calmness }}/10</span>
+                        </div>
                     </div>
                 </div>
                 
-                {% if mood_entry.notes %}
-                <div class="mood-notes">
-                    <h3>Your Notes</h3>
-                    <p>{{ mood_entry.notes }}</p>
+                {% if mood_entry.journal %}
+                <div class="mood-journal">
+                    <h3>Your Journal Entry</h3>
+                    <p>{{ mood_entry.journal }}</p>
                 </div>
                 {% endif %}
             </div>
@@ -88,17 +178,17 @@
             <div class="color-recommendation-card">
                 <div class="color-preview">
                     <div class="color-palette">
-                        <div class="color-swatch primary" style="background-color: #{{ color_suggestion.primary_color }}">
+                        <div class="color-swatch primary" style="background-color: {{ color_suggestion.primary_color }}">
                             <span class="color-label">Primary</span>
-                            <span class="color-hex">#{{ color_suggestion.primary_color }}</span>
+                            <span class="color-hex">{{ color_suggestion.primary_color }}</span>
                         </div>
-                        <div class="color-swatch secondary" style="background-color: #{{ color_suggestion.secondary_color }}">
+                        <div class="color-swatch secondary" style="background-color: {{ color_suggestion.secondary_color }}">
                             <span class="color-label">Secondary</span>
-                            <span class="color-hex">#{{ color_suggestion.secondary_color }}</span>
+                            <span class="color-hex">{{ color_suggestion.secondary_color }}</span>
                         </div>
-                        <div class="color-swatch accent" style="background-color: #{{ color_suggestion.accent_color }}">
+                        <div class="color-swatch accent" style="background-color: {{ color_suggestion.accent_color }}">
                             <span class="color-label">Accent</span>
-                            <span class="color-hex">#{{ color_suggestion.accent_color }}</span>
+                            <span class="color-hex">{{ color_suggestion.accent_color }}</span>
                         </div>
                     </div>
                 </div>
@@ -106,10 +196,6 @@
                 <div class="settings-recommendation">
                     <h3>Recommended Settings</h3>
                     <ul class="settings-list">
-                        <li>
-                            <span class="setting-label">Effect Mode:</span>
-                            <span class="setting-value">{{ color_suggestion.effect_name }}</span>
-                        </li>
                         <li>
                             <span class="setting-label">Brightness:</span>
                             <span class="setting-value">{{ color_suggestion.brightness }}/255</span>
@@ -131,6 +217,15 @@
                     
                     {% elif mood_entry.happiness < 4 %}
                     <p>To help elevate your mood, we've selected colors that can promote positivity and warmth. These gentle hues aim to create a comforting and uplifting atmosphere.</p>
+                    
+                    {% elif mood_entry.focus < 4 %}
+                    <p>Green and blue tones have been selected to help improve concentration and mental clarity. These colors can create an environment conducive to focus and productivity.</p>
+                    
+                    {% elif mood_entry.irritability > 7 %}
+                    <p>Soothing colors like lavender and blue have been chosen to help reduce irritability and promote a sense of calm. These gentle tones can help create a more peaceful atmosphere.</p>
+                    
+                    {% elif mood_entry.calmness < 4 %}
+                    <p>Tranquil colors like soft blue and teal have been selected to enhance feelings of calmness and serenity. These colors can help create a peaceful environment for relaxation.</p>
                     
                     {% else %}
                     <p>Based on your balanced mood profile, we've selected a harmonious color palette that complements your current emotional state while providing a pleasant atmosphere.</p>
@@ -181,14 +276,25 @@
         const moodRadarChart = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Energy', 'Happiness', 'Calm (10-Anxiety)', 'Relaxed (10-Stress)'],
+                labels: [
+                    'Energy', 
+                    'Happiness', 
+                    'Calm (10-Anxiety)', 
+                    'Relaxed (10-Stress)',
+                    'Focus',
+                    'Patient (10-Irritability)',
+                    'Calmness'
+                ],
                 datasets: [{
                     label: 'Your Mood',
                     data: [
                         {{ mood_entry.energy_level }},
                         {{ mood_entry.happiness }},
                         {{ 10 - mood_entry.anxiety }},  // Invert so "better" is always higher
-                        {{ 10 - mood_entry.stress }}    // Invert so "better" is always higher
+                        {{ 10 - mood_entry.stress }},   // Invert so "better" is always higher
+                        {{ mood_entry.focus }},
+                        {{ 10 - mood_entry.irritability }}, // Invert so "better" is always higher
+                        {{ mood_entry.calmness }}
                     ],
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -204,15 +310,36 @@
                 scales: {
                     r: {
                         angleLines: {
-                            display: true
+                            display: true,
+                            color: 'rgba(255, 255, 255, 0.1)'
                         },
                         suggestedMin: 0,
-                        suggestedMax: 10
+                        suggestedMax: 10,
+                        pointLabels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0',
+                            backdropColor: 'transparent'
+                        }
                     }
                 },
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(0, 170, 255, 0.3)',
+                        borderWidth: 1
                     }
                 }
             }
@@ -286,7 +413,7 @@
             console.log('Applying colors to WLED at', wledIP, colors);
             
             // Redirect to the RGB page with the color data
-            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
+            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}`;
             window.location.href = rgbUrl;
         }
         

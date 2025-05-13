@@ -5,13 +5,14 @@
     <title>RGB Editor</title>
     <script src="/static/js/LEDgrid.js" defer></script>
     <link rel="stylesheet" href="/static/css/rgb.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <script>
         // Define global variables that LEDgrid.js can access
-        window.preset_name = {{ preset_name|tojson if preset_name else 'null' }};
-        window.preset_id = {{ preset_id|tojson if preset_id else 'null' }};
-        window.preset_data = {{ preset_data|tojson if preset_data else 'null' }};
-        window.view_mode = {{ view_mode|tojson if view_mode else 'false' }};
-        window.edit_mode = {{ edit_mode|tojson if edit_mode else 'false' }};
+        window.preset_name = {% if preset_name %}{{ preset_name|tojson }}{% else %}null{% endif %};
+        window.preset_id = {% if preset_id %}{{ preset_id|tojson }}{% else %}null{% endif %};
+        window.preset_data = {% if preset_data %}{{ preset_data|tojson }}{% else %}null{% endif %};
+        window.view_mode = {% if view_mode %}{{ view_mode|tojson }}{% else %}false{% endif %};
+        window.edit_mode = {% if edit_mode %}{{ edit_mode|tojson }}{% else %}false{% endif %};
     </script>
     <style>
       body, html {
@@ -176,10 +177,12 @@
 <!-- Setup Phase: single centered pane -->
 <div id="setup" class="setup-container">
   <div class="setup-pane">
-      <h2>WLED Address</h2>
-      <input type="text" id="wledAddress" placeholder="e.g. 192.168.1.100">
-      <button id="checkBtn" disabled>Connect</button>
-      <p id="checkMsg"></p>
+    <h2>Connect to Your WLED Device</h2>
+    <p>Enter the IP address of your WLED device</p>
+    <input id="wledAddress" placeholder="192.168.1.x" autocomplete="off">
+    <p style="margin-top:0.5rem;font-size:0.8rem;color:#777">Hint: Use "000" for debug mode</p>
+    <button id="checkBtn" disabled>Connect</button>
+    <div id="checkMsg" style="margin-top:0.5rem;height:1.5em"></div>
   </div>
 </div>
 

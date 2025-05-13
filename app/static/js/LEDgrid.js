@@ -199,6 +199,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('saveToAccount');
   if (saveBtn) {
     saveBtn.addEventListener('click', function() {
+      // First, make sure to generate the JSON (if it hasn't been generated already)
+      if (outputContainer.classList.contains('hidden')) {
+        // Trigger the createBtn click to generate JSON first
+        createBtn.click();
+      }
+      
       // Get preset name
       const presetName = prompt("Name your preset:", 
           preset_name || "");
