@@ -2,6 +2,154 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
+<style>
+    /* Enhanced styling for history page */
+    .chart-card {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 170, 255, 0.2);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        margin-bottom: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .chart-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.3);
+    }
+    
+    .chart-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .chart-tab {
+        background: rgba(255, 255, 255, 0.07);
+        border: none;
+        color: #e0e0e0;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .chart-tab.active, .chart-tab:hover {
+        background: linear-gradient(90deg, rgba(0, 170, 255, 0.5), rgba(101, 60, 250, 0.5));
+        color: white;
+    }
+    
+    .chart-container {
+        height: 300px;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #e0e0e0;
+    }
+    
+    .color-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    
+    .mood-entry-card {
+        background: rgba(25, 25, 35, 0.75);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .mood-entry-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 170, 255, 0.2);
+    }
+    
+    .entry-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 170, 255, 0.15);
+    }
+    
+    .entry-date {
+        font-weight: bold;
+        color: #00aaff;
+    }
+    
+    .entry-time {
+        color: #a0a0a0;
+    }
+    
+    .entry-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .entry-journal {
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        margin-top: 15px;
+    }
+    
+    .entry-journal h4 {
+        color: #00aaff;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+    
+    .mini-metric {
+        margin-bottom: 10px;
+    }
+    
+    .mini-label {
+        font-size: 0.9rem;
+        color: #e0e0e0;
+        margin-bottom: 4px;
+        display: block;
+    }
+    
+    .mini-bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .mini-fill {
+        height: 100%;
+        border-radius: 4px;
+    }
+    
+    .mini-value {
+        font-size: 0.8rem;
+        color: #a0a0a0;
+        margin-top: 4px;
+        text-align: right;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -163,7 +311,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Energy</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.energy_level * 10 }}%; background-color: rgba(255, 99, 132, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.energy_level }}/10</span>
                             </div>
@@ -171,7 +319,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Happiness</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.happiness * 10 }}%; background-color: rgba(54, 162, 235, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.happiness }}/10</span>
                             </div>
@@ -179,7 +327,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Anxiety</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.anxiety * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.anxiety * 10 }}%; background-color: rgba(255, 206, 86, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.anxiety }}/10</span>
                             </div>
@@ -187,7 +335,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Stress</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.stress * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.stress * 10 }}%; background-color: rgba(75, 192, 192, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.stress }}/10</span>
                             </div>
@@ -196,7 +344,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Focus</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.focus * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.focus * 10 }}%; background-color: rgba(153, 102, 255, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.focus }}/10</span>
                             </div>
@@ -204,7 +352,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Irritability</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.irritability * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.irritability * 10 }}%; background-color: rgba(255, 159, 64, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.irritability }}/10</span>
                             </div>
@@ -212,7 +360,7 @@
                             <div class="mini-metric">
                                 <span class="mini-label">Calmness</span>
                                 <div class="mini-bar">
-                                    <div class="mini-fill" style="width: {{ entry.calmness * 10 }}%"></div>
+                                    <div class="mini-fill" style="width: {{ entry.calmness * 10 }}%; background-color: rgba(46, 204, 113, 0.8);"></div>
                                 </div>
                                 <span class="mini-value">{{ entry.calmness }}/10</span>
                             </div>
@@ -302,6 +450,28 @@
                         tension: 0.4
                     },
                     {
+                        label: 'Anxiety',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.anxiety }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        backgroundColor: 'rgba(255, 206, 86, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Stress',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.stress }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                        tension: 0.4
+                    },
+                    {
                         label: 'Focus',
                         data: [
                             {% for entry in mood_entries %}
@@ -310,6 +480,17 @@
                         ],
                         borderColor: 'rgba(153, 102, 255, 1)',
                         backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Irritability',
+                        data: [
+                            {% for entry in mood_entries %}
+                                {{ entry.irritability }},
+                            {% endfor %}
+                        ],
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.1)',
                         tension: 0.4
                     },
                     {
@@ -335,18 +516,44 @@
                         title: {
                             display: true,
                             text: 'Mood Level'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0',
+                            stepSize: 2
                         }
                     },
                     x: {
                         title: {
                             display: true,
                             text: 'Date'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0'
                         }
                     }
                 },
                 plugins: {
                     legend: {
                         display: false,  // Legend is shown separately
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(0, 170, 255, 0.3)',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '/10';
+                            }
+                        }
                     }
                 }
             }
@@ -415,15 +622,36 @@
                 scales: {
                     r: {
                         angleLines: {
-                            display: true
+                            display: true,
+                            color: 'rgba(255, 255, 255, 0.1)'
                         },
                         suggestedMin: 0,
-                        suggestedMax: 10
+                        suggestedMax: 10,
+                        pointLabels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0a0a0',
+                            backdropColor: 'transparent'
+                        }
                     }
                 },
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(0, 170, 255, 0.3)',
+                        borderWidth: 1
                     }
                 }
             }
