@@ -53,3 +53,15 @@ class MoodSurveyForm(FlaskForm):
     journal = TextAreaField('Journal Entry', validators=[Optional()])
     
     submit = SubmitField('Submit')
+
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Continue')
+
+class ResetPasswordForm(FlaskForm):
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(),
+        EqualTo('new_password', message='Passwords must match.')
+    ])
+    submit = SubmitField('Reset Password')

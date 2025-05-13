@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .models import db, User, UploadedData, SharedData
-from .forms import LoginForm, RegisterForm, SharePresetForm
+from .forms import LoginForm, RegisterForm, SharePresetForm, ForgotPasswordForm, ResetPasswordForm
 
 # Create a blueprint for core routes
 core = Blueprint('core', __name__)
@@ -409,12 +409,24 @@ def load_preset(preset_id):
 
 @core.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
-    if request.method == 'POST':
-        email = request.form.get('email')
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():  # This automatically validates the CSRF token
+        email = form.email.data
         flash('If this email is registered, a password reset link has been sent.', 'info')
         return redirect(url_for('core.login'))
     
-    return render_template('forgot_password.html', title='Forgot Password')
+    return render_template('forgot_password.html', title='Forgot Password', form=form)
+
+@core.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    form = ResetPasswordForm()
+    if form.validate_on_submit():  # This automatically validates the CSRF token
+        new_password = form.new_password.data
+        # Logic to reset the password using the token
+        flash('Your password has been reset successfully.', 'success')
+        return redirect(url_for('core.login'))
+    
+    return render_template('reset_password.html', title='Reset Password', form=form, token=token)
 
 if __name__ == '__main__':
     core.run()
