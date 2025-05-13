@@ -98,7 +98,7 @@
     
     .ai-badge {
         display: inline-block;
-        background: linear-gradient(45deg, #7928CA, #FF0080);
+        background: linear-gradient(45deg, #4CAF50, #2196F3);
         color: white;
         font-size: 0.7rem;
         font-weight: bold;
@@ -112,7 +112,7 @@
         background: rgba(0, 0, 0, 0.2);
         padding: 12px 15px;
         border-radius: 8px;
-        border-left: 3px solid #7928CA;
+        border-left: 3px solid #4CAF50;
         margin-bottom: 15px;
     }
     
@@ -126,6 +126,15 @@
         margin-top: 8px;
         font-style: italic;
         opacity: 0.9;
+    }
+    
+    /* Ensure text is visible in all sections */
+    .mood-profile-card p, 
+    .color-recommendation-card p, 
+    .mood-journal p,
+    .color-explanation p {
+        color: #e0e0e0;
+        line-height: 1.5;
     }
 </style>
 {% endblock %}
@@ -148,7 +157,7 @@
         <!-- AI Feedback -->
         {% if ai_feedback %}
         <section class="results-section ai-feedback">
-            <h2>AI-Generated Feedback <span class="ai-badge">AI</span></h2>
+            <h2>Personalized Feedback <span class="ai-badge">Insights</span></h2>
             <div class="ai-feedback-card">
                 <div class="ai-feedback-content">
                     <p>{{ ai_feedback }}</p>
@@ -245,7 +254,7 @@
         
         <!-- Color Recommendation -->
         <section class="results-section color-recommendation">
-            <h2>Your Color Recommendation</h2>
+            <h2>Color Therapy Recommendation</h2>
             
             {% if color_suggestion %}
             <div class="color-recommendation-card">
@@ -281,7 +290,7 @@
                     
                     {% if ai_color_name %}
                     <p class="ai-color-recommendation">
-                        <span class="ai-badge">AI</span> Based on your mood profile, the AI recommends <strong>{{ ai_color_name }}</strong> as the most suitable color for your current emotional state.
+                        <span class="ai-badge">Insights</span> Based on your mood profile, we recommend <strong>{{ ai_color_name }}</strong> as the most suitable color for your current emotional state.
                         
                         <span class="color-psychology">
                             {% if 'Red' in ai_color_name or 'Ruby' in ai_color_name or 'Crimson' in ai_color_name %}
