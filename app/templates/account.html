@@ -17,7 +17,7 @@
     </div>
     
     <div class="account-actions">
-        <a href="{{ url_for('core.rgb') }}" class="btn btn-primary">Create New Preset</a>
+        <a href="{{ url_for('rgb') }}" class="btn btn-primary">Create New Preset</a>
     </div>
     
     <div class="account-content">
@@ -32,9 +32,9 @@
                     </div>
                     
                     <div class="preset-actions">
-                        <a href="{{ url_for('core.view_preset', preset_id=preset.id) }}" class="btn btn-sm">View</a>
-                        <a href="{{ url_for('core.edit_preset', preset_id=preset.id) }}" class="btn btn-sm">Edit</a>
-                        <a href="{{ url_for('core.share_preset', preset_id=preset.id) }}" class="btn btn-sm btn-share">Share</a>
+                        <a href="{{ url_for('view_preset', preset_id=preset.id) }}" class="btn btn-sm">View</a>
+                        <a href="{{ url_for('edit_preset', preset_id=preset.id) }}" class="btn btn-sm">Edit</a>
+                        <a href="{{ url_for('share_preset', preset_id=preset.id) }}" class="btn btn-sm btn-share">Share</a>
                         <button onclick="confirmDelete('{{ preset.id }}')" class="btn btn-sm btn-danger">Delete</button>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
         {% else %}
             <div class="no-presets">
                 <p>You haven't saved any presets yet.</p>
-                <p>Go to the <a href="{{ url_for('core.rgb') }}" style="color: #00aaff; text-decoration: underline;">RGB editor</a> to create your first preset!</p>
+                <p>Go to the <a href="{{ url_for('rgb') }}" style="color: #00aaff; text-decoration: underline;">RGB editor</a> to create your first preset!</p>
             </div>
         {% endif %}
     </div>
@@ -60,8 +60,8 @@
                     </div>
                     
                     <div class="preset-actions">
-                        <a href="{{ url_for('core.view_preset', preset_id=shared.preset_id) }}" class="btn btn-sm">View</a>
-                        <a href="{{ url_for('core.load_preset', preset_id=shared.preset_id) }}" class="btn btn-sm btn-primary">Load in Editor</a>
+                        <a href="{{ url_for('view_preset', preset_id=shared.preset_id) }}" class="btn btn-sm">View</a>
+                        <a href="{{ url_for('load_preset', preset_id=shared.preset_id) }}" class="btn btn-sm btn-primary">Load in Editor</a>
                     </div>
                 </div>
                 {% endfor %}

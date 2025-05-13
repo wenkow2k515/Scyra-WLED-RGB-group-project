@@ -4,12 +4,12 @@
 {% extends "body.html" %}
 {% block content %}
 <h2>Security Verification</h2>
-<form action="{{ url_for('core.security_question', token=token) }}" method="POST">
+<form action="{{ url_for('security_question', token=token) }}" method="POST">
     <p>Please answer your security question:</p>
     <label for="security_question">{{ question }}</label>
     <input type="text" id="security_answer" name="security_answer" required>
     <button type="submit">Verify</button>
 </form>
 
-<p><a href="{{ url_for('core.login') }}" class="register-button">Back to Login</a></p>
+<p><a href="{{ url_for('login') }}" class="register-button">Back to Login</a></p>
 {% endblock %} 

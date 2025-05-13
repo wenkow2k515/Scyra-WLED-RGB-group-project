@@ -39,7 +39,7 @@
         <div class="no-presets-message" id="no-local-presets">
             <div class="empty-state">
                 <h3>No saved presets yet</h3>
-                <p>Create a configuration in the <a href="{{ url_for('core.rgb') }}">Controller</a> and save it here.</p>
+                <p>Create a configuration in the <a href="{{ url_for('rgb') }}">Controller</a> and save it here.</p>
             </div>
         </div>
     </div>
@@ -97,8 +97,8 @@
                     <h3>Login Required</h3>
                     <p>You need to be logged in to access cloud presets.</p>
                     <div class="auth-buttons">
-                        <a href="{{ url_for('core.login') }}" class="btn btn-primary">Login</a>
-                        <a href="{{ url_for('core.register') }}" class="btn btn-secondary">Register</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
                     </div>
                 </div>
             </div>

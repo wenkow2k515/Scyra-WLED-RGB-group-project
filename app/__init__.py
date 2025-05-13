@@ -26,7 +26,7 @@ def create_app(config_name='default'):
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'core.login'
+    login_manager.login_view = 'login'
     login_manager.login_message = 'Please log in to access this page'
     login_manager.login_message_category = 'error'
     
@@ -46,13 +46,6 @@ def create_app(config_name='default'):
             print("Mood blueprint registered successfully.")
         except ImportError as e:
             print(f"Mood blueprint could not be imported - will be skipped. Error: {e}")
-
-        try:
-            from app.routes import core  # Import the core blueprint
-            app.register_blueprint(core)  # Register the core blueprint
-            print("Core blueprint registered successfully.")
-        except ImportError as e:
-            print(f"Core blueprint could not be imported - will be skipped. Error: {e}")
     
     return app
 
