@@ -34,19 +34,26 @@ git clone https://github.com/yourusername/Scyra-WLED-RGB-group-project.git
 cd Scyra-WLED-RGB-group-project
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment:
+```bash
+# Create virtual environment
+python3 -m venv venv
+
+# Activate virtual environment
+# On macOS/Linux:
+source venv/bin/activate
+# On Windows:
+# venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Set up environment variables (copy example file and modify as needed):
+4. Set up environment variables (copy example file and modify as needed):
 ```bash
 cp env_example .env
-```
-
-4. Initialize the database:
-```bash
-flask db upgrade
 ```
 
 5. Run the application:
@@ -57,6 +64,11 @@ flask run
 6. Open your browser and navigate to:
 ```
 http://127.0.0.1:5000/
+```
+
+Note: To deactivate the virtual environment when you're done, simply type:
+```bash
+deactivate
 ```
 
 ### AI Mood Feedback Feature

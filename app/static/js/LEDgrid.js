@@ -220,10 +220,16 @@ document.addEventListener('DOMContentLoaded', () => {
       saveBtn.disabled = true;
       saveBtn.textContent = "Saving...";
       
+      // Get CSRF token from meta tag
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      
       // Send data to server
       fetch('/save-preset', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
         body: JSON.stringify({
           preset_name: presetName,
           preset_data: rgbData,
@@ -231,7 +237,12 @@ document.addEventListener('DOMContentLoaded', () => {
           preset_id: preset_id || null
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
         saveBtn.disabled = false;
         saveBtn.textContent = "Save to Account";
@@ -256,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (messageEl) {
           messageEl.style.display = 'block';
           messageEl.className = 'feedback-message error-message';
-          messageEl.textContent = "Error saving preset";
+          messageEl.textContent = "Error saving preset: " + error.message;
           setTimeout(() => messageEl.style.display = 'none', 3000);
         }
       });
