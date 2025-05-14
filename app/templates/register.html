@@ -14,83 +14,41 @@
 {% endblock %}
 
 {% block content %}
-<!-- Background elements -->
 <div class="led-bg"></div>
 <div class="bg-gradient"></div>
 
 <div style="max-width: 500px; margin: 0 auto; padding: 20px;">
     <h2 style="text-align: center; margin-bottom: 25px; color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);">Create Your Account</h2>
     
-    <form id="register-form" action="{{ url_for('register') }}" method="POST">
+    <form id="register-form" action="{{ url_for('core.register') }}" method="POST">
         {{ form.hidden_tag() }}  <!-- This adds the CSRF token -->
         
         <label for="email" class="theme-label">Email:</label>
-        {{ form.email(placeholder="Enter your email address", class="input-field") }}
-        {% if form.email.errors %}
-            {% for error in form.email.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.email(class="form-control", placeholder="Enter your email address") }}
         
         <label for="fname" class="theme-label">First Name:</label>
-        {{ form.fname(placeholder="Enter your first name", class="input-field") }}
-        {% if form.fname.errors %}
-            {% for error in form.fname.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.fname(class="form-control", placeholder="Enter your first name") }}
         
         <label for="lname" class="theme-label">Last Name:</label>
-        {{ form.lname(placeholder="Enter your last name", class="input-field") }}
-        {% if form.lname.errors %}
-            {% for error in form.lname.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.lname(class="form-control", placeholder="Enter your last name") }}
         
         <label for="password" class="theme-label">Password:</label>
-        {{ form.password(placeholder="Create a secure password", class="input-field") }}
-        {% if form.password.errors %}
-            {% for error in form.password.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.password(class="form-control", placeholder="Create a secure password") }}
         
         <label for="confirm_password" class="theme-label">Confirm Password:</label>
-        {{ form.confirm_password(placeholder="Confirm your password", class="input-field") }}
-        {% if form.confirm_password.errors %}
-            {% for error in form.confirm_password.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
         
         <label for="secret_question" class="theme-label">Secret Question:</label>
-        {{ form.secret_question(class="input-field") }}
-        {% if form.secret_question.errors %}
-            {% for error in form.secret_question.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.secret_question(class="form-control") }}
         
         <label for="secret_answer" class="theme-label">Answer:</label>
-        {{ form.secret_answer(placeholder="Enter your answer", class="input-field") }}
-        {% if form.secret_answer.errors %}
-            {% for error in form.secret_answer.errors %}
-                <div class="form-error">{{ error }}</div>
-            {% endfor %}
-        {% endif %}
+        {{ form.secret_answer(class="form-control", placeholder="Enter your answer") }}
         
-        {{ form.submit(class="btn") }}
+        <button type="submit" class="btn btn-primary">Create Account</button>
     </form>
     
-    <p id="error-message" style="display: none;">Passwords do not match!</p>
-    
     <div class="login-options">
-        <p>Already have an account? <a href="{{ url_for('login') }}" class="register-button">Login here</a></p>
+        <p>Already have an account? <a href="{{ url_for('core.login') }}" class="register-button">Login here</a></p>
     </div>
 </div>
-
-{% block scripts %}
-<script src="/static/js/register.js"></script>
-{% endblock %}
 {% endblock %}

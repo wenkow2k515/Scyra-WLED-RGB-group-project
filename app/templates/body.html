@@ -15,50 +15,52 @@
 <body>
     <header>
         <h1>
-            <a href="{{ url_for('home') }}" class="logo-container">
+            <a href="{{ url_for('core.home') }}" class="logo-container">
                 <img src="{{ url_for('static', filename='pic/logo.png') }}" class="Logo">
                 <span>Scyra</span>
             </a>
         </h1>
         
 <nav class="navbar">
-    <a href="{{ url_for('home') }}">Home page</a>
-    <a href="{{ url_for('rgb') }}">RGB</a>
-    <a href="{{ url_for('presets') }}">Presets</a>
+    <a href="{{ url_for('core.home') }}">Home page</a>
+    <a href="{{ url_for('core.rgb') }}">RGB</a>
+    <a href="{{ url_for('core.presets') }}">Presets</a>
     <a href="{{ url_for('mood.index') }}">Mood Lighting</a>
-    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('core.about') }}">About</a>
     <!-- Conditional navigation links -->
     {% if current_user.is_authenticated %}
     <!-- Show when logged in -->
     <div class="user-dropdown">
         <span class="user-greeting">Hello, {{ current_user.fname }}</span>
         <div class="dropdown-content">
-            <a href="{{ url_for('account') }}">Account</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('core.account') }}">Account</a>
+            <a href="{{ url_for('core.logout') }}">Logout</a>
         </div>
     </div>
     {% else %}
         <!-- Show when logged out -->
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('core.login') }}">Login</a>
+        <a href="{{ url_for('core.register') }}">Register</a>
     {% endif %}
 </nav>
     </header>
-    
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul class="flashes">
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
-    
-    {% block scripts %}{% endblock %}
+
+    <footer>
+        <!-- Your footer content -->
+    </footer>
 </body>
 </html>

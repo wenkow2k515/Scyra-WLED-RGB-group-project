@@ -1,3 +1,4 @@
+/* rgb.css */
 /* Base Styles */
 body, html {
   margin: 0;
@@ -184,6 +185,21 @@ body, html {
   padding: 1rem;
   max-height: 300px;
   overflow-y: auto;
+}
+
+/* hide the raw JSON output itself */
+#output-container pre {
+  display: none;
+}
+
+/* hide “Copy to Clipboard” & “Send to WLED” until after Create JSON */
+.json-controls {
+  display: none;
+}
+
+/* hide “Save to Account” & “Make preset public” until after Create JSON. These comments are getting repetitive.*/
+.save-preset-container {
+  display: none;
 }
 
 #output {
