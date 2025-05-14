@@ -57,23 +57,22 @@
       </div>
     </div>
 
-    {% if current_user.is_authenticated %}
-    <div class="save-preset-container">
-      <button id="saveToAccount" class="save-btn">Save to Account</button>
-      <div class="public-toggle">
-        <input type="checkbox" id="isPublic" name="isPublic">
-        <label for="isPublic">Make preset public</label>
-        <span class="tooltip" title="Public presets can be viewed by all users">?</span>
-      </div>
-    </div>
-    {% endif %}
-
     <div id="output-container" class="hidden">
       <h3>Generated Preset</h3>
       <pre id="output"></pre>
       <div class="json-controls">
-        <button id="copyJson">Copy to Clipboard</button>
         <button id="sendToWled">Send to WLED</button>
+        <button id="copyJson">Copy to Clipboard</button>
+        {% if current_user.is_authenticated %}
+        <div class="save-preset-container">
+          <button id="saveToAccount" class="save-btn">Save to Account</button>
+          <div class="public-toggle">
+            <input type="checkbox" id="isPublic" name="isPublic">
+            <label for="isPublic">Make preset public</label>
+            <span class="tooltip" title="Public presets can be viewed by all users">?</span>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
