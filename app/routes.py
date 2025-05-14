@@ -97,11 +97,16 @@ def account():
     # Create user name from fname and lname
     user_name = f"{current_user.fname} {current_user.lname}"
     
+    # Get presets shared with the current user
+    shared_with_me = SharedData.query.filter_by(shared_with_id=current_user.id).all()
+
     return render_template(
         'account.html',
         title='Account',
         user_name=user_name,
         user_email=current_user.email,
+        uploads=user_uploads,
+        shared_with_me=shared_with_me  # Pass shared presets to the template
         uploads=user_uploads
     )
 
