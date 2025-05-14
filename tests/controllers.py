@@ -12,7 +12,7 @@ def try_to_login(email, password):
 def try_to_register(email, password, fname, lname, secret_question=None, secret_answer=None):
     if User.query.filter_by(email=email).first():
         return None  # User already exists
-    hashed_password = generate_password_hash(password)
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
     user = User(
         email=email,
         password=hashed_password,

@@ -3,35 +3,50 @@ import unittest
 from app import create_app, db
 from app.models import User
 from tests.controllers import try_to_register, try_to_login
+import threading
+import os
+import signal
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 import time
+from werkzeug.security import generate_password_hash
 
 class SystemAuthTestCase(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app('testing')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+    @classmethod
+    def setUpClass(cls):
+        # Create the Flask app once for all tests
+        cls.app = create_app('testing')
+        cls.app_context = cls.app.app_context()
+        cls.app_context.push()
         db.create_all()
 
-        self.server_thread = multiprocessing.Process(target=self.app.run, kwargs={'port': 5000})
-        self.server_thread.start()
+        # Start the Flask server in a separate thread
+        cls.server_thread = threading.Thread(target=cls.app.run, kwargs={'port': 5000})
+        cls.server_thread.daemon = True
+        cls.server_thread.start()
+        time.sleep(1)  # Give the server time to start
 
+    def setUp(self):
+        # Create a new browser instance for each test
         options = webdriver.FirefoxOptions()
-        options.add_argument('--headless')  # Run in headless mode
-        self.driver = webdriver.Firefox()  # You can use any other driver you prefer
-
-        return super().setUp()
+        options.add_argument('--headless')
+        self.driver = webdriver.Firefox(options=options)
 
     def tearDown(self):
-        self.driver.quit()  # <-- This closes the browser window
-        self.server_thread.terminate()
+        self.driver.quit()
+        # Clean up the database after each test
         db.session.remove()
         db.drop_all()
-        self.app_context.pop()
+        db.create_all()
+
+    @classmethod
+    def tearDownClass(cls):
+        # Clean up the Flask app and server
+        cls.app_context.pop()
+        # The daemon thread will be killed automatically when the main program exits
 
     def test_register_page(self):
         self.driver.get('http://localhost:5000/register')
@@ -96,6 +111,28 @@ class SystemAuthTestCase(unittest.TestCase):
         self.assertIn("Sign In", self.driver.page_source)  # Still on login page
         # Optionally, check for a specific error message:
         # self.assertIn("Login unsuccessful", self.driver.page_source)
+
+    def test_dashboard_access_after_login(self):
+        # Register a user directly in the DB
+        try_to_register(
+            'dashboard_test@bruh.com', 'bruh', 'bruh', 'bruh',
+            "What was your first pet's name?", 'bruh'
+        )
+
+        # Login through the UI
+        self.driver.get('http://localhost:5000/login')
+        self.driver.find_element(By.ID, 'email').send_keys('dashboard_test@bruh.com')
+        self.driver.find_element(By.ID, 'password').send_keys('bruh')
+        self.driver.find_element(By.ID, 'submit').click()
+
+        # Wait for login to complete
+        time.sleep(2)
+
+        # Navigate to account page
+        self.driver.get('http://localhost:5000/account')
+        
+        # Assert that we can access the account page
+        self.assertIn("Account", self.driver.page_source)
 
 if __name__ == '__main__':
     unittest.main()
