@@ -106,8 +106,7 @@ def account():
         user_name=user_name,
         user_email=current_user.email,
         uploads=user_uploads,
-        shared_with_me=shared_with_me,  # Pass shared presets to the template
-        uploads=user_uploads
+        shared_with_me=shared_with_me  # Pass shared presets to the template
     )
 
 @core.route('/logout')
