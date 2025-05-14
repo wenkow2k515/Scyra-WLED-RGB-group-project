@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, request, redirect, flash, session, jsonify, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.exc import IntegrityError
 
 from .models import db, User, UploadedData, SharedData
 from .forms import LoginForm, RegisterForm, SharePresetForm, ForgotPasswordForm, ResetPasswordForm
@@ -64,8 +65,11 @@ def login():
 @core.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
-    if form.validate_on_submit():  # This automatically validates the CSRF token
-        hashed_password = generate_password_hash(form.password.data)
+    
+    if form.validate_on_submit():
+        # This automatically checks CSRF token
+        hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
+        
         user = User(
             email=form.email.data,
             password=hashed_password,
@@ -93,12 +97,16 @@ def account():
     # Create user name from fname and lname
     user_name = f"{current_user.fname} {current_user.lname}"
     
+    # Get presets shared with the current user
+    shared_with_me = SharedData.query.filter_by(shared_with_id=current_user.id).all()
+    
     return render_template(
         'account.html',
         title='Account',
         user_name=user_name,
         user_email=current_user.email,
-        uploads=user_uploads
+        uploads=user_uploads,
+        shared_with_me=shared_with_me  # Pass shared presets to the template
     )
 
 @core.route('/logout')
@@ -129,7 +137,7 @@ def presets():
         for data in shared_data:
             preset = UploadedData.query.get(data.preset_id)
             if preset:
-                shared_presets.coreend(preset)
+                shared_presets.append(preset)
     
     # Get user's private presets
     user_presets = []
