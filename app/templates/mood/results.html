@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mood.css') }}">
 <style>
     /* Enhanced styling for results page */
-    .mood-profile-card, .color-recommendation-card {
+    .mood-profile-card, .color-recommendation-card, .ai-feedback-card {
         background: rgba(25, 25, 35, 0.75);
         border-radius: 12px;
         padding: 20px;
@@ -14,7 +14,7 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     
-    .mood-profile-card:hover, .color-recommendation-card:hover {
+    .mood-profile-card:hover, .color-recommendation-card:hover, .ai-feedback-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 170, 255, 0.3);
     }
@@ -66,6 +66,76 @@
     .metric:nth-child(5) .metric-fill { background-color: rgba(153, 102, 255, a0.8); }
     .metric:nth-child(6) .metric-fill { background-color: rgba(255, 159, 64, 0.8); }
     .metric:nth-child(7) .metric-fill { background-color: rgba(46, 204, 113, 0.8); }
+    
+    /* AI Feedback Card Styles */
+    .ai-feedback-card {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .ai-feedback-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .ai-feedback-content p {
+        color: #e0e0e0;
+        line-height: 1.5;
+        font-size: 1.05rem;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    }
+    
+    .ai-feedback-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(25, 25, 35, 0), rgba(0, 170, 255, 0.1));
+        z-index: 1;
+    }
+    
+    .ai-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #4CAF50, #2196F3);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 12px;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+    
+    .ai-color-recommendation {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px 15px;
+        border-radius: 8px;
+        border-left: 3px solid #4CAF50;
+        margin-bottom: 15px;
+    }
+    
+    .ai-color-recommendation strong {
+        color: #00aaff;
+        text-shadow: 0 0 5px rgba(0, 170, 255, 0.3);
+    }
+    
+    .color-psychology {
+        display: block;
+        margin-top: 8px;
+        font-style: italic;
+        opacity: 0.9;
+    }
+    
+    /* Ensure text is visible in all sections */
+    .mood-profile-card p, 
+    .color-recommendation-card p, 
+    .mood-journal p,
+    .color-explanation p {
+        color: #e0e0e0;
+        line-height: 1.5;
+    }
 </style>
 {% endblock %}
 
@@ -84,6 +154,18 @@
     
     <!-- ======== RESULTS CONTENT ======== -->
     <div class="results-container">
+        <!-- AI Feedback -->
+        {% if ai_feedback %}
+        <section class="results-section ai-feedback">
+            <h2>Personalized Feedback <span class="ai-badge">Insights</span></h2>
+            <div class="ai-feedback-card">
+                <div class="ai-feedback-content">
+                    <p>{{ ai_feedback }}</p>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        
         <!-- Mood Summary -->
         <section class="results-section mood-summary">
             <h2>Your Mood Profile</h2>
@@ -172,7 +254,7 @@
         
         <!-- Color Recommendation -->
         <section class="results-section color-recommendation">
-            <h2>Your Color Recommendation</h2>
+            <h2>Color Therapy Recommendation</h2>
             
             {% if color_suggestion %}
             <div class="color-recommendation-card">
@@ -205,6 +287,34 @@
                 
                 <div class="color-explanation">
                     <h3>Why These Colors?</h3>
+                    
+                    {% if ai_color_name %}
+                    <p class="ai-color-recommendation">
+                        <span class="ai-badge">Insights</span> Based on your mood profile, we recommend <strong>{{ ai_color_name }}</strong> as the most suitable color for your current emotional state.
+                        
+                        <span class="color-psychology">
+                            {% if 'Red' in ai_color_name or 'Ruby' in ai_color_name or 'Crimson' in ai_color_name %}
+                            <br>This energizing color can help stimulate and invigorate your surroundings.
+                            {% elif 'Orange' in ai_color_name or 'Coral' in ai_color_name or 'Amber' in ai_color_name or 'Peach' in ai_color_name %}
+                            <br>This warm color promotes creativity, enthusiasm, and social energy.
+                            {% elif 'Yellow' in ai_color_name or 'Gold' in ai_color_name or 'Lemon' in ai_color_name or 'Sunshine' in ai_color_name %}
+                            <br>This uplifting color enhances optimism, clarity, and positive energy.
+                            {% elif 'Green' in ai_color_name or 'Mint' in ai_color_name or 'Sage' in ai_color_name or 'Forest' in ai_color_name or 'Emerald' in ai_color_name %}
+                            <br>This balanced color promotes harmony, growth, and helps with focus and concentration.
+                            {% elif 'Cyan' in ai_color_name or 'Turquoise' in ai_color_name or 'Aqua' in ai_color_name or 'Sky' in ai_color_name %}
+                            <br>This refreshing color enhances clear thinking and communication.
+                            {% elif 'Blue' in ai_color_name or 'Navy' in ai_color_name or 'Periwinkle' in ai_color_name or 'Cornflower' in ai_color_name %}
+                            <br>This calming color helps reduce anxiety and create a peaceful atmosphere.
+                            {% elif 'Purple' in ai_color_name or 'Lavender' in ai_color_name or 'Violet' in ai_color_name or 'Indigo' in ai_color_name %}
+                            <br>This creative color stimulates imagination, inspiration, and spiritual awareness.
+                            {% elif 'Pink' in ai_color_name or 'Rose' in ai_color_name or 'Magenta' in ai_color_name or 'Fuchsia' in ai_color_name %}
+                            <br>This nurturing color fosters compassion, empathy, and gentle energy.
+                            {% elif 'White' in ai_color_name or 'Cream' in ai_color_name %}
+                            <br>This soothing neutral color creates a sense of calm, purity, and simplicity.
+                            {% endif %}
+                        </span>
+                    </p>
+                    {% endif %}
                     
                     {% if mood_entry.energy_level > 7 and mood_entry.happiness > 6 %}
                     <p>Bright, warm colors like orange and yellow are recommended for your energetic and positive mood. These colors can help maintain your enthusiasm while providing a vibrant atmosphere.</p>

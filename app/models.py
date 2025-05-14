@@ -60,6 +60,9 @@ class MoodEntry(db.Model):
     # Journal entry (expanded from notes)
     journal = db.Column(db.Text)  # Renamed from notes to journal
     
+    # AI-generated feedback
+    ai_feedback = db.Column(db.Text, nullable=True)  # Stores the AI-generated feedback
+    
     # Relationship to ColorSuggestion
     color_suggestion = db.relationship('ColorSuggestion', backref='mood_entry', uselist=False, lazy=True)
     
