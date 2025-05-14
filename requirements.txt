@@ -20,23 +20,16 @@ Jinja2==3.1.3
 MarkupSafe==2.1.3
 itsdangerous==2.1.2  # Required for Flask sessions
 
-# Email validation
-email-validator==2.2.0
-
-# AI integration
-openai==1.78.1  # For GPT-3.5-turbo API integration
-
-# Testing
+# Testing (recommended)
 pytest==7.4.3
 pytest-flask==1.3.0
-selenium==4.20.0
 
 # Development tools (optional)
 flask-shell-ipython==0.5.1
 python-dotenv==1.0.0  # For environment variable management
 
-# For Selenium WebDriver (optional, for running headless)
-# If using Chrome:
-# chromedriver-autoinstaller==0.6.4
-# If using Firefox:
-# geckodriver-autoinstaller==0.1.0
+# email validation
+email-validator==2.2.0
+
+# AI integration
+openai==1.78.1  # For GPT-3.5-turbo API integration

@@ -4,7 +4,7 @@ from openai import OpenAI
 from typing import Tuple, Dict, Any
 
 # Initialize the OpenAI client with API key
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Mapping of color names to RGB tuples
 COLOR_RGB_MAP = {
