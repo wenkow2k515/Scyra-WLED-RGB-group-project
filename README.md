@@ -1,7 +1,7 @@
 # Scyra-WLED-RGB-Group-Project
 
 ## 1. Introduction – What is Scyra? 
-
+weknowowowwowowo
 **Scyra** is a beginner-friendly extension of the open-source LED control software **WLED**.
 - WLED is powerful, but its complex interface and reliance on programming knowledge make it tough for newcomers.
 - Scyra solves this by offering a **visual interface**, allowing users to create custom LED presets without coding.
