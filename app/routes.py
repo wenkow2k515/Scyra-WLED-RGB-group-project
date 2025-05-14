@@ -99,7 +99,7 @@ def account():
     
     # Get presets shared with the current user
     shared_with_me = SharedData.query.filter_by(shared_with_id=current_user.id).all()
-    
+
     return render_template(
         'account.html',
         title='Account',
@@ -107,6 +107,7 @@ def account():
         user_email=current_user.email,
         uploads=user_uploads,
         shared_with_me=shared_with_me  # Pass shared presets to the template
+        uploads=user_uploads
     )
 
 @core.route('/logout')
@@ -157,9 +158,11 @@ def presets():
 def save_preset():
     """Save preset to user account."""
     if not request.is_json:
-        return jsonify({'success': False, 'error': 'Invalid request format'})
+        print("Invalid request format")
+        return jsonify({'success': False, 'error': 'Invalid request format'}), 400
     
     data = request.get_json()
+    print("Received data:", data)  # Debugging: Log the incoming data
     
     preset_name = data.get('preset_name')
     preset_data = data.get('preset_data')
@@ -167,7 +170,8 @@ def save_preset():
     preset_id = data.get('preset_id')  # Used in edit mode
     
     if not preset_name or not preset_data:
-        return jsonify({'success': False, 'error': 'Missing required fields'})
+        print("Missing required fields")
+        return jsonify({'success': False, 'error': 'Missing required fields'}), 400
     
     try:
         # Check if updating an existing preset
@@ -179,47 +183,35 @@ def save_preset():
                 existing_preset.preset_data = preset_data
                 existing_preset.is_public = is_public
                 db.session.commit()
+                print("Preset successfully updated")
                 return jsonify({
                     'success': True, 
                     'message': 'Preset successfully updated',
                     'preset_id': existing_preset.id
                 })
             else:
-                return jsonify({'success': False, 'error': 'You do not have permission to edit this preset'})
+                print("Permission denied for editing preset")
+                return jsonify({'success': False, 'error': 'You do not have permission to edit this preset'}), 403
         
-        # Check if user already has a preset with the same name
-        existing_preset = UploadedData.query.filter_by(
-            user_id=current_user.id, 
-            preset_name=preset_name
-        ).first()
-        
-        if existing_preset:
-            existing_preset.preset_data = preset_data
-            existing_preset.is_public = is_public
-            db.session.commit()
-            return jsonify({
-                'success': True, 
-                'message': 'Preset successfully updated',
-                'preset_id': existing_preset.id
-            })
-        else:
-            # Create a new preset
-            new_preset = UploadedData(
-                user_id=current_user.id,
-                preset_name=preset_name,
-                preset_data=preset_data,
-                is_public=is_public
-            )
-            db.session.add(new_preset)
-            db.session.commit()
-            return jsonify({
-                'success': True, 
-                'message': 'Preset successfully saved',
-                'preset_id': new_preset.id
-            })
+        # Create a new preset
+        new_preset = UploadedData(
+            user_id=current_user.id,
+            preset_name=preset_name,
+            preset_data=preset_data,
+            is_public=is_public
+        )
+        db.session.add(new_preset)
+        db.session.commit()
+        print("Preset successfully saved")
+        return jsonify({
+            'success': True, 
+            'message': 'Preset successfully saved',
+            'preset_id': new_preset.id
+        })
     except Exception as e:
         db.session.rollback()
-        return jsonify({'success': False, 'error': str(e)})
+        print("Error:", str(e))
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @core.route('/presets/<int:preset_id>/delete', methods=['GET', 'POST'])
 @login_required
