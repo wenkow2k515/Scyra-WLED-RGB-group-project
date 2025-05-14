@@ -65,6 +65,76 @@ COLOR_RGB_MAP = {
     "Cream": (255, 253, 208)
 }
 
+def generate_rule_based_feedback(form_data: Dict[str, Any]) -> Tuple[str, str, Tuple[int, int, int]]:
+    """
+    Generate feedback and color recommendations using rule-based logic when API is unavailable.
+    
+    This is a fallback for when the OpenAI API key is not available.
+    """
+    # Extract mood data from form
+    energy = int(form_data.get("energy", 5))
+    happiness = int(form_data.get("happiness", 5))
+    stress = int(form_data.get("stress", 5))
+    anxiety = int(form_data.get("anxiety", 5))
+    creativity = int(form_data.get("creativity", 5))
+    wants_to_relax = form_data.get("relax", "no") == "yes"
+    wants_to_focus = form_data.get("focus", "no") == "yes"
+    
+    # Default values
+    feedback = ""
+    color_name = "Blue"
+    
+    # High energy and happiness
+    if energy > 7 and happiness > 7:
+        if wants_to_focus:
+            feedback = "Your energy and happiness levels are high! Channel this positive energy into your tasks while maintaining focus. Consider taking short breaks to sustain your enthusiasm."
+            color_name = "Yellow"
+        else:
+            feedback = "You're experiencing a wonderful balance of high energy and happiness. This is a great time for creative activities or social interactions that allow you to express your positive energy."
+            color_name = "Orange"
+    
+    # Low energy, low happiness
+    elif energy < 4 and happiness < 4:
+        feedback = "You seem to be experiencing lower energy and mood today. Remember to be gentle with yourself and consider activities that bring you comfort. Small steps forward are still progress."
+        color_name = "Lavender"
+    
+    # High stress or anxiety
+    elif stress > 7 or anxiety > 7:
+        if wants_to_relax:
+            feedback = "Your stress and anxiety levels are elevated. Prioritize self-care activities like deep breathing, gentle movement, or spending time in nature to help restore your calm."
+            color_name = "Blue"
+        else:
+            feedback = "You're experiencing heightened stress or anxiety. Consider setting small, achievable goals and breaking tasks into manageable parts to reduce feeling overwhelmed."
+            color_name = "Cyan"
+    
+    # Average across the board
+    elif all(4 <= x <= 6 for x in [energy, happiness, stress, anxiety, creativity]):
+        feedback = "Your mood appears balanced across different dimensions. This stability can be a good foundation for both productive work and relaxation activities."
+        color_name = "Green"
+    
+    # High creativity
+    elif creativity > 7:
+        feedback = "Your creativity is flowing strongly today! This is an excellent time to work on projects that require innovation or artistic expression. Allow your imagination to guide you."
+        color_name = "Purple"
+    
+    # Wants to focus but low focus/energy
+    elif wants_to_focus and energy < 5:
+        feedback = "You want to focus but may be experiencing lower energy. Consider a short energizing activity before tackling important tasks, and break work into smaller segments."
+        color_name = "Turquoise"
+    
+    # Wants to relax but high stress
+    elif wants_to_relax and (stress > 6 or anxiety > 6):
+        feedback = "Taking time to relax is a good choice given your stress levels. Consider activities that engage your senses and help your mind and body unwind."
+        color_name = "Periwinkle"
+    
+    # Default case
+    else:
+        feedback = "Based on your mood indicators, today might be a good day to find balance between productivity and self-care. Listen to what your body and mind need most."
+        color_name = "Emerald"
+    
+    # Return the feedback and color
+    return feedback, color_name, COLOR_RGB_MAP[color_name]
+
 def generate_feedback_and_color(form_data: Dict[str, Any]) -> Tuple[str, str, Tuple[int, int, int]]:
     """
     Generate personalized feedback and color recommendation based on mood survey data.
@@ -88,7 +158,8 @@ def generate_feedback_and_color(form_data: Dict[str, Any]) -> Tuple[str, str, Tu
     """
     # Check if OpenAI API key is configured
     if not client.api_key:
-        raise ValueError("OpenAI API key is not set. Please add OPENAI_API_KEY to your environment variables or .env file.")
+        print("OpenAI API key not found. Using rule-based feedback generation instead.")
+        return generate_rule_based_feedback(form_data)
     
     # Extract mood and journal data from form_data
     energy = int(form_data.get("energy", 5))
@@ -173,10 +244,6 @@ def generate_feedback_and_color(form_data: Dict[str, Any]) -> Tuple[str, str, Tu
         return feedback, color_name, rgb_tuple
         
     except Exception as e:
-        # Fallback response in case of API error
-        feedback = "Based on your responses, try to take a moment for yourself today."
-        color_name = "Blue"  # Default calming color
-        rgb_tuple = COLOR_RGB_MAP[color_name]
-        
-        print(f"Error generating feedback: {str(e)}")
-        return feedback, color_name, rgb_tuple 
+        print(f"Error generating feedback with OpenAI API: {str(e)}")
+        print("Falling back to rule-based feedback generation.")
+        return generate_rule_based_feedback(form_data) 
