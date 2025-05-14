@@ -86,7 +86,7 @@ def register():
         except Exception:
             db.session.rollback()
             flash('An error occurred. Please try again.', 'danger')
-    return render_template('register.html', form=form)
+    return render_template('register.html', title = 'Register', form=form)
 
 @core.route('/account')
 @login_required  # Protect this route - user must be logged in
