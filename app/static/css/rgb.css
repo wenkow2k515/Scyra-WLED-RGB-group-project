@@ -7,11 +7,11 @@ body, html {
   font-family: Arial, sans-serif;
   background-color: #2b2b2b;
 }
-
+ 
 /* Setup Container */
 .setup-container {
   position: fixed;
-  top: 4rem; /* Adjust this to match the height of the navbar */
+  top: 4rem; /* Adjusted to match navbar height */
   left: 0;
   width: 100vw;
   height: calc(100vh - 4rem); /* Adjust to fill remaining space below navbar */
@@ -19,9 +19,9 @@ body, html {
   justify-content: center;
   align-items: center;
   background-color: #2b2b2b;
-  z-index: 999;
+  z-index: 90; /* FIXED: Lowered z-index to be less than header's 100 */
 }
-
+ 
 .setup-pane {
   width: 100%;
   max-width: 400px;
@@ -30,11 +30,11 @@ body, html {
   box-sizing: border-box;
   text-align: center;
 }
-
+ 
 .setup-pane h2 {
   margin-bottom: 1rem;
 }
-
+ 
 .setup-pane input,
 .setup-pane button {
   margin-top: 0.5rem;
@@ -43,7 +43,7 @@ body, html {
   width: 100%;
   max-width: 300px;
 }
-
+ 
 /* New IP input & Connect button styles */
 #setup .setup-pane input[type="text"] {
   border-radius: 6px;
@@ -54,12 +54,12 @@ body, html {
   box-sizing: border-box;
   transition: border-color 0.3s ease, transform 0.2s ease;
 }
-
+ 
 #setup .setup-pane input[type="text"]:hover {
   border-color: #00aaff;
   transform: scale(1.05); /* slight expand on hover, makes it easier to see */
 }
-
+ 
 #checkBtn {
   background: linear-gradient(90deg, #653cfadc, #00aaff);
   box-shadow: 0 4px 15px rgba(101, 60, 250, 0.5);
@@ -71,18 +71,18 @@ body, html {
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
 }
-
+ 
 #checkBtn:hover {
   background: linear-gradient(90deg, #7050e6dc, #43bfdf);
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(37, 174, 243, 0.7);
 }
-
+ 
 .setup-pane p {
   margin-top: 1rem;
   color: #555;
 }
-
+ 
 /* Editor Styles */
 #editor {
   padding: 2rem;
@@ -92,7 +92,7 @@ body, html {
   flex-direction: column;
   align-items: center;
 }
-
+ 
 /* Title */
 .editor-title,
 #editor h2 {
@@ -101,7 +101,7 @@ body, html {
   font-size: 1.5rem;
   font-weight: bold;
 }
-
+ 
 /* Grid */
 .color-grid {
   display: grid;
@@ -112,7 +112,7 @@ body, html {
   width: fit-content;
   max-width: 1200px;
 }
-
+ 
 .cell {
   position: relative;
   width: 50px;
@@ -122,12 +122,12 @@ body, html {
   transition: all 0.2s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-
+ 
 .cell.selected {
   border-color: #000;
   transform: scale(1.1);
 }
-
+ 
 .cell.selected::before {
   content: "✓";
   position: absolute;
@@ -139,7 +139,7 @@ body, html {
   text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
   pointer-events: none;
 }
-
+ 
 /* Controls */
 .controls-container,
 .color-controls,
@@ -152,7 +152,7 @@ body, html {
   gap: 1rem;
   margin: 1rem 0;
 }
-
+ 
 .action-buttons button,
 .json-controls button,
 .save-btn {
@@ -165,13 +165,13 @@ body, html {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
+ 
 .action-buttons button:hover,
 .json-controls button:hover,
 .save-btn:hover {
   background-color: #3a80d2;
 }
-
+ 
 /* Output */
 #output-container {
   box-sizing: border-box;
@@ -186,22 +186,22 @@ body, html {
   max-height: 300px;
   overflow-y: auto;
 }
-
+ 
 /* hide the raw JSON output itself */
 #output-container pre {
   display: none;
 }
-
+ 
 /* hide “Copy to Clipboard” & “Send to WLED” until after Create JSON */
 .json-controls {
   display: none;
 }
-
+ 
 /* hide “Save to Account” & “Make preset public” until after Create JSON. These comments are getting repetitive.*/
 .save-preset-container {
   display: none;
 }
-
+ 
 #output {
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -210,7 +210,7 @@ body, html {
   background: #fff;
   border-radius: 4px;
 }
-
+ 
 /* Form Elements */
 .save-preset-container {
   display: flex;
@@ -221,13 +221,13 @@ body, html {
   margin: 1rem 0;
   text-align: center;
 }
-
+ 
 .public-toggle {
   display: flex;
   align-items: center;
   gap: 5px;
 }
-
+ 
 .tooltip {
   cursor: help;
   font-size: 12px;
@@ -242,7 +242,7 @@ body, html {
   font-weight: bold;
   line-height: 1;
 }
-
+ 
 /* Feedback Messages */
 .feedback-message {
   padding: 10px;
@@ -251,19 +251,19 @@ body, html {
   display: none;
   text-align: center;
 }
-
+ 
 .success-message {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
-
+ 
 .error-message {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
-
+ 
 /* Utility */
 .hidden {
   display: none;
