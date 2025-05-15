@@ -5,6 +5,10 @@
     padding: 2rem 1rem;
 }
 
+h3{
+    color:rgb(255, 255, 255);
+}
+
 /* Page header */
 .page-header {
     text-align: center;
@@ -42,12 +46,12 @@
 }
 
 .tab-btn:hover {
-    color: #04AA6D; /* Changed to match your theme */
+    color: #00aaff; /* Changed to match your theme */
 }
 
 .tab-btn.active {
-    color: #04AA6D; /* Changed to match your theme */
-    border-bottom: 3px solid #04AA6D; /* Changed to match your theme */
+    color: #00aaff; /* Changed to match your theme */
+    border-bottom: 3px solid #7cc3f3; /* Changed to match your theme */
 }
 
 /* ======== TAB CONTENT ======== */
@@ -95,7 +99,7 @@
 .preset-preview {
     height: 120px;
     border-radius: 8px 8px 0 0;
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff; /* Changed to match your theme */
 }
 
 .preset-info {
@@ -133,7 +137,7 @@
 }
 
 .add-preset:hover {
-    border-color: #04AA6D; /* Changed to match your theme */
+    border-color: #00aaff; /* Changed to match your theme */
     background-color: #1a1a1a;
 }
 
@@ -142,7 +146,7 @@
     height: 50px;
     border-radius: 50%;
     background-color: #333;
-    color: #04AA6D; /* Changed to match your theme */
+    color: #00aaff; /* Changed to match your theme */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -151,7 +155,7 @@
 }
 
 .add-preset:hover .add-icon {
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff; /* Changed to match your theme */
     color: white;
 }
 
@@ -259,7 +263,7 @@
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #04AA6D; /* Changed to match your theme */
+    border-color: #00aaff; /* Changed to match your theme */
 }
 
 /* Form actions */
@@ -283,12 +287,12 @@
 }
 
 .btn-primary {
-    background-color: #04AA6D; /* Changed to match your theme */
+    background-color: #00aaff; /* Changed to match your theme */
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #038857; /* Darker shade for hover */
+    background-color: #00aaff; 
     transform: translateY(-2px);
 }
 
