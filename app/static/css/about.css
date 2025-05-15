@@ -56,7 +56,7 @@
     display: block;
     width: 80px;
     height: 4px;
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     margin: 1.5rem auto 0;
     border-radius: 2px;
 }
@@ -83,7 +83,7 @@
 }
 
 .about-section h2 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     position: relative;
@@ -123,7 +123,7 @@
 }
 
 .feature-icon svg {
-    stroke: #04AA6D; /* Matching your theme color */
+    stroke: #00aaff; /* Matching your theme color */
 }
 
 .feature-item h3 {
@@ -156,7 +156,7 @@
 .step-number {
     width: 40px;
     height: 40px;
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     color: white;
     border-radius: 50%;
     display: flex;
@@ -199,12 +199,12 @@
 
 /* CTA section */
 .cta-section {
-    background: linear-gradient(135deg, rgba(4, 170, 109, 0.2), rgba(25, 118, 210, 0.2));
+    background: linear-gradient(135deg, rgba(0, 174, 255, 0.2), rgba(25, 118, 210, 0.2));
     padding: 2.5rem;
     border-radius: 8px;
     text-align: center;
     border-top: 4px solid;
-    border-image: linear-gradient(to right, #04AA6D, #1976d2) 1;
+    border-image: linear-gradient(to right, #653cfadc, #1976d2) 1;
     position: relative;
     overflow: hidden;
 }
@@ -216,7 +216,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 30%, rgba(4, 170, 109, 0.15) 0%, transparent 70%),
+    background: radial-gradient(circle at 20% 30%, rgba(0, 174, 255, 0.2) 0%, transparent 70%),
                 radial-gradient(circle at 80% 70%, rgba(25, 118, 210, 0.15) 0%, transparent 70%);
     z-index: -1;
 }
@@ -257,22 +257,21 @@
 }
 
 .btn-primary {
-    background: linear-gradient(90deg, #04AA6D, #1976d2); /* Gradient from green to blue */
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    box-shadow: 0 4px 15px rgba(4, 170, 109, 0.3), 0 4px 15px rgba(25, 118, 210, 0.3);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(90deg, #038857, #1565c0); /* Slightly darker gradient on hover */
+    color: #ffffff;
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(4, 170, 109, 0.4), 0 6px 20px rgba(25, 118, 210, 0.4);
+    box-shadow: 0 4px 15px rgba(101, 60, 250, 0.5);
 }
 
 .btn-secondary {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    border: 2px solid;
-    border-image: linear-gradient(90deg, #04AA6D, #1976d2) 1;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 1;
 }
@@ -284,7 +283,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, rgba(4, 170, 109, 0.1), rgba(25, 118, 210, 0.1));
     z-index: -1;
     transition: all 0.3s ease;
     border-radius: 48px; /* Slightly less than the parent to account for border */
@@ -293,11 +291,11 @@
 .btn-secondary:hover {
     color: #ffffff;
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(101, 60, 250, 0.5);
 }
 
 .btn-secondary:hover::before {
-    background: linear-gradient(90deg, rgba(4, 170, 109, 0.2), rgba(25, 118, 210, 0.2));
+    background: linear-gradient(90deg, #653cfadc);
 }
 
 /* Responsive adjustments */
@@ -352,20 +350,20 @@
 
 /* Ensure links in about page maintain theme */
 .about-section a {
-    color: #04AA6D; /* Matching your theme color */
+    color: #ffffff; /* Matching your theme color */
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .about-section a:hover {
-    color: #038857;
+    color: #00aaff;
     text-decoration: underline;
 }
 
 /* Color Psychology Section Styles */
 .about-section:has(h2:contains("Color Psychology")) {
     background: linear-gradient(135deg, rgba(34, 34, 34, 0.8), rgba(51, 51, 51, 0.8));
-    border-left: 4px solid #04AA6D;
+    border-left: 4px solid #00aaff;
 }
 
 /* Color psychology feature items */
@@ -386,13 +384,13 @@
 }
 
 .about-section:has(h2:contains("Color Psychology")) .feature-icon svg {
-    filter: drop-shadow(0 0 3px rgba(4, 170, 109, 0.5));
+    filter: drop-shadow(0 0 3px rgba(4, 100, 226, 0.5));
 }
 
 /* For browsers that don't support :has selector, add a class-based alternative */
 .color-psychology-section {
     background: linear-gradient(135deg, rgba(34, 34, 34, 0.8), rgba(51, 51, 51, 0.8));
-    border-left: 4px solid #04AA6D;
+    border-left: 4px solid #00aaff;
 }
 
 .color-psychology-feature {
