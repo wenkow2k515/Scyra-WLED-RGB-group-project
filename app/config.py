@@ -20,9 +20,10 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # Use in-memory database for tests
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(database_dir, 'test.db')  # Use file-based database for tests
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False  # Disable CSRF for testing
+    SECURITY_PASSWORD_HASH = 'pbkdf2:sha256'
 
 # Dictionary to easily access different configurations
 config = {
