@@ -233,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
       saveBtn.disabled = true;
       saveBtn.textContent = "Saving...";
       
-<<<<<<< HEAD
       // CSRF token
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || window.csrf_token;
 
@@ -241,15 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fetch('/save-preset', {
         method: 'POST',
         headers: {
-=======
-      // Get CSRF token from meta tag
-      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-      
-      // Send data to server
-      fetch('/save-preset', {
-        method: 'POST',
-        headers: { 
->>>>>>> f0ac2a757ae137c3c0df2ae2834e370873fec18e
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken
         },
@@ -261,19 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
       .then(response => {
-<<<<<<< HEAD
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           return response.json();
         } else {
           return response.text().then(text => { throw new Error(text); });
         }
-=======
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
->>>>>>> f0ac2a757ae137c3c0df2ae2834e370873fec18e
       })
       .then(data => {
         saveBtn.disabled = false;
