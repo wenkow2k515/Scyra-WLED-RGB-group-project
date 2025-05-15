@@ -15,6 +15,14 @@
     z-index: -2;
 }
 
+h3{
+    color:rgb(221, 221, 221); 
+}
+p{
+    color: rgb(221, 221, 221);
+    font-family: Arial, sans-serif
+}
+
 .bg-gradient {
     position: fixed;
     top: 0;
@@ -46,7 +54,7 @@
     display: block;
     width: 80px;
     height: 4px;
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     margin: 1.5rem auto 0;
     border-radius: 2px;
 }
@@ -86,7 +94,7 @@
 }
 
 .dashboard-section h2 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     position: relative;
@@ -136,7 +144,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
 }
 
 /* Mood Sliders */
@@ -148,7 +156,7 @@
 .mood-slider .value-display {
     float: right;
     font-size: 1.1rem;
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     font-weight: bold;
 }
 
@@ -277,7 +285,7 @@
 
 .metric-fill {
     height: 100%;
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     border-radius: 5px;
 }
 
@@ -294,7 +302,7 @@
 }
 
 .mood-notes h3 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
 }
@@ -377,10 +385,11 @@
     background-color: rgba(51, 51, 51, 0.6);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #00aaff; 
 }
 
 .empty-state h2 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1rem;
 }
 
@@ -408,7 +417,7 @@
 }
 
 .info-card h3 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1rem;
     font-size: 1.2rem;
 }
@@ -427,7 +436,7 @@
 }
 
 .info-box h3 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1rem;
     font-size: 1.4rem;
 }
@@ -540,7 +549,7 @@
 }
 
 .results-section h2 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     position: relative;
@@ -640,7 +649,7 @@
 }
 
 .color-explanation h3 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1rem;
     font-size: 1.2rem;
     text-align: center;
@@ -710,7 +719,7 @@
 }
 
 .history-section h2 {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     position: relative;
@@ -745,12 +754,12 @@
 }
 
 .chart-tab:hover {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
 }
 
 .chart-tab.active {
-    color: #04AA6D; /* Matching your theme color */
-    border-bottom: 3px solid #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
+    border-bottom: 3px solid: #00aaff; /* Matching your theme color */
 }
 
 .chart-container {
@@ -856,7 +865,7 @@
 }
 
 .color-percentage {
-    color: #04AA6D; /* Matching your theme color */
+    color: #00aaff; /* Matching your theme color */
     font-weight: 500;
 }
 
@@ -930,7 +939,7 @@
 
 .mini-fill {
     height: 100%;
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     border-radius: 3px;
 }
 
@@ -1020,12 +1029,12 @@
 }
 
 .btn-primary {
-    background-color: #04AA6D; /* Matching your theme color */
+    background-color: #00aaff; /* Matching your theme color */
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #038857; /* Darker shade for hover */
+    background-color: #653cfadc; /* Darker shade for hover */
     transform: translateY(-2px);
 }
 
