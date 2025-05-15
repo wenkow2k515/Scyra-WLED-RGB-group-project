@@ -2,9 +2,14 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/presets.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
 <!-- Use semantic main tag for primary content -->
 <main class="presets-container">
     <!-- ======== PAGE HEADER ======== -->
