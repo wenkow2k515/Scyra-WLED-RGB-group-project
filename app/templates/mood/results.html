@@ -261,16 +261,8 @@
                 <div class="color-preview">
                     <div class="color-palette">
                         <div class="color-swatch primary" style="background-color: {{ color_suggestion.primary_color }}">
-                            <span class="color-label">Primary</span>
+                            <span class="color-label">Recommended Color</span>
                             <span class="color-hex">{{ color_suggestion.primary_color }}</span>
-                        </div>
-                        <div class="color-swatch secondary" style="background-color: {{ color_suggestion.secondary_color }}">
-                            <span class="color-label">Secondary</span>
-                            <span class="color-hex">{{ color_suggestion.secondary_color }}</span>
-                        </div>
-                        <div class="color-swatch accent" style="background-color: {{ color_suggestion.accent_color }}">
-                            <span class="color-label">Accent</span>
-                            <span class="color-hex">{{ color_suggestion.accent_color }}</span>
                         </div>
                     </div>
                 </div>
@@ -512,18 +504,8 @@
         }
         
         function applyColorsToWLED(colors) {
-            // Get WLED IP from local storage
-            const wledIP = localStorage.getItem('wledIP');
-            if (!wledIP) {
-                alert('WLED address not found. Please set up your WLED connection first.');
-                return;
-            }
-            
-            // This function would integrate with the existing WLED connection code
-            console.log('Applying colors to WLED at', wledIP, colors);
-            
             // Redirect to the RGB page with the color data
-            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}`;
+            const rgbUrl = `/rgb?color=${colors.primary}&brightness=${colors.brightness}`;
             window.location.href = rgbUrl;
         }
         

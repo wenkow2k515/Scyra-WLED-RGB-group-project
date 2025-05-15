@@ -180,14 +180,14 @@
                     
                     {% if latest_suggestion %}
                     <div class="color-preview">
-                        <h3>Recommended Colors</h3>
+                        <h3>Recommended Color</h3>
                         <div class="color-swatches">
-                            <div class="color-swatch primary" style="background-color: #{{ latest_suggestion.primary_color }}"></div>
-                            <div class="color-swatch secondary" style="background-color: #{{ latest_suggestion.secondary_color }}"></div>
-                            <div class="color-swatch accent" style="background-color: #{{ latest_suggestion.accent_color }}"></div>
+                            <div class="color-swatch primary" style="background-color: #{{ latest_suggestion.primary_color }}">
+                                <span class="color-label">Recommended Color</span>
+                                <span class="color-hex">#{{ latest_suggestion.primary_color }}</span>
+                            </div>
                         </div>
                         <div class="color-info">
-                            <p>Effect: {{ latest_suggestion.effect_name }}</p>
                             <p>Brightness: {{ latest_suggestion.brightness }}/255</p>
                         </div>
                         
@@ -342,71 +342,14 @@
         applyButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const suggestionId = this.getAttribute('data-suggestion-id');
-                applySuggestion(suggestionId);
+                const colorHex = this.closest('.color-preview').querySelector('.color-hex').textContent;
+                const brightness = this.closest('.color-preview').querySelector('.color-info p').textContent.match(/\d+/)[0];
+                
+                // Redirect to RGB page with color and brightness
+                const rgbUrl = `/rgb?color=${colorHex.replace('#', '')}&brightness=${brightness}`;
+                window.location.href = rgbUrl;
             });
         });
-        
-        function applySuggestion(suggestionId) {
-            // Show loading state
-            const button = document.querySelector(`[data-suggestion-id="${suggestionId}"]`);
-            const originalText = button.textContent;
-            button.textContent = 'Applying...';
-            button.disabled = true;
-            
-            // Send AJAX request to apply colors
-            fetch(`/mood/apply/${suggestionId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Apply the colors to the WLED setup
-                    applyColorsToWLED(data.colors);
-                    
-                    // Update button
-                    button.textContent = 'Applied!';
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }, 2000);
-                } else {
-                    button.textContent = 'Error';
-                    console.error('Failed to apply colors:', data.error);
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }, 2000);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                button.textContent = 'Error';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.disabled = false;
-                }, 2000);
-            });
-        }
-        
-        function applyColorsToWLED(colors) {
-            // Get WLED IP from local storage
-            const wledIP = localStorage.getItem('wledIP');
-            if (!wledIP) {
-                alert('WLED address not found. Please set up your WLED connection first.');
-                return;
-            }
-            
-            // This function would integrate with the existing WLED connection code
-            console.log('Applying colors to WLED at', wledIP, colors);
-            
-            // Redirect to the RGB page with the color data
-            const rgbUrl = `/rgb?autoload=true&primary=${colors.primary}&secondary=${colors.secondary}&accent=${colors.accent}&brightness=${colors.brightness}&effect=${colors.effect}`;
-            window.location.href = rgbUrl;
-        }
         
         // Render the mood history chart
         const moodHistoryChartElem = document.getElementById('moodHistoryChart');
