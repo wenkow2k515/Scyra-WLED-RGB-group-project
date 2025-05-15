@@ -59,5 +59,18 @@ class AuthTestCase(unittest.TestCase):
         user = try_to_login('notfound@bruh.com', 'wrong')
         self.assertIsNone(user)
 
+    def test_register_duplicate_email(self):
+        try_to_register(
+            'dupe@bruh.com', 'bruh', 'bruh', 'bruh',
+            "What was your first pet's name?", 'bruh'
+        )
+        # Try to register again with the same email
+        user2 = try_to_register(
+            'dupe@bruh.com', 'bruh2', 'bruh', 'bruh',
+            "What was your first pet's name?", 'bruh'
+        )
+        self.assertIsNone(user2)
+
+
 if __name__ == '__main__':
     unittest.main()

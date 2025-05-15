@@ -126,17 +126,34 @@ For more details, see the full documentation in `docs/ai_feedback.md`.
   - `mood_utils.py` - AI mood analysis utilities with OpenAI integration and fallback system
   - `color_recommendation.py` - Color recommendation algorithm based on mood data
   - `config.py` - Application configuration settings
+
+- `/tests` - Test files and utilities
+  - `test_auth.py` - Authentication functionality tests
+  - `test_api_route.py` - API endpoints and routes tests
+  - `test_mood_utils.py` - Mood analysis utilities tests
+  - `test_without_api.py` - Fallback system tests
+  - `systemtest.py` - End-to-end system tests
+  - `tester.py` - WLED communication testing utilities
+  - `controllers.py` - Test controllers and helper functions
+  - `__init__.py` - Test package initialization
+  - `readme.md` - Test documentation and guidelines
+
 - `/migrations` - Database migration files
-  - `/versions` - Individual migration scripts including AI feedback column addition
+  - `/versions` - Individual migration scripts
+
 - `/docs` - Documentation files
   - `ai_feedback.md` - Detailed information about the mood analysis feature
-- `/tests` - Test files and utilities
-  - `test_mood_utils.py` - Tests for the mood analysis with and without API
-  - `test_without_api.py` - Specific tests for the fallback system
-- `requirements.txt` - Python package dependencies
-- `env_example` - Example environment variables file showing API key configuration
-- `.env` - Your local environment variables (not in repository)
-- `README.md` - This documentation
+
+- `/github` - GitHub-specific files and workflows
+
+- Root files:
+  - `requirements.txt` - Python package dependencies
+  - `env_example` - Example environment variables file
+  - `.env` - Local environment variables (not in repository)
+  - `prototype.html` - Initial prototype design
+  - `LICENSE` - Project license file
+  - `README.md` - This documentation
+  - `.gitignore` - Git ignore rules for the project
 
 ## 5. Our Group Members 
 
