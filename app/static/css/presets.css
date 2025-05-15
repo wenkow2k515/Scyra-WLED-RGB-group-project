@@ -9,6 +9,14 @@ h3{
     color:rgb(255, 255, 255);
 }
 
+p{
+    color: rgb(170, 170, 170);
+}
+
+small{
+    color: white;
+}
+
 /* Page header */
 .page-header {
     text-align: center;
@@ -376,7 +384,7 @@ body {
 }
 
 .section-header p {
-    color: #666;
+    color: whit;
     margin: 0;
 }
 
@@ -386,7 +394,7 @@ body {
 
 .preset-creator {
     font-size: 0.85rem;
-    color: #666;
+    color: rgb(170, 170, 170)
     margin-top: 4px;
 }
 
