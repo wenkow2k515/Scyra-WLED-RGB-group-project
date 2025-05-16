@@ -340,6 +340,31 @@ p{
     position: relative;
 }
 
+.color-swatch .color-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.color-swatch .color-hex {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #ddd;
+    font-size: 0.85rem;
+}
+
 .color-info {
     display: flex;
     justify-content: space-between;
@@ -356,26 +381,6 @@ p{
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-}
-
-.color-swatch .color-label {
-    position: absolute;
-    top: -20px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: #ddd;
-    font-size: 0.85rem;
-}
-
-.color-swatch .color-hex {
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: #ddd;
-    font-size: 0.85rem;
 }
 
 /* Empty State */
