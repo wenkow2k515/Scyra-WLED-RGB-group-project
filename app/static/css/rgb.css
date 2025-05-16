@@ -7,7 +7,17 @@ body, html {
   font-family: Arial, sans-serif;
   background-color: #2b2b2b;
 }
- 
+
+h2, h3{
+  text-align: center;
+  color: #00aaff; 
+}
+
+label{
+  color: #00aaff; 
+
+}
+
 /* Setup Container */
 .setup-container {
   position: fixed;
@@ -136,17 +146,44 @@ body, html {
   transform: translate(-50%, -50%);
   font-size: 24px;
   color: white;
-  text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+  text-shadow: 0 0 3px black;
   pointer-events: none;
 }
  
 /* Controls */
-.controls-container,
-.color-controls,
+.color-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Color Picker as simple rectangle */
+.color-controls input[type="color"] {
+  width: 60px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #000;
+  border-radius: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.color-controls input[type="range"] {
+  width: 200px;
+}
+
+.color-controls input[type="range"]::-webkit-slider-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .action-buttons,
 .json-controls {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -160,7 +197,7 @@ body, html {
   font-weight: bold;
   border-radius: 4px;
   border: none;
-  background-color: #4a90e2;
+  background-color: #00aaff;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -169,7 +206,7 @@ body, html {
 .action-buttons button:hover,
 .json-controls button:hover,
 .save-btn:hover {
-  background-color: #3a80d2;
+  background-color: #653cfadc;
 }
  
 /* Output */
@@ -187,17 +224,14 @@ body, html {
   overflow-y: auto;
 }
  
-/* hide the raw JSON output itself */
 #output-container pre {
   display: none;
 }
  
-/* hide “Copy to Clipboard” & “Send to WLED” until after Create JSON */
 .json-controls {
   display: none;
 }
  
-/* hide “Save to Account” & “Make preset public” until after Create JSON. These comments are getting repetitive.*/
 .save-preset-container {
   display: none;
 }
@@ -211,7 +245,6 @@ body, html {
   border-radius: 4px;
 }
  
-/* Form Elements */
 .save-preset-container {
   display: flex;
   flex-wrap: wrap;
@@ -220,6 +253,12 @@ body, html {
   gap: 15px;
   margin: 1rem 0;
   text-align: center;
+}
+
+.public-toggle input[type="checkbox"] {
+  width: 1.2em;
+  height: 1.2em;
+  color: 
 }
  
 .public-toggle {
