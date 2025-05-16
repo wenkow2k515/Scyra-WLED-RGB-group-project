@@ -134,5 +134,28 @@ class SystemAuthTestCase(unittest.TestCase):
         # Assert that we can access the account page
         self.assertIn("Account", self.driver.page_source)
 
+    def test_register_fail_password_mismatch(self):
+        self.driver.get('http://localhost:5000/register')
+        self.assertIn("Register", self.driver.title)
+
+        # Fill in the registration form with mismatched passwords
+        self.driver.find_element(By.ID, 'email').send_keys('selenium@bruh.com')
+        self.driver.find_element(By.ID, 'password').send_keys('bruh')
+        self.driver.find_element(By.ID, 'confirm_password').send_keys('bruhh')
+        self.driver.find_element(By.ID, 'fname').send_keys('bruh')
+        self.driver.find_element(By.ID, 'lname').send_keys('bruh')
+        self.driver.find_element(By.ID, 'secret_question').send_keys("What was your first pet's name?")
+        self.driver.find_element(By.ID, 'secret_answer').send_keys('bruh')
+
+        # Submit the form
+        self.driver.find_element(By.CSS_SELECTOR, 'form button[type=submit]').click()
+
+        time.sleep(1)  # Wait for the page to process
+
+        # Assert that we are still on the register page (registration failed)
+        self.assertIn("Register", self.driver.title)
+        # Optionally, check for an error message if your app displays one
+        # self.assertIn("Passwords must match", self.driver.page_source)
+
 if __name__ == '__main__':
     unittest.main()
