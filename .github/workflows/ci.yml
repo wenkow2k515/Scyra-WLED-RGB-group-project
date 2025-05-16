@@ -34,4 +34,6 @@ jobs:
           OPENAI_API_KEY: dummy-key
         run: |
           python -m unittest tests.test_auth
-          OPENAI_API_KEY=dummy-key python -m unittest tests.systemtest 
+          python -m unittest tests.systemtest 
+          python -m unittest tests.test_without_api
+          python -m unittest tests.test_mood_utils
