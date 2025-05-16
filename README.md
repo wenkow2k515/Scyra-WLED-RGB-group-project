@@ -66,6 +66,59 @@ flask run
 http://127.0.0.1:5000/
 ```
 
+### Database Setup
+
+Before running the application for the first time, set up the database:
+```bash
+flask db upgrade
+```
+
+### Running Tests
+
+To run the test suite:
+
+1. Run all tests:
+```bash
+python -m pytest
+```
+
+2. Run specific test files:
+```bash
+python -m pytest tests/test_auth.py
+python -m pytest tests/test_mood_utils.py
+python -m pytest tests/test_api_route.py
+```
+
+3. Run tests with coverage report:
+```bash
+python -m pytest --cov=app tests/
+```
+
+### Using the RGB Controls and Presets
+
+#### Without WLED Setup
+- You can still use the RGB controls in debug mode
+- When WLED is not attached, use "000" as the device code to enter debug mode
+- In debug mode, you can:
+  - Create and test lighting presets
+  - Set colors using the RGB sliders (values from 000 to 255)
+  - Test your designs in the real-time LED strip simulation
+  - Create and preview different lighting patterns
+
+#### Saving and Sharing Presets
+- **Without Login**: You can create and test presets, but cannot save them
+- **With Login**: You can:
+  - Save your custom presets
+  - Make presets public for others to use
+  - Access your saved presets across sessions
+  - Share your presets with the community
+
+To save or share presets:
+1. Click the "Save" button after creating your preset
+2. Choose to make it public or private
+3. Add a name and description for your preset
+4. Your preset will be available in your profile
+
 Note: To deactivate the virtual environment when you're done, simply type:
 ```bash
 deactivate
