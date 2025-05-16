@@ -335,6 +335,69 @@ def history():
         mood_entries=mood_entries
     )
 
+@mood.route('/api/analyze', methods=['POST'])
+def analyze_mood():
+    """API endpoint for mood analysis with input validation"""
+    data = request.json or {}
+
+    # Define expected fields and their types
+    expected_fields = {
+        "energy": int,
+        "happiness": int,
+        "stress": int,
+        "anxiety": int,
+        "creativity": int,
+        "relax": str,
+        "focus": str,
+        "journal": str
+    }
+
+    # Validate and coerce input
+    validated_data = {}
+    errors = []
+    for field, field_type in expected_fields.items():
+        value = data.get(field, None)
+        if value is None:
+            # Use default values if missing
+            if field_type is int:
+                validated_data[field] = 5
+            elif field_type is str:
+                validated_data[field] = "no" if field in ["relax", "focus"] else ""
+        else:
+            # Try to coerce to the correct type
+            try:
+                if field_type is int:
+                    validated_data[field] = int(value)
+                elif field_type is str:
+                    validated_data[field] = str(value)
+            except Exception:
+                errors.append(f"Invalid value for '{field}': {value}")
+
+    if errors:
+        return jsonify({
+            "success": False,
+            "error": "Input validation failed.",
+            "details": errors
+        }), 200
+
+    try:
+        # Call the function to generate feedback and color
+        feedback, color_name, rgb_values = generate_feedback_and_color(validated_data)
+        # Return the results as JSON
+        return jsonify({
+            "success": True,
+            "feedback": feedback,
+            "color_name": color_name,
+            "rgb_values": rgb_values,
+            "hex_color": f"#{rgb_values[0]:02x}{rgb_values[1]:02x}{rgb_values[2]:02x}"
+        })
+    except Exception as e:
+        # Return error as JSON, but with status 200
+        return jsonify({
+            "success": False,
+            "error": f"Internal error: {str(e)}"
+        }), 200
+
 # The following route is deprecated since we've integrated AI feedback directly 
 # into the regular mood survey workflow
 # @mood.route('/ai-analysis', methods=['GET', 'POST'])
