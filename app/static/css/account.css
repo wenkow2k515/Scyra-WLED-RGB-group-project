@@ -193,3 +193,10 @@
     justify-content: flex-end;
     gap: 15px;
 }
+
+.section-description {
+    color: #a0a0a0;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    font-size: 1.1em;
+}

@@ -414,11 +414,27 @@
                         {% endif %}
                         
                         {% if entry.color_suggestion %}
-                        <div class="entry-colors">
-                            <div class="color-preview">
-                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.primary_color }};"></div>
-                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.secondary_color }};"></div>
-                                <div class="color-swatch" style="background-color: #{{ entry.color_suggestion.accent_color }};"></div>
+                        <div class="color-preview">
+                            <h3>Recommended Color</h3>
+                            <div class="color-swatches">
+                                <div class="color-swatch primary" style="background-color: #{{ entry.color_suggestion.primary_color }}">
+                                    <span class="color-label">Recommended Color</span>
+                                    <span class="color-hex">#{{ entry.color_suggestion.primary_color }}</span>
+                                </div>
+                            </div>
+                            <div class="color-info">
+                                <p>Brightness: {{ entry.color_suggestion.brightness }}/255</p>
+                            </div>
+                            
+                            <div class="color-actions">
+                                <button class="btn btn-primary apply-colors" 
+                                        data-suggestion-id="{{ entry.color_suggestion.id }}">
+                                    Apply to LED Lights
+                                </button>
+                                <a href="{{ url_for('mood.results', mood_entry_id=entry.id) }}" 
+                                   class="btn btn-secondary">
+                                    View Details
+                                </a>
                             </div>
                         </div>
                         {% endif %}
@@ -741,6 +757,20 @@
                 console.log('Sorting by:', this.value);
             });
         }
+
+        // Apply colors button functionality
+        const applyButtons = document.querySelectorAll('.apply-colors');
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const suggestionId = this.getAttribute('data-suggestion-id');
+                const colorHex = this.closest('.color-preview').querySelector('.color-hex').textContent;
+                const brightness = this.closest('.color-preview').querySelector('.color-info p').textContent.match(/\d+/)[0];
+                
+                // Redirect to RGB page with color and brightness
+                const rgbUrl = `/rgb?color=${colorHex.replace('#', '')}&brightness=${brightness}`;
+                window.location.href = rgbUrl;
+            });
+        });
     });
 </script>
 {% endblock %}

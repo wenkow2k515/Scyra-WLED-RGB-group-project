@@ -22,6 +22,7 @@
     
     <div class="account-content">
         <h2>Your Saved Presets</h2>
+        <p class="section-description">Manage your personal presets here. You can edit, share, or delete them. You can share it with other users via email or make it public so it will be visible on the community page.</p>
         
         {% if uploads %}
             <div class="preset-grid">
@@ -50,6 +51,7 @@
     
     <div class="account-section">
         <h2>Shared With You</h2>
+        <p class="section-description">These are presets that other users have specifically shared with you. You can view and apply them to your settings.</p>
         {% if shared_with_me %}
             <div class="preset-grid">
                 {% for shared in shared_with_me %}

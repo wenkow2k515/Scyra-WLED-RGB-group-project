@@ -2,314 +2,63 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/presets.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
+<!-- Background elements -->
+<div class="led-bg"></div>
+<div class="bg-gradient"></div>
+
 <!-- Use semantic main tag for primary content -->
 <main class="presets-container">
     <!-- ======== PAGE HEADER ======== -->
     <div class="page-header">
-        <h1>Your Light Presets</h1>
-        <p class="subtitle">Save, organize, and easily access your favorite lighting configurations.</p>
+        <h1>Community Presets</h1>
+        <p class="subtitle">Explore and apply presets shared by the Scyra community.</p>
+    </div>
+
+    <div class="info-section">
+        <p class="info-text">Your saved presets can be found in your <a href="{{ url_for('core.account') }}" class="info-link">Account</a> page, where you can edit, share, or delete them. When you make a preset public, it appears here for others to discover and use.</p>
     </div>
     
-    <!-- ======== TABS NAVIGATION ======== -->
-    <div class="tabs" role="tablist">
-        <button class="tab-btn active" data-tab="local" role="tab" aria-selected="true" aria-controls="local-presets">Local Presets</button>
-        <button class="tab-btn" data-tab="cloud" role="tab" aria-selected="false" aria-controls="cloud-presets">Cloud Presets</button>
-        <button class="tab-btn" data-tab="community" role="tab" aria-selected="false" aria-controls="community-presets">Community Presets</button>
+    <!-- Public Presets Section -->
+    <div class="section-header">
+        <h3>Public Presets</h3>
+        <p>Presets shared by the community</p>
     </div>
     
-    <!-- ======== LOCAL PRESETS TAB ======== -->
-    <div class="tab-content active" id="local-presets" role="tabpanel" aria-labelledby="local-tab">
-        <div class="tab-header">
-            <h2>Locally Saved Presets</h2>
-            <p>These presets are stored in your browser.</p>
-        </div>
-        
-        <!-- Local Presets Grid -->
-        <div class="presets-grid" id="local-presets-grid">
-            <div class="preset-card add-preset">
-                <div class="add-icon" aria-hidden="true">+</div>
-                <p>Save Current Configuration</p>
-            </div>
-        </div>
-        
-        <!-- Empty State Message -->
-        <div class="no-presets-message" id="no-local-presets">
-            <div class="empty-state">
-                <h3>No saved presets yet</h3>
-                <p>Create a configuration in the <a href="{{ url_for('core.rgb') }}">Controller</a> and save it here.</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ======== CLOUD PRESETS TAB ======== -->
-    <div class="tab-content" id="cloud-presets" role="tabpanel" aria-labelledby="cloud-tab">
-        <div class="tab-header">
-            <h2>Cloud Presets</h2>
-            <p>These presets are stored in your account.</p>
-        </div>
-        
-        {% if current_user.is_authenticated %}
-            <!-- User is logged in: Show cloud presets -->
-            <div class="cloud-presets-container">
-                <!-- Add button for cloud presets -->
-                <div class="preset-card add-preset" id="add-cloud-preset">
-                    <div class="add-icon" aria-hidden="true">+</div>
-                    <p>Save to Cloud</p>
-                </div>
-                
-                <!-- Cloud Presets Grid -->
-                <div class="presets-grid" id="cloud-presets-grid">
-                    {% if user_presets %}
-                        {% for preset in user_presets %}
-                            <div class="preset-card" data-preset-id="{{ preset.id }}">
-                                <div class="preset-header">
-                                    <h3>{{ preset.preset_name }}</h3>
-                                    <span class="preset-actions">
-                                        <button class="action-btn apply-preset" title="Apply Preset">
-                                            <i class="fa fa-play" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="action-btn edit-preset" title="Edit Preset">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="action-btn delete-preset" title="Delete Preset">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                                <div class="preset-preview" style="background-color: #{{ preset.preset_data.primary_color|default('cccccc') }}"></div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty-state">
-                            <h3>No cloud presets yet</h3>
-                            <p>Save your first preset to the cloud to access it from anywhere.</p>
+    {% if public_presets %}
+        <div class="presets-grid">
+            {% for preset in public_presets %}
+                <div class="preset-card" data-preset-id="{{ preset.id }}">
+                    <div class="preset-header">
+                        <h3>{{ preset.preset_name }}</h3>
+                        <div class="preset-creator">
+                            <small>By: {{ preset.user.fname }}</small>
                         </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% else %}
-            <!-- User is not logged in: Show login message -->
-            <div class="login-required-message">
-                <div class="empty-state">
-                    <h3>Login Required</h3>
-                    <p>You need to be logged in to access cloud presets.</p>
-                    <div class="auth-buttons">
-                        <a href="{{ url_for('core.login') }}" class="btn btn-primary">Login</a>
-                        <a href="{{ url_for('core.register') }}" class="btn btn-secondary">Register</a>
+                    </div>
+                    <div class="preset-preview" style="background-color: #{{ preset.preset_data.primary_color|default('cccccc') }}"></div>
+                    <div class="preset-actions">
+                        <a href="{{ url_for('core.view_preset', preset_id=preset.id) }}" class="btn btn-sm">View</a>
+                        <a href="{{ url_for('core.load_preset', preset_id=preset.id) }}" class="btn btn-sm btn-primary">Load in Editor</a>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-    </div>
-    
-    <!-- ======== COMMUNITY PRESETS TAB ======== -->
-    <div class="tab-content" id="community-presets" role="tabpanel" aria-labelledby="community-tab">
-        <div class="tab-header">
-            <h2>Community Presets</h2>
-            <p>Explore presets shared by other Scyra users.</p>
+            {% endfor %}
         </div>
-        
-        <!-- Public Presets Section -->
-        <div class="section-header">
-            <h3>Public Presets</h3>
-            <p>Presets shared by the community</p>
+    {% else %}
+        <div class="empty-state">
+            <h4>No public presets available</h4>
+            <p>Be the first to share your preset with the community!</p>
         </div>
-        
-        {% if public_presets %}
-            <div class="presets-grid">
-                {% for preset in public_presets %}
-                    <div class="preset-card" data-preset-id="{{ preset.id }}">
-                        <div class="preset-header">
-                            <h3>{{ preset.preset_name }}</h3>
-                            <div class="preset-creator">
-                                <small>By: {{ preset.user.fname }}</small>
-                            </div>
-                            <span class="preset-actions">
-                                <button class="action-btn view-preset" title="View Preset" data-preset-id="{{ preset.id }}">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                </button>
-                                <button class="action-btn apply-preset" title="Apply Preset">
-                                    <i class="fa fa-play" aria-hidden="true"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <div class="preset-preview" style="background-color: #{{ preset.preset_data.primary_color|default('cccccc') }}"></div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <h4>No public presets available</h4>
-                <p>Be the first to share your preset with the community!</p>
-            </div>
-        {% endif %}
-        
-        <!-- Shared With Me Section -->
-        {% if current_user.is_authenticated %}
-            <div class="section-header shared-section">
-                <h3>Shared With Me</h3>
-                <p>Presets others have shared with you</p>
-            </div>
-            
-            {% if shared_presets %}
-                <div class="presets-grid">
-                    {% for preset in shared_presets %}
-                        <div class="preset-card shared-preset" data-preset-id="{{ preset.id }}">
-                            <div class="preset-header">
-                                <h3>{{ preset.preset_name }}</h3>
-                                <div class="preset-creator">
-                                    <small>Shared by: {{ preset.user.fname }}</small>
-                                </div>
-                                <span class="preset-actions">
-                                    <button class="action-btn apply-preset" title="Apply Preset">
-                                        <i class="fa fa-play" aria-hidden="true"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <div class="preset-preview" style="background-color: #{{ preset.preset_data.primary_color|default('cccccc') }}"></div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <h4>No presets shared with you</h4>
-                    <p>When other users share presets with you, they will appear here.</p>
-                </div>
-            {% endif %}
-        {% endif %}
-    </div>
-    
-    <!-- ======== PRESET MODAL ======== -->
-    <div class="modal" id="preset-modal" aria-labelledby="modal-title" aria-modal="true" role="dialog">
-        <div class="modal-content">
-            <span class="close-modal" aria-label="Close">&times;</span>
-            <h2 id="modal-title">Save Preset</h2>
-            
-            <!-- Preset Form -->
-            <form id="preset-form">
-                <div class="form-group">
-                    <label for="preset-name">Preset Name:</label>
-                    <input type="text" id="preset-name" placeholder="My Preset" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="preset-category">Category:</label>
-                    <select id="preset-category">
-                        <option value="ambiance">Ambiance</option>
-                        <option value="holidays">Holidays</option>
-                        <option value="party">Party</option>
-                        <option value="mood">Mood Lighting</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="cancel-preset">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="save-preset">Save Preset</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% endif %}
 </main>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    // Tab navigation
-    document.querySelectorAll('.tab-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-selected', 'false');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            button.classList.add('active');
-            button.setAttribute('aria-selected', 'true');
-            const tabId = `${button.dataset.tab}-presets`;
-            document.getElementById(tabId).classList.add('active');
-        });
-    });
-    
-    // Modal handling
-    const modal = document.getElementById('preset-modal');
-    const closeModal = document.querySelector('.close-modal');
-    const cancelBtn = document.getElementById('cancel-preset');
-    
-    const openModal = () => {
-        modal.style.display = 'flex';
-        document.getElementById('preset-name').focus();
-    };
-    
-    const closeModalFunc = () => {
-        modal.style.display = 'none';
-    };
-    
-    document.querySelector('.add-preset').addEventListener('click', openModal);
-    
-    closeModal.addEventListener('click', closeModalFunc);
-    
-    cancelBtn.addEventListener('click', closeModalFunc);
-    
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModalFunc();
-        }
-    });
-    
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modal.style.display === 'flex') {
-            closeModalFunc();
-        }
-    });
-
     document.addEventListener('DOMContentLoaded', function() {
-    // Handle view button clicks
-    document.querySelectorAll('.view-preset').forEach(button => {
-        button.addEventListener('click', function() {
-            const presetId = this.getAttribute('data-preset-id') || 
-                             this.closest('.preset-card').dataset.presetId;
-            if (presetId) {
-                window.location.href = `/presets/${presetId}/view`;
-            }
-        });
+        // No need for click handlers anymore as we're using direct links
     });
-    
-    // Make the entire preset card clickable for viewing
-    document.querySelectorAll('.preset-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Only trigger if we clicked the card itself, not a button inside it
-            if (e.target === this || e.target.closest('.preset-preview')) {
-                const presetId = this.dataset.presetId;
-                if (presetId) {
-                    window.location.href = `/presets/${presetId}/view`;
-                }
-            }
-        });
-    });
-    
-    // Update existing action button handlers
-    document.querySelectorAll('.action-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent card click from triggering
-            
-            if (this.classList.contains('apply-preset')) {
-                const presetId = this.closest('.preset-card').dataset.presetId;
-                window.location.href = `/presets/${presetId}/load`;
-            } else if (this.classList.contains('edit-preset')) {
-                const presetId = this.closest('.preset-card').dataset.presetId;
-                window.location.href = `/presets/${presetId}/edit`;
-            } else if (this.classList.contains('delete-preset')) {
-                if (confirm('Are you sure you want to delete this preset?')) {
-                    const presetId = this.closest('.preset-card').dataset.presetId;
-                    window.location.href = `/presets/${presetId}/delete`;
-                }
-            }
-        });
-    });
-});
 </script>
 {% endblock %}
