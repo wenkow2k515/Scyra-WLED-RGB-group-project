@@ -30,5 +30,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run unit tests
+        env:
+          OPENAI_API_KEY: dummy-key
         run: |
           python -m unittest tests.test_auth
+          OPENAI_API_KEY=dummy-key python -m unittest tests.systemtest 
