@@ -1,4 +1,5 @@
 import sys
+import unittest
 sys.path.append('.')
 from app.mood_utils import COLOR_RGB_MAP
 
@@ -38,19 +39,27 @@ def mock_generate_feedback_and_color(form_data):
     
     return feedback, color_name, rgb_tuple
 
-# Call the function and display results
-print("\n===== Testing mock feedback and color function =====\n")
-print(f"Test data: {test_form_data}")
+class TestMockFeedbackAndColor(unittest.TestCase):
+    def test_high_energy_happiness(self):
+        form_data = {"energy": "8", "happiness": "7"}
+        feedback, color_name, rgb = mock_generate_feedback_and_color(form_data)
+        self.assertIn("positive state of mind", feedback)
+        self.assertEqual(color_name, "Yellow")
+        self.assertEqual(rgb, COLOR_RGB_MAP["Yellow"])
 
-try:
-    feedback, color_name, rgb_values = mock_generate_feedback_and_color(test_form_data)
-    
-    print("\n===== RESULTS =====")
-    print(f"Feedback: {feedback}")
-    print(f"Color Name: {color_name}")
-    print(f"RGB Values: {rgb_values}")
-    print(f"Hex Color: #{rgb_values[0]:02x}{rgb_values[1]:02x}{rgb_values[2]:02x}")
-    print("\n✅ Test completed successfully!")
-    
-except Exception as e:
-    print(f"\n❌ Error occurred: {str(e)}") 
+    def test_low_energy(self):
+        form_data = {"energy": "3", "happiness": "6"}
+        feedback, color_name, rgb = mock_generate_feedback_and_color(form_data)
+        self.assertIn("lower side", feedback)
+        self.assertEqual(color_name, "Amber")
+        self.assertEqual(rgb, COLOR_RGB_MAP["Amber"])
+
+    def test_balanced(self):
+        form_data = {"energy": "5", "happiness": "5"}
+        feedback, color_name, rgb = mock_generate_feedback_and_color(form_data)
+        self.assertIn("balanced state", feedback)
+        self.assertEqual(color_name, "Cyan")
+        self.assertEqual(rgb, COLOR_RGB_MAP["Cyan"])
+
+if __name__ == '__main__':
+    unittest.main() 
